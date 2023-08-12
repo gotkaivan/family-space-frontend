@@ -166,3 +166,9 @@ span.flatpickr-weekday,
 [x-cloak] {
 	display: none !important;
 }
+
+.modal {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 25%);
+}

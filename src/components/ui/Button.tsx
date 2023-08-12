@@ -2,41 +2,27 @@ import React, { MouseEventHandler } from 'react';
 
 type Props = {
 	title: string;
-	leftIcon?: string | null;
-	rightIcon?: string | null;
-	handleClick?: MouseEventHandler;
-	submitting?: boolean | false;
-	type?: 'button' | 'submit';
+	leftIcon?: JSX.Element;
+	rightIcon?: JSX.Element;
+	disabled?: boolean;
+	clickHandler?: MouseEventHandler;
 	bgColor?: string;
 	textColor?: string;
+	className?: string;
 };
 
-const Button = ({ title, leftIcon, rightIcon, handleClick, submitting, type, bgColor, textColor }: Props) => (
+const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bgColor, textColor, className = '' }: Props) => (
 	<button
-		type={type || 'button'}
-		disabled={submitting || false}
-		className={`flexCenter gap-3 px-4 py-3
+		type="button"
+		disabled={disabled}
+		className={`flexCenter gap-3 w-full cursor-pointer rounded-lg border p-4 transition hover:bg-opacity-90
         ${textColor ? textColor : 'text-white'}
-        ${submitting ? 'bg-black/50' : bgColor ? bgColor : 'bg-primary-purple'} rounded-xl text-sm font-medium max-md:w-full`}
-		onClick={handleClick}
+        ${bgColor ? bgColor : 'border-primary bg-primary'} ${className}`}
+		onClick={clickHandler}
 	>
-		{leftIcon && (
-			<img
-				src={leftIcon}
-				width={14}
-				height={14}
-				alt="left icon"
-			/>
-		)}
+		{leftIcon && leftIcon}
 		{title}
-		{rightIcon && (
-			<img
-				src={rightIcon}
-				width={14}
-				height={14}
-				alt="right icon"
-			/>
-		)}
+		{rightIcon && rightIcon}
 	</button>
 );
 

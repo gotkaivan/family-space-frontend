@@ -1,28 +1,30 @@
-import React from 'react';
-import { Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import React, { FC, memo } from 'react';
+import { Navigate, Route, Routes, redirect } from 'react-router-dom';
 import DefaultLayout from '../layouts/DefaultLayout';
 import HomePage from '../pages/HomePage';
 import ChatPage from '../pages/ChatPage';
-import { Navigate } from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import NotesPage from '../pages/NotesPage';
 import TasksPage from '../pages/TasksPage';
+import { useAuth } from '../hooks/useAuth';
 
-const router = createBrowserRouter(
-	createRoutesFromElements(
-		<>
+const CustomRoutes: FC = () => {
+	const { isAuth, isInitialised } = useAuth();
+
+	const getSecureRoutes = () => {
+		return (
 			<Route
 				path="/"
 				element={<DefaultLayout />}
 			>
 				<Route
 					index
-					element={<Navigate to="/analitycs" />}
+					element={<Navigate to="/analytics" />}
 				/>
 				<Route
-					path="analitycs"
+					path="analytics"
 					element={<HomePage />}
 				/>
 				<Route
@@ -38,6 +40,11 @@ const router = createBrowserRouter(
 					element={<NotesPage />}
 				/>
 			</Route>
+		);
+	};
+
+	const getAuthRoutes = () => {
+		return (
 			<Route
 				path="/auth"
 				element={<AuthLayout />}
@@ -51,8 +58,14 @@ const router = createBrowserRouter(
 					element={<RegisterPage />}
 				/>
 			</Route>
-		</>
-	)
-);
+		);
+	};
 
-export default router;
+	const loadedRoutes = isAuth ? getSecureRoutes() : getAuthRoutes();
+
+	const routes = isInitialised ? loadedRoutes : null;
+
+	return <Routes>{routes}</Routes>;
+};
+
+export default memo(CustomRoutes);

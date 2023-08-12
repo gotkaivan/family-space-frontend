@@ -1,7 +1,7 @@
 import React from 'react';
 import { IPropsIcon } from './types';
 
-const CalendarIcon = ({ width, height }: IPropsIcon) => {
+const CalendarIcon = ({ width, height, color = '' }: Omit<IPropsIcon, 'name'>) => {
 	return (
 		<svg
 			className="fill-current"

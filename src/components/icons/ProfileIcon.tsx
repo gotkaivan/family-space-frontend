@@ -1,10 +1,10 @@
 import React from 'react';
 import { IPropsIcon } from './types';
 
-const ProfileIcon = ({ width, height }: IPropsIcon) => {
+const ProfileIcon = ({ width, height, color = '' }: Omit<IPropsIcon, 'name'>) => {
 	return (
 		<svg
-			className="fill-current"
+			className={`fill-current ${color}`}
 			width={width}
 			height={height}
 			viewBox="0 0 18 18"

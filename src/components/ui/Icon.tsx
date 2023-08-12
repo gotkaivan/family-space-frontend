@@ -1,20 +1,16 @@
-import { CalendarIcon, ProfileIcon, SettingsIcon, TableIcon } from '../icons';
+import { CalendarIcon, ProfileIcon, SettingsIcon, TableIcon, EmailIcon, LockIcon } from '../icons';
+import { IPropsIcon } from '../icons/types';
 
-export type IconName = 'calendar' | 'profile' | 'table' | 'settings';
+export type IconName = 'calendar' | 'profile' | 'table' | 'settings' | 'email' | 'lock';
 
-interface IProps {
-	name: IconName;
-	width: number;
-	height: number;
-}
-
-const Icon = ({ name, width, height }: IProps) => {
+const Icon = ({ name, width, height, color }: IPropsIcon) => {
 	switch (name) {
 		case 'calendar':
 			return (
 				<CalendarIcon
 					width={width}
 					height={height}
+					color={color}
 				/>
 			);
 		case 'profile':
@@ -22,6 +18,7 @@ const Icon = ({ name, width, height }: IProps) => {
 				<ProfileIcon
 					width={width}
 					height={height}
+					color={color}
 				/>
 			);
 		case 'table':
@@ -29,6 +26,7 @@ const Icon = ({ name, width, height }: IProps) => {
 				<TableIcon
 					width={width}
 					height={height}
+					color={color}
 				/>
 			);
 		case 'settings':
@@ -36,6 +34,23 @@ const Icon = ({ name, width, height }: IProps) => {
 				<SettingsIcon
 					width={width}
 					height={height}
+					color={color}
+				/>
+			);
+		case 'email':
+			return (
+				<EmailIcon
+					width={width}
+					height={height}
+					color={color}
+				/>
+			);
+		case 'lock':
+			return (
+				<LockIcon
+					width={width}
+					height={height}
+					color={color}
 				/>
 			);
 	}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { IPropsIcon } from './types';
 
-const SettingsIcon = ({ width, height }: IPropsIcon) => {
+const SettingsIcon = ({ width, height }: Omit<IPropsIcon, 'name'>) => {
 	return (
 		<svg
 			className="fill-current"
