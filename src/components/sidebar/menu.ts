@@ -1,5 +1,4 @@
-import { IPropsIcon } from '../icons/types';
-import { IconName } from '../ui/Icon';
+import { IPropsIcon, IconName } from '../icons/types';
 
 interface IMenuItem {
 	name: string;
@@ -10,7 +9,16 @@ interface IMenuItem {
 const menu: IMenuItem[] = [
 	{
 		name: 'Analytics',
-		url: 'analitycs',
+		url: 'analytics',
+		icon: {
+			name: 'calendar',
+			width: 18,
+			height: 18,
+		},
+	},
+	{
+		name: 'Income/Expenses',
+		url: 'income',
 		icon: {
 			name: 'calendar',
 			width: 18,

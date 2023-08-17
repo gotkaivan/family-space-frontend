@@ -43,7 +43,7 @@ export const useAuth = () => {
 		if (!isInitialised) {
 			initApp();
 		}
-	}, [location, navigate, authToken]);
+	}, [location, navigate, authToken, dispatch, isInitialised, user]);
 	return {
 		isAuth,
 		isInitialised,

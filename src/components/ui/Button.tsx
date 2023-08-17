@@ -11,13 +11,12 @@ type Props = {
 	className?: string;
 };
 
-const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bgColor, textColor, className = '' }: Props) => (
+const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bgColor, className = '' }: Props) => (
 	<button
 		type="button"
 		disabled={disabled}
-		className={`flexCenter gap-3 w-full cursor-pointer rounded-lg border p-4 transition hover:bg-opacity-90
-        ${textColor ? textColor : 'text-white'}
-        ${bgColor ? bgColor : 'border-primary bg-primary'} ${className}`}
+		className={`flexCenter gap-3 w-full cursor-pointer rounded-lg border transition hover:bg-opacity-90 ${className}
+        ${bgColor ? bgColor : 'border-primary bg-primary'}`}
 		onClick={clickHandler}
 	>
 		{leftIcon && leftIcon}

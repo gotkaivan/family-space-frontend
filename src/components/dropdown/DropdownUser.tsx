@@ -1,13 +1,34 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import UserImg from '../../assets/images/user/user-01.png';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { logoutApi } from '../../api/auth';
+import { KEY__AUTH_TOKEN, ROUTE__LOGIN } from '../../constants';
+import { changeIsAuth, setUser } from '../../store/features/profile';
 
 const DropdownUser = () => {
+	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
+
+	const { user } = useAppSelector(state => state.profile);
 
 	const trigger = useRef<any>(null);
 	const dropdown = useRef<any>(null);
+
+	const logout = useCallback(async () => {
+		await logoutApi();
+		localStorage.setItem(KEY__AUTH_TOKEN, '');
+
+		dispatch(changeIsAuth(false));
+
+		dispatch(setUser(null));
+		window.document.body.classList.remove('dark');
+		navigate(ROUTE__LOGIN, {
+			replace: true,
+		});
+	}, []);
 
 	useEffect(() => {
 		const clickHandler = ({ target }: MouseEvent) => {
@@ -37,7 +58,7 @@ const DropdownUser = () => {
 				to="#"
 			>
 				<span className="hidden text-right lg:block">
-					<span className="block text-sm font-medium text-black dark:text-white">Thomas Anree</span>
+					<span className="block font-medium text-black dark:text-white text-sm">{user?.name}</span>
 				</span>
 
 				<span className="h-12 w-12 rounded-full">
@@ -145,7 +166,10 @@ const DropdownUser = () => {
 						</Link>
 					</li>
 				</ul>
-				<button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+				<button
+					onClick={() => logout()}
+					className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+				>
 					<svg
 						className="fill-current"
 						width="22"

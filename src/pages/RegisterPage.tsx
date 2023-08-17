@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Icon from '../components/ui/Icon';
-import { useAppDispatch, useAppSelector } from '../store';
+import { useAppDispatch } from '../store';
 import { RegisterRequestDto } from '../api';
 import { isEmail } from '../helpers';
 import { changeIsAuth, setUser } from '../store/features/profile';
@@ -25,7 +25,7 @@ const RegisterPage = () => {
 
 	const REPEATED_PASSWORD_ERROR = 'Введите пароль повторно';
 
-	const profile = useAppSelector(state => state.profile);
+	// const profile = useAppSelector(state => state.profile);
 
 	const [currentUser, setCurrentUser] = useState<RegisterRequestDto>({ email: '', name: '', password: '' });
 
@@ -33,20 +33,31 @@ const RegisterPage = () => {
 
 	const [repeatedPassword, setRepeatedPassword] = useState<string>('');
 
-	const hasNameError = useMemo(() => !currentUser.name && isTouched, [currentUser.name, isTouched]);
+	const hasNameError = useMemo(() => !currentUser.name, [currentUser.name]);
 
-	const hasEmailError = useMemo(() => (!currentUser.email || !isEmail(currentUser.email)) && isTouched, [currentUser.email, isTouched]);
+	const hasEmailError = useMemo(() => !currentUser.email || !isEmail(currentUser.email), [currentUser.email]);
 
-	const hasPasswordError = useMemo(() => !currentUser.password && isTouched, [currentUser.password, isTouched]);
+	const hasPasswordError = useMemo(() => !currentUser.password, [currentUser.password]);
 
-	const hasRepeatedPasswordError = useMemo(() => currentUser.password !== repeatedPassword && isTouched, [currentUser.password, repeatedPassword, isTouched]);
+	const hasRepeatedPasswordError = useMemo(() => currentUser.password !== repeatedPassword, [currentUser.password, repeatedPassword]);
 
-	const isFormValid = useMemo(() => !(hasEmailError || hasPasswordError || hasNameError), [hasEmailError, hasPasswordError, hasNameError]);
+	const hasTouchedNameError = useMemo(() => hasNameError && isTouched, [hasNameError, isTouched]);
+
+	const hasTouchedEmailError = useMemo(() => hasEmailError && isTouched, [hasEmailError, isTouched]);
+
+	const hasTouchedPasswordError = useMemo(() => hasPasswordError && isTouched, [hasPasswordError, isTouched]);
+
+	const hasTouchedRepeatedPasswordError = useMemo(() => hasRepeatedPasswordError && isTouched, [hasRepeatedPasswordError, isTouched]);
+
+	const validateForm = () => {
+		if (hasNameError || hasEmailError || hasPasswordError || hasRepeatedPasswordError) return false;
+		return true;
+	};
 
 	const clickHandler = useCallback(async () => {
 		setIsTouched(true);
 
-		if (isFormValid) {
+		if (validateForm()) {
 			try {
 				const { user, token } = await registerApi(currentUser);
 
@@ -62,10 +73,10 @@ const RegisterPage = () => {
 					replace: true,
 				});
 			} catch (e) {
-				notify(NOTIFY_TYPES.ERROR, e);
+				notify(NOTIFY_TYPES.ERROR, e.body?.message);
 			}
 		}
-	}, [navigate, currentUser, dispatch, isFormValid]);
+	}, [navigate, currentUser, dispatch, repeatedPassword]);
 	return (
 		<>
 			<div className="w-full p-4 sm:p-12.5 xl:p-17.5">
@@ -75,8 +86,9 @@ const RegisterPage = () => {
 					<Input
 						type={'text'}
 						label="Name"
+						classesType="auth"
 						placeholder="Enter your full name"
-						hasError={hasNameError}
+						hasError={hasTouchedNameError}
 						errorMessage={NAME_ERROR}
 						value={currentUser.name}
 						onChange={e => setCurrentUser({ ...currentUser, name: e.target.value })}
@@ -93,9 +105,10 @@ const RegisterPage = () => {
 					<Input
 						type={'text'}
 						label="Email"
+						classesType="auth"
 						placeholder="Enter your email"
 						value={currentUser.email}
-						hasError={hasEmailError}
+						hasError={hasTouchedEmailError}
 						errorMessage={EMAIL_ERROR}
 						onChange={e => setCurrentUser({ ...currentUser, email: e.target.value })}
 						icon={
@@ -110,9 +123,10 @@ const RegisterPage = () => {
 					<Input
 						type={'password'}
 						label="Password"
+						classesType="auth"
 						placeholder="Enter your password"
 						value={currentUser.password}
-						hasError={hasPasswordError}
+						hasError={hasTouchedPasswordError}
 						errorMessage={PASSWORD_ERROR}
 						onChange={e => setCurrentUser({ ...currentUser, password: e.target.value })}
 						icon={
@@ -127,10 +141,11 @@ const RegisterPage = () => {
 					<Input
 						type={'password'}
 						label="Re-type Password"
+						classesType="auth"
 						placeholder="Re-enter your password"
 						value={repeatedPassword}
 						onChange={e => setRepeatedPassword(e.target.value)}
-						hasError={hasRepeatedPasswordError}
+						hasError={hasTouchedRepeatedPasswordError}
 						errorMessage={REPEATED_PASSWORD_ERROR}
 						className="mb-6"
 						icon={
@@ -145,7 +160,7 @@ const RegisterPage = () => {
 					<Button
 						title={'Create account'}
 						clickHandler={clickHandler}
-						className="mb-5"
+						className="mb-5 p-4 text-white"
 					/>
 
 					<div className="mt-6 text-center">

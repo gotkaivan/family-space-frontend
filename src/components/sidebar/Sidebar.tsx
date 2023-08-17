@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Icon from '../ui/Icon';
 import menu from './menu';
 import { Link } from 'react-router-dom';
+import MenuBurger from '../burger/MenuBurger';
 
 interface SidebarProps {
 	isSidebarOpen: boolean;
@@ -34,13 +35,18 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }: SidebarProps) => {
 		return () => document.removeEventListener('keydown', keyHandler);
 	});
 
+	const closeHandler = (e: Event) => {
+		e.stopPropagation();
+		setSidebarOpen(!isSidebarOpen);
+	};
+
 	const getMenuItems = () => {
 		return menu.map(item => {
 			return (
 				<li key={item.name}>
 					<Link
 						to={`/${item.url}`}
-						className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+						className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-sm ${
 							pathname?.includes(item.url) && 'bg-graydark dark:bg-meta-4'
 						}`}
 					>
@@ -59,14 +65,21 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }: SidebarProps) => {
 	return (
 		<aside
 			ref={sidebar}
-			className={`absolute left-0 top-0 z-9999 flex h-screen flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
-				isSidebarOpen ? 'translate-x-0 w-0' : '-translate-x-full w-60'
-			}`}
+			className={`absolute left-0 top-0 z-9999 flex h-screen flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark
+			lg:static translate-x-0 ${isSidebarOpen ? 'translate-x-0 w-0' : '-translate-x-full w-60'}`}
 		>
 			<div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-				<nav className="px-4 lg:mt-9 lg:px-6">
+				<nav className="px-4 mt-6 lg:mt-10.5 lg:px-6">
 					<div>
-						<h3 className="mb-6 ml-4 text-md font-semibold text-bodydark2">MENU</h3>
+						<div className="mb-6 ml-4  flex justify-end items-center">
+							<div className="lg:hidden">
+								<MenuBurger
+									isOpen={isSidebarOpen}
+									clickHandler={closeHandler}
+								/>
+							</div>
+						</div>
+
 						<ul className="mb-6 flex flex-col gap-1.5">{getMenuItems()}</ul>
 					</div>
 				</nav>

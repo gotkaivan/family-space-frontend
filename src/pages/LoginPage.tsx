@@ -9,7 +9,6 @@ import { loginApi } from '../api/auth';
 import { KEY__AUTH_TOKEN, ROUTE__MAIN } from '../constants';
 import { LoginRequestDto } from '../api';
 import { isEmail } from '../helpers';
-import toast from 'react-hot-toast';
 import { NOTIFY_TYPES, useNotify } from '../hooks/useNotify';
 
 const SignIn: FC = () => {
@@ -27,16 +26,23 @@ const SignIn: FC = () => {
 
 	const [isTouched, setIsTouched] = useState<boolean>(false);
 
-	const hasEmailError = useMemo(() => (!currentUser.email || !isEmail(currentUser.email)) && isTouched, [currentUser.email, isTouched]);
+	const hasEmailError = useMemo(() => !currentUser.email || !isEmail(currentUser.email), [currentUser.email]);
 
-	const hasPasswordError = useMemo(() => !currentUser.password && isTouched, [currentUser.password, isTouched]);
+	const hasPasswordError = useMemo(() => !currentUser.password, [currentUser.password]);
 
-	const isFormValid = useMemo(() => !(hasEmailError || hasPasswordError) && isTouched, [hasEmailError, hasPasswordError, isTouched]);
+	const hasTouchedEmailError: boolean = useMemo(() => hasEmailError && isTouched, [hasEmailError, isTouched]);
+
+	const hasTouchedPasswordError: boolean = useMemo(() => hasPasswordError && isTouched, [hasPasswordError, isTouched]);
+
+	const validateForm = () => {
+		if (hasEmailError || hasPasswordError) return false;
+		return true;
+	};
 
 	const clickHandler = useCallback(async () => {
 		setIsTouched(true);
 
-		if (isFormValid) {
+		if (validateForm()) {
 			try {
 				const { user, token } = await loginApi(currentUser);
 
@@ -50,11 +56,10 @@ const SignIn: FC = () => {
 					replace: true,
 				});
 			} catch (e) {
-				console.log(e.message);
-				notify(NOTIFY_TYPES.ERROR, e.error);
+				notify(NOTIFY_TYPES.ERROR, e.body?.message);
 			}
 		}
-	}, [navigate, currentUser, dispatch, isFormValid]);
+	}, [isTouched, navigate, currentUser, dispatch, hasEmailError, hasPasswordError]);
 
 	return (
 		<>
@@ -66,7 +71,8 @@ const SignIn: FC = () => {
 					<Input
 						label="Email"
 						type="text"
-						hasError={hasEmailError}
+						classesType="auth"
+						hasError={hasTouchedEmailError}
 						errorMessage={EMAIL_ERROR}
 						placeholder="Enter your email"
 						value={currentUser.email}
@@ -84,7 +90,8 @@ const SignIn: FC = () => {
 						label="Password"
 						type="password"
 						className={'mb-6'}
-						hasError={hasPasswordError}
+						classesType="auth"
+						hasError={hasTouchedPasswordError}
 						errorMessage={PASSWORD_ERROR}
 						placeholder="6+ Characters, 1 Capital letter"
 						value={currentUser.password}
@@ -100,6 +107,7 @@ const SignIn: FC = () => {
 
 					<Button
 						title={'Sign in'}
+						className="p-4 text-white"
 						clickHandler={clickHandler}
 					/>
 

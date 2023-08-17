@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { Navigate, Route, Routes, redirect } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import DefaultLayout from '../layouts/DefaultLayout';
 import HomePage from '../pages/HomePage';
 import ChatPage from '../pages/ChatPage';
@@ -8,6 +8,10 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import NotesPage from '../pages/NotesPage';
 import TasksPage from '../pages/TasksPage';
+import IncomePage from '../pages/income';
+import IncomeOperationsPage from '../pages/income/IncomeOperationsPage';
+import IncomeTypesPage from '../pages/income/IncomeTypesPage';
+
 import { useAuth } from '../hooks/useAuth';
 
 const CustomRoutes: FC = () => {
@@ -27,6 +31,24 @@ const CustomRoutes: FC = () => {
 					path="analytics"
 					element={<HomePage />}
 				/>
+				<Route
+					path="income/"
+					element={<IncomePage />}
+				>
+					<Route
+						index
+						element={<Navigate to="/income/operations" />}
+					/>
+					<Route
+						path="operations"
+						element={<IncomeOperationsPage />}
+					/>
+					<Route
+						path="types"
+						element={<IncomeTypesPage />}
+					/>
+				</Route>
+
 				<Route
 					path="tasks"
 					element={<TasksPage />}
