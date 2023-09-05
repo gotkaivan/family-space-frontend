@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
-import Header from '../components/header/Header';
-import Sidebar from '../components/sidebar/Sidebar';
+import { useMemo, useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import Header from 'common/components/header/Header';
+import Sidebar from 'common/components/sidebar/Sidebar';
+import { IS__SIDEBAR__OPEN } from 'common/constants';
 
 export default function DefaultLayout() {
-	const [isSidebarOpen, setSidebarOpen] = useState(false);
+	const isSidebarOpenedFromStorage = localStorage.getItem(IS__SIDEBAR__OPEN);
+
+	const isOpened = useMemo(() => (isSidebarOpenedFromStorage ? JSON.parse(isSidebarOpenedFromStorage) : false), [isSidebarOpenedFromStorage]);
+
+	const [isSidebarOpen, setSidebarOpen] = useState(isOpened);
+
+	const changeSidebarState = (isOpen: boolean) => {
+		localStorage.setItem(IS__SIDEBAR__OPEN, JSON.stringify(isOpen));
+		setSidebarOpen(isOpen);
+	};
 
 	return (
 		<div className="dark:bg-boxdark-2 dark:text-bodydark">
 			<div className="flex h-screen overflow-hidden">
 				<Sidebar
 					isSidebarOpen={isSidebarOpen}
-					setSidebarOpen={setSidebarOpen}
+					setSidebarOpen={changeSidebarState}
 				/>
 				<div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
 					<Header
 						isSideberOpen={isSidebarOpen}
-						setSidebarOpen={setSidebarOpen}
+						setSidebarOpen={changeSidebarState}
 					/>
 					<main>
 						<div className="mx-auto max-w-screen p-4 md:p-6">

@@ -1,3 +1,5 @@
+import { TypeAction } from 'common/types';
+
 export interface ITaskColumn {
 	id: number;
 	title: string;
@@ -16,4 +18,15 @@ export interface ISubTask {
 	id: number;
 	content: string;
 	isCompleted: boolean;
+}
+
+export type TypeItem = 'status' | 'task';
+
+export interface IActionTaskResponseParams<DataType> {
+	typeItem: TypeItem;
+	typeAction: TypeAction;
+	isOpen: boolean;
+	statusId: number;
+	taskId?: number;
+	data?: DataType;
 }

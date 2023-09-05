@@ -1,15 +1,15 @@
-import React, { Link, useNavigate } from 'react-router-dom';
-import Input from '../components/ui/Input';
-import Button from '../components/ui/Button';
-import Icon from '../components/ui/Icon';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store';
-import { changeIsAuth, setUser } from '../store/features/profile';
-import { loginApi } from '../api/auth';
-import { KEY__AUTH_TOKEN, ROUTE__MAIN } from '../constants';
-import { LoginRequestDto } from '../api';
-import { isEmail } from '../helpers';
-import { NOTIFY_TYPES, useNotify } from '../hooks/useNotify';
+import { Link, useNavigate } from 'react-router-dom';
+import Input from 'common/components/ui/Input';
+import Button from 'common/components/ui/Button';
+import Icon from 'common/components/ui/Icon';
+import { useAppDispatch, useAppSelector } from 'store';
+import { changeIsAuth, setUser } from 'store/features/profile';
+import { loginApi } from 'common/api/auth';
+import { KEY__AUTH_TOKEN, ROUTE__MAIN } from 'common/constants';
+import { isEmail } from 'common/helpers';
+import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
+import { LoginRequestDto } from 'generated/api';
 
 const SignIn: FC = () => {
 	const navigate = useNavigate();
@@ -55,7 +55,7 @@ const SignIn: FC = () => {
 				navigate(ROUTE__MAIN, {
 					replace: true,
 				});
-			} catch (e) {
+			} catch (e: any) {
 				notify(NOTIFY_TYPES.ERROR, e.body?.message);
 			}
 		}

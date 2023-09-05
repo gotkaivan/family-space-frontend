@@ -8,11 +8,10 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import NotesPage from '../pages/NotesPage';
 import TasksPage from '../pages/TasksPage';
-import IncomePage from '../pages/income';
-import IncomeOperationsPage from '../pages/income/IncomeOperationsPage';
-import IncomeTypesPage from '../pages/income/IncomeTypesPage';
 
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../common/hooks/useAuth';
+import CapitalizationPage from 'pages/CapitalizationPage';
+import TransactionsPage from 'pages/TransactionsPage';
 
 const CustomRoutes: FC = () => {
 	const { isAuth, isInitialised } = useAuth();
@@ -25,30 +24,20 @@ const CustomRoutes: FC = () => {
 			>
 				<Route
 					index
-					element={<Navigate to="/analytics" />}
+					element={<Navigate to="/tasks" />}
 				/>
 				<Route
 					path="analytics"
 					element={<HomePage />}
 				/>
 				<Route
-					path="income/"
-					element={<IncomePage />}
-				>
-					<Route
-						index
-						element={<Navigate to="/income/operations" />}
-					/>
-					<Route
-						path="operations"
-						element={<IncomeOperationsPage />}
-					/>
-					<Route
-						path="types"
-						element={<IncomeTypesPage />}
-					/>
-				</Route>
-
+					path="transactions"
+					element={<TransactionsPage />}
+				/>
+				<Route
+					path="capitalization/"
+					element={<CapitalizationPage />}
+				/>
 				<Route
 					path="tasks"
 					element={<TasksPage />}

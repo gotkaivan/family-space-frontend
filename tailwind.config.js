@@ -2,7 +2,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './node_modules/react-tailwindcss-datepicker/dist/index.esm.js'],
 	darkMode: 'class',
 	theme: {
 		fontFamily: {
@@ -53,6 +53,9 @@ module.exports = {
 				'success': '#219653',
 				'danger': '#cf304a',
 				'warning': '#FFA70B',
+			},
+			margin: {
+				'18px': '18px',
 			},
 			fontSize: {
 				'title-xxl': ['44px', '55px'],

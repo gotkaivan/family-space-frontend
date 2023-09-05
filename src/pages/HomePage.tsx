@@ -1,8 +1,7 @@
-import React from 'react';
 // import ChartFour from '../components/charts/ChartFour';
-import ChartOne from '../components/charts/ChartOne';
-import ChartTwo from '../components/charts/ChartTwo';
-import ChartThree from '../components/charts/ChartThree';
+import ChartOne from 'common/components/charts/ChartOne';
+import ChartTwo from 'common/components/charts/ChartTwo';
+import ChartThree from 'common/components/charts/ChartThree';
 
 const Home = () => {
 	return (

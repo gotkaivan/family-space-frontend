@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
-import Icon from '../components/ui/Icon';
-import { useAppDispatch } from '../store';
-import { RegisterRequestDto } from '../api';
-import { isEmail } from '../helpers';
-import { changeIsAuth, setUser } from '../store/features/profile';
-import { KEY__AUTH_TOKEN, ROUTE__MAIN } from '../constants';
-import { registerApi } from '../api/auth';
-import { NOTIFY_TYPES, useNotify } from '../hooks/useNotify';
+import Input from 'common/components/ui/Input';
+import Icon from 'common/components/ui/Icon';
+import { useAppDispatch } from 'store';
+import { isEmail } from 'common/helpers';
+import { changeIsAuth, setUser } from 'store/features/profile';
+import { KEY__AUTH_TOKEN, ROUTE__MAIN } from 'common/constants';
+import { registerApi } from 'common/api/auth';
+import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
+import Button from 'common/components/ui/Button';
+import { RegisterRequestDto } from 'generated/api';
 
 const RegisterPage = () => {
 	const navigate = useNavigate();
@@ -72,7 +72,7 @@ const RegisterPage = () => {
 				navigate(ROUTE__MAIN, {
 					replace: true,
 				});
-			} catch (e) {
+			} catch (e: any) {
 				notify(NOTIFY_TYPES.ERROR, e.body?.message);
 			}
 		}

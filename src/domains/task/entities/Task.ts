@@ -1,24 +1,26 @@
-import { getRandomId } from '../../../helpers';
-import { ISubTask, ITask } from '../types';
+import { getRandomId } from 'common/helpers';
+import { SubtaskDto, TaskDto } from 'generated/api';
 
-class Task implements ITask {
-	constructor(task: ITask) {
-		this.id = task.id || getRandomId();
-		this.columnId = task.columnId || getRandomId();
-		this.title = task.title || '';
-		this.description = task.description || '';
-		this.subtasks = task.subtasks || [];
+class Task implements TaskDto {
+	constructor(task?: TaskDto) {
+		this.id = task?.id || getRandomId();
+		this.title = task?.title || '';
+		this.description = task?.description || '';
+		this.statusId = task?.statusId || 0;
+		this.subtasks = task?.subtasks || [];
+		this.position = task?.position || 0;
 	}
+	position: number;
+
+	subtasks: SubtaskDto[];
 
 	id: number;
-
-	columnId: number;
 
 	title: string;
 
 	description: string;
 
-	subtasks: ISubTask[];
+	statusId: number;
 }
 
 export default Task;
