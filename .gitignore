@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 /src/generated
+/api
+/backend
 /examples
 /.pnp
 .pnp.js
