@@ -1,0 +1,6 @@
+RewriteEngine On
+   #  Директива включает редиректы.
+RewriteBase /
+   # Без директивы (.*) = /$1 будет /var/wwww/site/web/$1  с директивой  = /$1
+Options +FollowSymLinks
+   # Разрешает переход по символическим ссылкам.
