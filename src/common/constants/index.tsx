@@ -1,4 +1,4 @@
-export const API_HOST = 'http://localhost:7000';
+export const API_HOST = 'http://api-fincome.space:7000';
 
 export const ROUTE__LOGIN = '/auth/login';
 export const AUTH__ROUTES__ALIAS = 'auth';
