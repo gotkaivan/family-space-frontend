@@ -1,6 +1,8 @@
-RewriteEngine On
-   #  Директива включает редиректы.
-RewriteBase /
-   # Без директивы (.*) = /$1 будет /var/wwww/site/web/$1  с директивой  = /$1
-Options +FollowSymLinks
-   # Разрешает переход по символическим ссылкам.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /build/index.html [L]
+</IfModule>
