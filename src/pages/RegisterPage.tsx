@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from 'common/components/ui/Input';
 import Icon from 'common/components/ui/Icon';
@@ -77,6 +77,15 @@ const RegisterPage = () => {
 			}
 		}
 	}, [navigate, currentUser, dispatch, repeatedPassword]);
+
+	useEffect(() => {
+		const keyHandler = ({ keyCode }: KeyboardEvent) => {
+			if (keyCode === 13) clickHandler();
+		};
+		document.addEventListener('keydown', keyHandler);
+		return () => document.removeEventListener('keydown', keyHandler);
+	});
+
 	return (
 		<>
 			<div className="w-full p-4 sm:p-12.5 xl:p-17.5">

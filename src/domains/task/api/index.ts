@@ -17,15 +17,11 @@ import {
 	UpdateSubtaskDto,
 } from 'generated/api';
 
-const authToken = localStorage.getItem(KEY__AUTH_TOKEN);
-
 OpenAPI.BASE = API_HOST;
 
-if (authToken) {
-	OpenAPI.HEADERS = {
-		Authorization: `Bearer ${authToken}`,
-	};
-}
+OpenAPI.CREDENTIALS = 'include';
+
+OpenAPI.WITH_CREDENTIALS = true;
 
 /**
  * Статусы

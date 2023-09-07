@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from 'common/components/ui/Input';
 import Button from 'common/components/ui/Button';
@@ -60,6 +60,14 @@ const SignIn: FC = () => {
 			}
 		}
 	}, [isTouched, navigate, currentUser, dispatch, hasEmailError, hasPasswordError]);
+
+	useEffect(() => {
+		const keyHandler = ({ keyCode }: KeyboardEvent) => {
+			if (keyCode === 13) clickHandler();
+		};
+		document.addEventListener('keydown', keyHandler);
+		return () => document.removeEventListener('keydown', keyHandler);
+	});
 
 	return (
 		<>

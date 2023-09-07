@@ -1,10 +1,10 @@
-import React, { createContext, FC, ReactNode, useCallback, useEffect, useMemo, useReducer } from 'react';
+import { createContext, FC, ReactNode, useCallback, useEffect, useMemo, useReducer } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserDto } from 'generated/api';
 import Loader from '../components/ui/Loader';
 import { loginApi } from '../api/auth';
 import { ACTION__APP_INIT, ACTION__LOGIN, ACTION__LOGOUT, KEY__AUTH_TOKEN, ROUTE__LOGIN, ROUTE__MAIN } from '../constants';
-import useLocalStorage from '../hooks/useLocalStorage';
+import useCookie from 'react-use-cookie';
 import { getUserByToken } from 'domains/user/api/user';
 
 export interface AuthState {
@@ -86,7 +86,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialAuthState);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [authToken, setAuthToken] = useLocalStorage(KEY__AUTH_TOKEN, '');
+	const [authToken] = useCookie(KEY__AUTH_TOKEN, '');
 
 	const login = useCallback(
 		async (email: string, password: string) => {
@@ -98,8 +98,6 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 					payload: response.user,
 				});
 
-				setAuthToken(response.token);
-
 				navigate(ROUTE__MAIN, {
 					replace: true,
 				});
@@ -107,16 +105,15 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 				console.log(e);
 			}
 		},
-		[navigate, setAuthToken]
+		[navigate]
 	);
 
 	const logout = useCallback(() => {
-		setAuthToken('');
 		dispatch({ type: ACTION__LOGOUT });
 		navigate(ROUTE__LOGIN, {
 			replace: true,
 		});
-	}, [navigate, setAuthToken]);
+	}, [navigate]);
 
 	const contextValue = useMemo(
 		() => ({
@@ -131,19 +128,16 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 		const initApp = async () => {
 			try {
 				if (authToken && !state.user) {
-					const response = await getUserByToken(authToken);
-
-					console.log(response);
+					const responseUser = await getUserByToken(authToken);
 
 					dispatch({
 						type: ACTION__APP_INIT,
-						payload: response,
+						payload: responseUser,
 					});
 
 					if (location.pathname === ROUTE__LOGIN) {
 						navigate(ROUTE__MAIN);
 					}
-					console.log(state);
 				}
 
 				if (!authToken) {

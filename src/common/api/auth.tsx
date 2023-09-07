@@ -3,6 +3,10 @@ import { AuthResponseDto, AuthService, CancelablePromise, LoginRequestDto, OpenA
 
 OpenAPI.BASE = API_HOST;
 
+OpenAPI.CREDENTIALS = 'include';
+
+OpenAPI.WITH_CREDENTIALS = true;
+
 export const loginApi = (requestBody: LoginRequestDto): CancelablePromise<AuthResponseDto> => {
 	return AuthService.authControllerLogin(requestBody);
 };
