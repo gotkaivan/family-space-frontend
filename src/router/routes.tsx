@@ -12,6 +12,7 @@ import TasksPage from '../pages/TasksPage';
 import { useAuth } from '../common/hooks/useAuth';
 import CapitalizationPage from 'pages/CapitalizationPage';
 import TransactionsPage from 'pages/TransactionsPage';
+import TaskBoardsPage from 'pages/TaskBoardsPage';
 
 const CustomRoutes: FC = () => {
 	const { isAuth, isInitialised } = useAuth();
@@ -40,7 +41,11 @@ const CustomRoutes: FC = () => {
 				/>
 				<Route
 					path="tasks"
+					element={<TaskBoardsPage />}
+				/>
+				<Route
 					element={<TasksPage />}
+					path="tasks/:boardId"
 				/>
 				<Route
 					path="chat"

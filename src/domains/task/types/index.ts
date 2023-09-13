@@ -25,7 +25,6 @@ export type TypeItem = 'status' | 'task';
 export interface IActionTaskResponseParams<DataType> {
 	typeItem: TypeItem;
 	typeAction: TypeAction;
-	isOpen: boolean;
 	statusId: number;
 	taskId?: number;
 	data?: DataType;

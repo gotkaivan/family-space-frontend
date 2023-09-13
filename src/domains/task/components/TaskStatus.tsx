@@ -33,7 +33,6 @@ const TaskStatus = ({ taskStatus, createNewTask, onActionHandler, onUpdateStatus
 			statusId: taskStatus.id,
 			taskId,
 			data,
-			isOpen: true,
 		});
 	};
 
@@ -43,7 +42,6 @@ const TaskStatus = ({ taskStatus, createNewTask, onActionHandler, onUpdateStatus
 			typeAction: 'delete',
 			statusId: taskStatus.id,
 			taskId,
-			isOpen: true,
 		});
 	};
 
@@ -53,7 +51,6 @@ const TaskStatus = ({ taskStatus, createNewTask, onActionHandler, onUpdateStatus
 			typeAction: 'edit',
 			statusId: taskStatus.id,
 			data: item,
-			isOpen: true,
 		});
 	};
 
@@ -62,7 +59,6 @@ const TaskStatus = ({ taskStatus, createNewTask, onActionHandler, onUpdateStatus
 			typeItem: 'status',
 			typeAction: 'delete',
 			statusId: taskStatus.id,
-			isOpen: true,
 		});
 	};
 

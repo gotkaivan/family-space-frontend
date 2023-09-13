@@ -41,14 +41,13 @@ const CapitalizationPage = () => {
 				/>
 			)}
 
-			{actionData?.typeAction === 'delete' && actionData?.id && (
-				<DeleteModal
-					title={`Удалить транзакцию ?`}
-					description={`Вы точно хотите удалить транзакцию ?`}
-					cancel={() => setActionData(null)}
-					confirm={() => deleteInvestment()}
-				/>
-			)}
+			<DeleteModal
+				title={`Удалить транзакцию ?`}
+				description={`Вы точно хотите удалить транзакцию ?`}
+				cancel={() => setActionData(null)}
+				confirm={() => deleteInvestment()}
+				isOpen={!!(actionData?.typeAction === 'delete' && actionData?.id)}
+			/>
 		</div>
 	);
 };

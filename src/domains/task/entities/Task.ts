@@ -9,7 +9,9 @@ class Task implements TaskDto {
 		this.statusId = task?.statusId || 0;
 		this.subtasks = task?.subtasks || [];
 		this.position = task?.position || 0;
+		this.linkBoardId = task?.linkBoardId || null;
 	}
+
 	position: number;
 
 	subtasks: SubtaskDto[];
@@ -21,6 +23,8 @@ class Task implements TaskDto {
 	description: string;
 
 	statusId: number;
+
+	linkBoardId: number | null;
 }
 
 export default Task;

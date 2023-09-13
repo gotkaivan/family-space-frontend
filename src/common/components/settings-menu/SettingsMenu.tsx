@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, MouseEvent, useRef } from 'react';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import Icon from '../ui/Icon';
 import SettingsDropdown from './SettingsDropdown';
@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const SettingsMenu = ({ className = '', onEdit, onDelete }: IProps) => {
-	const clickRef = React.useRef();
+	const clickRef = useRef();
 
 	const [isOpenSettingsMenu, setIsOpenSettingsMenu] = useState<boolean>(false);
 
@@ -30,6 +30,7 @@ const SettingsMenu = ({ className = '', onEdit, onDelete }: IProps) => {
 		<div
 			// @ts-ignore
 			ref={clickRef}
+			onClick={e => e.preventDefault()}
 			className={`absolute ${className}`}
 		>
 			<div

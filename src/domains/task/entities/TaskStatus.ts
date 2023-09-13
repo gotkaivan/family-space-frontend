@@ -8,6 +8,7 @@ class TaskStatusEntity implements TaskStatusDto {
 		this.description = status?.description || '';
 		this.position = status?.position || 0;
 		this.tasks = status?.tasks || [];
+		this.boardId = status?.boardId || getRandomId();
 	}
 	position: number;
 
@@ -18,6 +19,8 @@ class TaskStatusEntity implements TaskStatusDto {
 	title: string;
 
 	description: string;
+
+	boardId: number;
 }
 
 export default TaskStatusEntity;

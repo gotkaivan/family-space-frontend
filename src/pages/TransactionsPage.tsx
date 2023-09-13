@@ -36,14 +36,13 @@ const TransactionsPage = () => {
 				/>
 			)}
 
-			{actionData?.typeAction === 'delete' && actionData?.id && (
-				<DeleteModal
-					title={`Удалить транзакцию ?`}
-					description={`Вы точно хотите удалить транзакцию ?`}
-					cancel={() => setActionData(null)}
-					confirm={() => onDeleteTransaction()}
-				/>
-			)}
+			<DeleteModal
+				title={`Удалить транзакцию ?`}
+				description={`Вы точно хотите удалить транзакцию ?`}
+				cancel={() => setActionData(null)}
+				confirm={() => onDeleteTransaction()}
+				isOpen={!!(actionData?.typeAction === 'delete' && actionData?.id)}
+			/>
 		</div>
 	);
 };

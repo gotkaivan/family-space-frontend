@@ -6,7 +6,6 @@ const useTransaction = () => {
 	const [transactions, setTransactions] = useState<ITransaction[]>([]);
 
 	async function saveTransactions(data: ITransaction[]) {
-		console.log(data);
 		await localStorage.setItem(TRANSACTION__DATA, JSON.stringify(data));
 		return setTransactions(data);
 		return;
@@ -16,7 +15,6 @@ const useTransaction = () => {
 		try {
 			const result = [...transactions];
 			result.push(transaction);
-			console.log('create');
 			return await saveTransactions(result);
 		} catch (e) {
 			throw new Error('Не удалось создать транзакцию');
@@ -34,8 +32,6 @@ const useTransaction = () => {
 				}
 				return item;
 			});
-			console.log('update');
-
 			return await saveTransactions(result);
 		} catch (e) {
 			throw new Error('Не удалось обновить транзакцию');

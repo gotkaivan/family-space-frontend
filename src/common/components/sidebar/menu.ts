@@ -8,7 +8,7 @@ interface IMenuItem {
 
 const menu: IMenuItem[] = [
 	{
-		name: 'Tasks',
+		name: 'Задачи',
 		url: 'tasks',
 		icon: {
 			name: 'table',
@@ -18,7 +18,7 @@ const menu: IMenuItem[] = [
 	},
 
 	{
-		name: 'Transactions',
+		name: 'Транзакции',
 		url: 'transactions',
 		icon: {
 			name: 'calendar',
@@ -27,7 +27,7 @@ const menu: IMenuItem[] = [
 		},
 	},
 	{
-		name: 'Capitalization',
+		name: 'Капитализация',
 		url: 'capitalization',
 		icon: {
 			name: 'calendar',
@@ -36,7 +36,7 @@ const menu: IMenuItem[] = [
 		},
 	},
 	{
-		name: 'Analytics',
+		name: 'Аналитика',
 		url: 'analytics',
 		icon: {
 			name: 'calendar',

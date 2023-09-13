@@ -5,11 +5,14 @@ import Button from '../ui/Button';
 interface IProps {
 	title: string;
 	description: string;
+	isOpen: boolean;
 	confirm: () => void;
 	cancel: () => void;
 }
 
-const DeleteModal: FC<IProps> = ({ title, description, cancel, confirm }) => {
+const DeleteModal: FC<IProps> = ({ isOpen, title, description, cancel, confirm }) => {
+	if (!isOpen) return null;
+
 	return (
 		<div
 			onClick={() => cancel()}

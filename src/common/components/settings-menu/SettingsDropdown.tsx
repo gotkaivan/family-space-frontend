@@ -23,7 +23,7 @@ const SettingsDropdown = ({ isOpen = false, onEdit, onDelete }: IProps) => {
 					width={16}
 					height={16}
 				/>
-				Edit
+				Обновить
 			</button>
 			<button
 				onClick={onDelete}
@@ -34,7 +34,7 @@ const SettingsDropdown = ({ isOpen = false, onEdit, onDelete }: IProps) => {
 					width={16}
 					height={16}
 				/>
-				Delete
+				Удалить
 			</button>
 		</div>
 	);

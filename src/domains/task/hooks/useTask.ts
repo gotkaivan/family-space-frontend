@@ -1,7 +1,7 @@
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import { useEffect, useState } from 'react';
 import {
-	getStatusesApi,
+	getStatusesByGroupIdApi,
 	createStatusApi,
 	createTaskApi,
 	deleteTaskApi,
@@ -13,20 +13,24 @@ import {
 	deleteSubtaskApi,
 } from '../api';
 import { CancelablePromise, CreateTaskStatusDto, DeleteTaskResponseDto, DeleteTaskStatusResponseDto, SubtaskDto, TaskDto, TaskStatusDto } from 'generated/api';
+import { redirect, useParams } from 'react-router-dom';
 
 const INITIAL_POSITION = 10000000;
 
 const useTask = () => {
 	const { notify } = useNotify();
+	const { boardId } = useParams();
 	const [data, setData] = useState<TaskStatusDto[]>([]);
 
 	async function getData() {
 		try {
-			const statuses = await getStatusesApi();
+			if (!boardId) return;
+			const statuses = await getStatusesByGroupIdApi(+boardId);
 			setData(statuses);
 			return;
 		} catch (e) {
 			notify(NOTIFY_TYPES.ERROR, 'Не удалось получить задачи');
+			redirect('/tasks');
 		}
 	}
 
@@ -103,11 +107,12 @@ const useTask = () => {
 		updateStatus(request);
 	}
 
-	async function createNewStatus(): Promise<TaskStatusDto | null> {
+	async function createNewStatus(boardId: number): Promise<TaskStatusDto | null> {
 		try {
 			const newStatus: CreateTaskStatusDto = {
 				title: 'Новый статус',
 				description: '',
+				boardId,
 				position: getStatusPosition(),
 			};
 
@@ -237,7 +242,7 @@ const useTask = () => {
 
 	async function updateSubtask(subtask: SubtaskDto): Promise<void> {
 		try {
-			const updatedStatus = await updateSubtaskApi(subtask);
+			await updateSubtaskApi(subtask);
 
 			notify(NOTIFY_TYPES.SUCCESS, 'Подзадача успешно обновлен');
 		} catch (e) {
@@ -247,7 +252,7 @@ const useTask = () => {
 
 	useEffect(() => {
 		getData();
-	}, []);
+	}, [boardId]);
 	return {
 		data,
 		createNewTask,

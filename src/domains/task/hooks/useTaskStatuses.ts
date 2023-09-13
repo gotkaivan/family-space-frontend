@@ -127,8 +127,6 @@ const useTaskStatuses = (props: ITaskStatusesProps) => {
 	};
 
 	const onActionHandler = async (actionData: IActionTaskResponseParams<TaskDto | TaskStatusDto | null>): Promise<boolean> => {
-		// @ts-ignore
-
 		setActionData(actionData);
 		return true;
 	};

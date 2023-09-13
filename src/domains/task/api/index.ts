@@ -1,5 +1,6 @@
-import { API_HOST, KEY__AUTH_TOKEN } from 'common/constants';
+import { API_HOST } from 'common/constants';
 import {
+	BoardsService,
 	StatusService,
 	TaskService,
 	SubtaskService,
@@ -15,6 +16,9 @@ import {
 	DeleteTaskStatusResponseDto,
 	DeleteSubtaskResponseDto,
 	UpdateSubtaskDto,
+	BoardDto,
+	CreateBoardDto,
+	DeleteBoardResponseDto,
 } from 'generated/api';
 
 OpenAPI.BASE = API_HOST;
@@ -24,11 +28,35 @@ OpenAPI.CREDENTIALS = 'include';
 OpenAPI.WITH_CREDENTIALS = true;
 
 /**
+ * Доски
+ */
+
+export const getBoardsApi = (): CancelablePromise<BoardDto[]> => {
+	return BoardsService.boardControllerGetBoards();
+};
+
+export const getBoardByIdApi = (id: number): CancelablePromise<BoardDto> => {
+	return BoardsService.boardControllerGetBoardById(id);
+};
+
+export const createBoardApi = (board: CreateBoardDto): CancelablePromise<BoardDto> => {
+	return BoardsService.boardControllerCreateBoard(board);
+};
+
+export const updateBoardApi = (status: BoardDto): CancelablePromise<BoardDto> => {
+	return BoardsService.boardControllerUpdateBoard(status);
+};
+
+export const deleteBoardApi = (id: number): CancelablePromise<DeleteBoardResponseDto> => {
+	return BoardsService.boardControllerDeleteBoard(id);
+};
+
+/**
  * Статусы
  */
 
-export const getStatusesApi = (): CancelablePromise<TaskStatusDto[]> => {
-	return StatusService.statusControllerGetStatuses();
+export const getStatusesByGroupIdApi = (groupId: number): CancelablePromise<TaskStatusDto[]> => {
+	return StatusService.statusControllerGetStatuses(groupId);
 };
 
 export const getStatusByIdApi = (id: number): CancelablePromise<TaskStatusDto> => {

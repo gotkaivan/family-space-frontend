@@ -201,6 +201,7 @@ module.exports = {
 			width: {
 				600: '600px',
 				300: '300px',
+				250: '250px',
 				200: '200px',
 			},
 			zIndex: {
