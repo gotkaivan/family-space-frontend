@@ -156,6 +156,7 @@ const useTask = () => {
 	}
 
 	async function updateTask(task: TaskDto, updateSubtask: boolean = true): Promise<TaskDto | null> {
+		console.log('update task');
 		try {
 			const promises: CancelablePromise<SubtaskDto>[] = [];
 
@@ -163,6 +164,7 @@ const useTask = () => {
 
 			if (updateSubtask) {
 				task.subtasks.forEach(async subtask => {
+					console.log(subtask);
 					promises.push(
 						updateSubtaskApi({
 							...subtask,

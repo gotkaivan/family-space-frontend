@@ -1,4 +1,3 @@
-import { API_HOST } from 'common/constants';
 import {
 	BoardsService,
 	StatusService,
@@ -19,13 +18,7 @@ import {
 	BoardDto,
 	CreateBoardDto,
 	DeleteBoardResponseDto,
-} from 'generated/api';
-
-OpenAPI.BASE = API_HOST;
-
-OpenAPI.CREDENTIALS = 'include';
-
-OpenAPI.WITH_CREDENTIALS = true;
+} from 'api';
 
 /**
  * Доски

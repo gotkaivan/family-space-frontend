@@ -112,7 +112,12 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 	const onClickHandler = async () => {
 		if (!statusId) return;
 		const requestType = id ? 'update' : 'create';
-		const subtasks = state.subtasks.filter(subtask => subtask.content.length);
+		const subtasks = state.subtasks
+			.filter(subtask => subtask.content.length)
+			.map((subtask: LocalSubtask) => {
+				if (subtask.isNewSubtask) subtask.id = 0;
+				return subtask;
+			});
 		const request = { ...state, statusId, subtasks, linkBoardId: !!state.linkBoardId ? state.linkBoardId : null };
 
 		await onCreateUpdateTask(requestType, request);

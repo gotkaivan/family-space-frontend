@@ -1,11 +1,4 @@
-import { API_HOST } from 'common/constants';
-import { AuthResponseDto, AuthService, CancelablePromise, LoginRequestDto, OpenAPI, RegisterRequestDto } from 'generated/api';
-
-OpenAPI.BASE = API_HOST;
-
-OpenAPI.CREDENTIALS = 'include';
-
-OpenAPI.WITH_CREDENTIALS = true;
+import { AuthResponseDto, AuthService, CancelablePromise, LoginRequestDto, RegisterRequestDto } from './';
 
 export const loginApi = (requestBody: LoginRequestDto): CancelablePromise<AuthResponseDto> => {
 	return AuthService.authControllerLogin(requestBody);

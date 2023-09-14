@@ -17,6 +17,7 @@
 		"jsx": "react-jsx",
 		"paths": {
 			"common/*": ["common/*"],
+			"api/*": ["api/*"],
 			"assets/*": ["assets/*"],
 			"domains/*": ["domains/*"]
 		},

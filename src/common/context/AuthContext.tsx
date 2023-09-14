@@ -2,7 +2,7 @@ import { createContext, FC, ReactNode, useCallback, useEffect, useMemo, useReduc
 import { useLocation, useNavigate } from 'react-router-dom';
 import { UserDto } from 'generated/api';
 import Loader from '../components/ui/Loader';
-import { loginApi } from '../api/auth';
+import { loginApi } from 'api/auth';
 import { ACTION__APP_INIT, ACTION__LOGIN, ACTION__LOGOUT, KEY__AUTH_TOKEN, ROUTE__LOGIN, ROUTE__MAIN } from '../constants';
 import useCookie from 'react-use-cookie';
 import { getUserByToken } from 'domains/user/api/user';
@@ -128,7 +128,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 		const initApp = async () => {
 			try {
 				if (authToken && !state.user) {
-					const responseUser = await getUserByToken(authToken);
+					const responseUser = await getUserByToken();
 
 					dispatch({
 						type: ACTION__APP_INIT,

@@ -5,7 +5,7 @@ import Button from 'common/components/ui/Button';
 import Icon from 'common/components/ui/Icon';
 import { useAppDispatch, useAppSelector } from 'store';
 import { changeIsAuth, setUser } from 'store/features/profile';
-import { loginApi } from 'common/api/auth';
+import { loginApi } from 'api/auth';
 import { KEY__AUTH_TOKEN, ROUTE__MAIN } from 'common/constants';
 import { isEmail } from 'common/helpers';
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';

@@ -6,7 +6,7 @@ import { useAppDispatch } from 'store';
 import { isEmail } from 'common/helpers';
 import { changeIsAuth, setUser } from 'store/features/profile';
 import { KEY__AUTH_TOKEN, ROUTE__MAIN } from 'common/constants';
-import { registerApi } from 'common/api/auth';
+import { registerApi } from 'api/auth';
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import Button from 'common/components/ui/Button';
 import { RegisterRequestDto } from 'generated/api';

@@ -3,7 +3,7 @@ import UserImg from '../../assets/images/user/user-01.png';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../store';
-import { logoutApi } from '../../api/auth';
+import { logoutApi } from 'api/auth';
 import { KEY__AUTH_TOKEN, ROUTE__LOGIN } from '../../constants';
 import { changeIsAuth, setUser } from '../../../store/features/profile';
 

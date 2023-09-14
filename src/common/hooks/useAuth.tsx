@@ -19,7 +19,7 @@ export const useAuth = () => {
 		const initApp = async () => {
 			try {
 				if (authToken?.length && !user) {
-					const userDto = await getUserByToken(authToken);
+					const userDto = await getUserByToken();
 
 					dispatch(setUser(userDto));
 					dispatch(changeIsAuth(true));
