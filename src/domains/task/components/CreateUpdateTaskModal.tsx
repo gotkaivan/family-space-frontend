@@ -17,7 +17,6 @@ interface IProps {
 	onCreateUpdateTask: (type: 'create' | 'update', task: TaskDto) => void;
 	deleteSubtask: (subtaskId: number) => Promise<DeleteTaskResponseDto | null>;
 	close: () => void;
-	isOpen: boolean;
 	data?: TaskDto | null;
 }
 
@@ -27,7 +26,7 @@ type WithNewParameter = {
 
 type LocalSubtask = SubtaskDto & WithNewParameter;
 
-const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, close, isOpen, data, id, statusId }) => {
+const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, close, data, id, statusId }) => {
 	const { boardId } = useParams();
 	const [state, setState] = useState<TaskDto>(data || new Task());
 
@@ -161,7 +160,6 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 	return (
 		<FormModal
 			close={close}
-			isOpen={isOpen}
 			content={
 				<>
 					<Input

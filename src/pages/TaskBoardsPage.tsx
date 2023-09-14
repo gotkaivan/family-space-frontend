@@ -5,6 +5,7 @@ import { BoardDto } from 'generated/api';
 import { useState } from 'react';
 import BoardItem from 'domains/task/components/BoardItem';
 import useTaskBoards from 'domains/task/hooks/useTaskBoards';
+import ModalWrapper from 'common/components/modals/ModalWrapper';
 
 interface IActionState {
 	id?: number;
@@ -85,13 +86,14 @@ const TaskBoardsPage = () => {
 					);
 				})}
 			</div>
-			<CreateUpdateBoardModal
-				onCreateUpdateTask={onCreateUpdateHandler}
-				id={actionState?.id}
-				data={actionState?.data}
-				close={() => setActionState(null)}
-				isOpen={actionState?.actionType === 'create' || actionState?.actionType === 'update'}
-			/>
+			<ModalWrapper isOpen={actionState?.actionType === 'create' || actionState?.actionType === 'update'}>
+				<CreateUpdateBoardModal
+					onCreateUpdateTask={onCreateUpdateHandler}
+					id={actionState?.id}
+					data={actionState?.data}
+					close={() => setActionState(null)}
+				/>
+			</ModalWrapper>
 
 			<DeleteModal
 				title={`Удалить доску`}

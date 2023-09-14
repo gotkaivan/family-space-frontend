@@ -2,15 +2,12 @@ import { FC } from 'react';
 import Icon from '../ui/Icon';
 
 interface IProps {
-	isOpen: boolean;
 	content: JSX.Element;
 	button: JSX.Element;
 	close: () => void;
 }
 
-const FormModal: FC<IProps> = ({ isOpen, content, button, close }) => {
-	if (!isOpen) return null;
-
+const FormModal: FC<IProps> = ({ content, button, close }) => {
 	return (
 		<div
 			onClick={() => close()}

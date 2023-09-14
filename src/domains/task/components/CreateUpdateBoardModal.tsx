@@ -10,11 +10,10 @@ interface IProps {
 	id?: number | undefined;
 	onCreateUpdateTask: (type: 'create' | 'update', board: BoardDto) => void;
 	close: () => void;
-	isOpen: boolean;
 	data?: BoardDto | null;
 }
 
-const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateTask, close, isOpen, data, id }) => {
+const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateTask, close, data, id }) => {
 	const [state, setState] = useState<BoardDto>(data || new Board());
 
 	const buttonTitle = useMemo(() => (id ? 'Обновить доску' : 'Создать доску'), [id]);
@@ -32,7 +31,6 @@ const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateTask, close, isOpen,
 	return (
 		<FormModal
 			close={close}
-			isOpen={isOpen}
 			content={
 				<>
 					<Input

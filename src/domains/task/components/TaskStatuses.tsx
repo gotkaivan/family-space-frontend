@@ -9,6 +9,7 @@ import Drop from './draggable/Drop';
 import Drag from './draggable/Drag';
 import useTaskStatuses from '../hooks/useTaskStatuses';
 import { useParams } from 'react-router-dom';
+import ModalWrapper from 'common/components/modals/ModalWrapper';
 
 export interface ITaskStatusesProps {
 	data: TaskStatusDto[];
@@ -92,15 +93,16 @@ const TaskStatuses: FC<ITaskStatusesProps> = props => {
 					</div>
 				</Drop>
 			</DragDropContext>
-			<CreateUpdateTaskModal
-				isOpen={!!(actionData?.statusId && actionData.typeItem === 'task' && (actionData.typeAction === 'create' || actionData?.typeAction === 'edit'))}
-				id={actionData?.taskId}
-				statusId={actionData?.statusId}
-				data={modalData}
-				deleteSubtask={deleteSubtask}
-				onCreateUpdateTask={onCreateUpdateTask}
-				close={() => setActionData(null)}
-			/>
+			<ModalWrapper isOpen={!!(actionData?.statusId && actionData.typeItem === 'task' && (actionData.typeAction === 'create' || actionData?.typeAction === 'edit'))}>
+				<CreateUpdateTaskModal
+					id={actionData?.taskId}
+					statusId={actionData?.statusId}
+					data={modalData}
+					deleteSubtask={deleteSubtask}
+					onCreateUpdateTask={onCreateUpdateTask}
+					close={() => setActionData(null)}
+				/>
+			</ModalWrapper>
 
 			<DeleteModal
 				title={`Удалить ${deleteTitleWord}`}
