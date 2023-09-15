@@ -91,11 +91,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 	const login = useCallback(
 		async (email: string, password: string) => {
 			try {
-				const response = await loginApi({ email, password });
+				const user = await loginApi({ email, password });
 
 				dispatch({
 					type: ACTION__LOGIN,
-					payload: response.user,
+					payload: user,
 				});
 
 				navigate(ROUTE__MAIN, {

@@ -44,9 +44,7 @@ const SignIn: FC = () => {
 
 		if (validateForm()) {
 			try {
-				const { user, token } = await loginApi(currentUser);
-
-				localStorage.setItem(KEY__AUTH_TOKEN, token);
+				const user = await loginApi(currentUser);
 
 				dispatch(changeIsAuth(true));
 

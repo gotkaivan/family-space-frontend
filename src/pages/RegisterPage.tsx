@@ -59,9 +59,7 @@ const RegisterPage = () => {
 
 		if (validateForm()) {
 			try {
-				const { user, token } = await registerApi(currentUser);
-
-				localStorage.setItem(KEY__AUTH_TOKEN, token);
+				const user = await registerApi(currentUser);
 
 				dispatch(changeIsAuth(true));
 
