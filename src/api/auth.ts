@@ -1,4 +1,4 @@
-import { AuthResponseDto, AuthService, CancelablePromise, LoginRequestDto, RegisterRequestDto } from './';
+import { AuthResponseDto, AuthService, CancelablePromise, LoginRequestDto, RegisterRequestDto } from './index';
 
 export const loginApi = (requestBody: LoginRequestDto): CancelablePromise<AuthResponseDto> => {
 	return AuthService.authControllerLogin(requestBody);
