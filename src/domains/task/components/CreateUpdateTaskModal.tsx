@@ -95,7 +95,7 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 				if (subtask.id === id) {
 					return {
 						...subtask,
-						content: e.target.value,
+						title: e.target.value,
 					};
 				} else {
 					return subtask;
