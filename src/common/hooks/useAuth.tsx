@@ -3,6 +3,7 @@ import { AUTH__ROUTES__ALIAS, KEY__AUTH_TOKEN, ROUTE__LOGIN, ROUTE__MAIN } from 
 import { useAppDispatch, useAppSelector } from 'store';
 import { changeIsAuth, setUser } from 'store/features/profile';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getCookie } from 'react-use-cookie';
 import { getUserByToken } from 'domains/user/api/user';
 
 export const useAuth = () => {
@@ -13,7 +14,7 @@ export const useAuth = () => {
 	const [isInitialised, setIsInitialised] = useState<boolean>(false);
 	const { isAuth, user } = useAppSelector(state => state.profile);
 
-	const authToken = localStorage.getItem(KEY__AUTH_TOKEN);
+	const authToken = getCookie(KEY__AUTH_TOKEN);
 
 	useEffect(() => {
 		const initApp = async () => {
