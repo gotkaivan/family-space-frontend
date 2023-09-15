@@ -4,7 +4,8 @@ import { SubtaskDto } from 'generated/api';
 class SubTask implements SubtaskDto {
 	constructor(subtask?: SubtaskDto) {
 		this.id = subtask?.id || getRandomId();
-		this.content = subtask?.content || '';
+		this.title = subtask?.title || '';
+		this.description = subtask?.description || '';
 		this.isCompleted = subtask?.isCompleted || false;
 		this.position = subtask?.position || 0;
 		this.taskId = subtask?.taskId || 0;
@@ -16,7 +17,9 @@ class SubTask implements SubtaskDto {
 
 	id: number;
 
-	content: string;
+	title: string;
+
+	description: string;
 
 	isCompleted: boolean;
 

@@ -45,7 +45,7 @@ const SubTask: FC<IProps> = ({ subtask, updateSubtask }) => {
 					</span>
 				</div>
 
-				<p className="text-sm w-200">{subtask.content}</p>
+				<p className="text-sm w-200">{subtask.title}</p>
 			</div>
 		</label>
 	);
