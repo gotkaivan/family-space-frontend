@@ -6,7 +6,7 @@ const DarkModeSwitcher = () => {
 
 	return (
 		<li>
-			<label className={`relative m-0 block h-6 w-12 rounded-full ${colorMode === 'dark' ? 'bg-form-strokedark' : 'bg-stroke'}`}>
+			<label className={`relative m-0 block h-4.5 w-8.5 rounded-full ${colorMode === 'dark' ? 'bg-form-strokedark' : 'bg-stroke'}`}>
 				<input
 					type="checkbox"
 					onChange={() => {
@@ -17,7 +17,7 @@ const DarkModeSwitcher = () => {
 					className="dur absolute top-0 z-50 m-0 h-full w-full cursor-pointer opacity-0"
 				/>
 				<span
-					className={`absolute top-1/2 left-[0px] flex h-6 w-6 -translate-y-1/2 translate-x-0 items-center justify-center rounded-full bg-white shadow-switcher duration-75 ease-linear ${
+					className={`absolute top-1/2 left-[0px] flex h-4.5 w-4.5 -translate-y-1/2 translate-x-0 items-center justify-center rounded-full bg-white shadow-switcher duration-75 ease-linear ${
 						colorMode === 'dark' && '!right-[3px] !translate-x-full'
 					}`}
 				>
