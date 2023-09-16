@@ -35,15 +35,15 @@ const menu: IMenuItem[] = [
 			height: 18,
 		},
 	},
-	{
-		name: 'Аналитика',
-		url: 'analytics',
-		icon: {
-			name: 'calendar',
-			width: 18,
-			height: 18,
-		},
-	},
+	// {
+	// 	name: 'Аналитика',
+	// 	url: 'analytics',
+	// 	icon: {
+	// 		name: 'calendar',
+	// 		width: 18,
+	// 		height: 18,
+	// 	},
+	// },
 ];
 
 export default menu;

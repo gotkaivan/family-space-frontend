@@ -87,14 +87,14 @@ const RegisterPage = () => {
 	return (
 		<>
 			<div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-				<h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">Sign Up</h2>
+				<h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">Регистрация</h2>
 
 				<form>
 					<Input
 						type={'text'}
-						label="Name"
+						label="Имя"
 						classesType="auth"
-						placeholder="Enter your full name"
+						placeholder="Введите ваше полное имя"
 						hasError={hasTouchedNameError}
 						errorMessage={NAME_ERROR}
 						value={currentUser.name}
@@ -113,7 +113,7 @@ const RegisterPage = () => {
 						type={'text'}
 						label="Email"
 						classesType="auth"
-						placeholder="Enter your email"
+						placeholder="Введите ваш email"
 						value={currentUser.email}
 						hasError={hasTouchedEmailError}
 						errorMessage={EMAIL_ERROR}
@@ -129,9 +129,9 @@ const RegisterPage = () => {
 
 					<Input
 						type={'password'}
-						label="Password"
+						label="Пароль"
 						classesType="auth"
-						placeholder="Enter your password"
+						placeholder="Введите ваш пароль"
 						value={currentUser.password}
 						hasError={hasTouchedPasswordError}
 						errorMessage={PASSWORD_ERROR}
@@ -147,9 +147,9 @@ const RegisterPage = () => {
 
 					<Input
 						type={'password'}
-						label="Re-type Password"
+						label="Повторный пароль"
 						classesType="auth"
-						placeholder="Re-enter your password"
+						placeholder="Повторите пароль"
 						value={repeatedPassword}
 						onChange={e => setRepeatedPassword(e.target.value)}
 						hasError={hasTouchedRepeatedPasswordError}
@@ -165,19 +165,19 @@ const RegisterPage = () => {
 					/>
 
 					<Button
-						title={'Create account'}
+						title={'Зарегистрироваться'}
 						clickHandler={clickHandler}
 						className="mb-5 p-4 text-white"
 					/>
 
 					<div className="mt-6 text-center">
 						<p>
-							Already have an account?{' '}
+							У вас есть аккаунт ?{' '}
 							<Link
 								to="/auth/login"
 								className="text-primary"
 							>
-								Sign in
+								Войти
 							</Link>
 						</p>
 					</div>

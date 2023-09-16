@@ -71,7 +71,7 @@ const SignIn: FC = () => {
 		<>
 			<div className="w-full p-4 sm:p-12.5 xl:p-17.5">
 				<h1>{profile.user?.name}</h1>
-				<h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">Sign in</h2>
+				<h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">Авторизация</h2>
 
 				<form>
 					<Input
@@ -80,7 +80,7 @@ const SignIn: FC = () => {
 						classesType="auth"
 						hasError={hasTouchedEmailError}
 						errorMessage={EMAIL_ERROR}
-						placeholder="Enter your email"
+						placeholder="Введите ваш email"
 						value={currentUser.email}
 						onChange={e => setCurrentUser({ ...currentUser, email: e.target.value })}
 						icon={
@@ -93,13 +93,13 @@ const SignIn: FC = () => {
 					/>
 
 					<Input
-						label="Password"
+						label="Пароль"
 						type="password"
 						className={'mb-6'}
 						classesType="auth"
 						hasError={hasTouchedPasswordError}
 						errorMessage={PASSWORD_ERROR}
-						placeholder="6+ Characters, 1 Capital letter"
+						placeholder="6+ символов, 1 Заглавная буква"
 						value={currentUser.password}
 						onChange={e => setCurrentUser({ ...currentUser, password: e.target.value })}
 						icon={
@@ -112,19 +112,19 @@ const SignIn: FC = () => {
 					/>
 
 					<Button
-						title={'Sign in'}
+						title={'Войти'}
 						className="p-4 text-white"
 						clickHandler={clickHandler}
 					/>
 
 					<div className="mt-6 text-center">
 						<p>
-							Don’t have any account?{' '}
+							У вас нет аккаунта ?{' '}
 							<Link
 								to="/auth/register"
 								className="text-primary"
 							>
-								Sign Up
+								Зарегистрироваться
 							</Link>
 						</p>
 					</div>

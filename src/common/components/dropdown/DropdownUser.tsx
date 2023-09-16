@@ -93,16 +93,16 @@ const DropdownUser = () => {
 					dropdownOpen === true ? 'block' : 'hidden'
 				}`}
 			>
-				<ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
+				<ul className="flex flex-col gap-5 border-b border-stroke px-6 py-4 dark:border-strokedark">
 					<li>
 						<Link
 							to="/profile"
-							className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+							className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary text-md"
 						>
 							<svg
 								className="fill-current"
-								width="22"
-								height="22"
+								width="18"
+								height="18"
 								viewBox="0 0 22 22"
 								fill="none"
 								xmlns="http://www.w3.org/2000/svg"
@@ -116,10 +116,10 @@ const DropdownUser = () => {
 									fill=""
 								/>
 							</svg>
-							My Profile
+							Мой профиль
 						</Link>
 					</li>
-					<li>
+					{/* <li>
 						<Link
 							to="#"
 							className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -164,16 +164,16 @@ const DropdownUser = () => {
 							</svg>
 							Account Settings
 						</Link>
-					</li>
+					</li> */}
 				</ul>
 				<button
 					onClick={() => logout()}
-					className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+					className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary text-md"
 				>
 					<svg
 						className="fill-current"
-						width="22"
-						height="22"
+						width="18"
+						height="18"
 						viewBox="0 0 22 22"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +187,7 @@ const DropdownUser = () => {
 							fill=""
 						/>
 					</svg>
-					Log Out
+					Выйти
 				</button>
 			</div>
 		</div>

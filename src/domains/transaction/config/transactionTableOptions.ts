@@ -10,7 +10,7 @@ const tableOptions: ITransactionTableColumn[] = [
 	{
 		id: getRandomId(),
 		value: 'Название',
-		title: 'Title',
+		title: 'Название транзакции',
 	},
 	{
 		id: getRandomId(),

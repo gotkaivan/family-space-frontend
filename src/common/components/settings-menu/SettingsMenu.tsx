@@ -1,4 +1,4 @@
-import { useState, MouseEvent, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useClickOutside } from '../../hooks/useClickOutside';
 import Icon from '../ui/Icon';
 import SettingsDropdown from './SettingsDropdown';

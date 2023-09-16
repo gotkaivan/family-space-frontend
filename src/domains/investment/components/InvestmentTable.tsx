@@ -25,7 +25,7 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 	}, []);
 
 	const actionColumn = useMemo(() => {
-		if (hasActions) return <th className="py-4 px-4 font-medium text-black dark:text-white">Действия</th>;
+		if (hasActions) return <th className="py-4 px-4 font-medium text-black dark:text-white"></th>;
 	}, [hasActions]);
 
 	const openEdit = (data: ITransaction) => {
