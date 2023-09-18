@@ -9,13 +9,13 @@ interface IProps {
 const SettingsDropdown = ({ isOpen = false, onEdit, onDelete }: IProps) => {
 	return (
 		<div
-			className={`absolute right-0 top-full z-40 w-40 space-y-1 rounded-sm border border-stroke bg-white p-1.5 shadow-default dark:border-strokedark dark:bg-boxdark block ${
+			className={`absolute right-0 top-full z-40 w-40 space-y-1 rounded-md border border-stroke bg-white p-1.5 shadow-default dark:border-strokedark dark:bg-boxdark block ${
 				!isOpen && 'hidden'
 			}`}
 		>
 			<button
 				onClick={onEdit}
-				className="flex w-full items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+				className="flex w-full items-center gap-2 rounded-md py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
 			>
 				<Icon
 					name={'edit'}
@@ -26,7 +26,7 @@ const SettingsDropdown = ({ isOpen = false, onEdit, onDelete }: IProps) => {
 			</button>
 			<button
 				onClick={onDelete}
-				className="flex w-full items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+				className="flex w-full items-center gap-2 rounded-md py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
 			>
 				<Icon
 					name={'trash'}

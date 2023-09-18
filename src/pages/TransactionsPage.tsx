@@ -40,7 +40,7 @@ const TransactionsPage = () => {
 				title={`Удалить транзакцию ?`}
 				description={`Вы точно хотите удалить транзакцию ?`}
 				cancel={() => setActionData(null)}
-				confirm={() => onDeleteTransaction()}
+				confirm={onDeleteTransaction}
 				isOpen={!!(actionData?.typeAction === 'delete' && actionData?.id)}
 			/>
 		</div>

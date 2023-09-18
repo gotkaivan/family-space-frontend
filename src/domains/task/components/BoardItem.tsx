@@ -21,7 +21,7 @@ const BoardItem: FC<IProps> = ({ item, className = '', onEdit, onDelete }) => {
 	return (
 		<Link
 			to={`/tasks/${item.id}`}
-			className={`relative rounded-sm border border-stroke bg-white py-4 px-5 shadow-default dark:border-strokedark dark:bg-boxdark cursor-pointer
+			className={`relative rounded-md border border-stroke bg-white py-4 px-5 shadow-default dark:border-strokedark dark:bg-boxdark cursor-pointer
       w-250 ${className}`}
 		>
 			<SettingsMenu

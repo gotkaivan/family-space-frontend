@@ -86,8 +86,8 @@ const TaskStatuses: FC<ITaskStatusesProps> = props => {
 						<div>
 							<Button
 								clickHandler={createHandler}
-								title={'Добавить новый статус'}
-								className={`p-3 w-full text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark`}
+								title={'Добавить статус'}
+								className={`p-3 text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark`}
 							/>
 						</div>
 					</div>
@@ -108,7 +108,7 @@ const TaskStatuses: FC<ITaskStatusesProps> = props => {
 				title={`Удалить ${deleteTitleWord}`}
 				description={`Вы точно хотите удалить ${deleteTitleWord} ?`}
 				cancel={() => setActionData(null)}
-				confirm={() => deleteElement()}
+				confirm={deleteElement}
 				isOpen={!!(actionData?.typeAction === 'delete')}
 			/>
 		</div>

@@ -75,17 +75,20 @@ const useCapitalizationPage = () => {
 		}
 	}
 
-	async function deleteInvestment() {
+	async function deleteInvestment(): Promise<boolean> {
 		if (actionData?.id && actionData?.typeAction === 'delete') {
 			try {
 				await deleteTransaction(actionData.id);
 				await getTransactions();
 				setActionData(null);
 				notify(NOTIFY_TYPES.SUCCESS, 'Транзакция успешно удалена');
+				return true;
 			} catch (message: any) {
 				notify(NOTIFY_TYPES.ERROR, message);
+				return false;
 			}
 		}
+		return false;
 	}
 
 	return {

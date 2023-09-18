@@ -17,7 +17,7 @@ const SquareButton: FC<IProps> = ({ onClick, iconName, size = 20, buttonSize }) 
 	return (
 		<button
 			onClick={onClick}
-			className={`flex items-center justify-center rounded-sm border border-stroke bg-white hover:text-primary dark:border-strokedark dark:bg-boxdark ${buttonSizeClasses}`}
+			className={`flex items-center justify-center rounded-md border border-stroke bg-white hover:text-primary dark:border-strokedark dark:bg-boxdark ${buttonSizeClasses}`}
 		>
 			<Icon
 				name={iconName}

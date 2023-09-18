@@ -2,10 +2,11 @@ import DeleteModal from 'common/components/modals/DeleteModal';
 import Button from 'common/components/ui/Button';
 import CreateUpdateBoardModal from 'domains/task/components/CreateUpdateBoardModal';
 import { BoardDto } from 'generated/api';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import BoardItem from 'domains/task/components/BoardItem';
 import useTaskBoards from 'domains/task/hooks/useTaskBoards';
 import ModalWrapper from 'common/components/modals/ModalWrapper';
+import PageLoader from 'common/components/ui/Loader/PageLoader';
 
 interface IActionState {
 	id?: number;
@@ -14,7 +15,7 @@ interface IActionState {
 }
 
 const TaskBoardsPage = () => {
-	const { data, createNewBoard, updateBoard, deleteBoard } = useTaskBoards();
+	const { data, isLoading, createNewBoard, updateBoard, deleteBoard } = useTaskBoards();
 
 	const [actionState, setActionState] = useState<IActionState | null>(null);
 
@@ -31,23 +32,25 @@ const TaskBoardsPage = () => {
 		return createdBoard;
 	}
 
-	async function deleteHandler() {
+	async function deleteHandler(): Promise<boolean> {
 		if (actionState?.actionType === 'delete' && actionState?.id) {
 			const id = await deleteBoard(actionState?.id);
 			setActionState(null);
-			return id;
+			return true;
 		}
+		return false;
 	}
 
-	function onCreateUpdateHandler(type: 'create' | 'update', board: BoardDto) {
+	async function onCreateUpdateHandler(type: 'create' | 'update', board: BoardDto): Promise<boolean> {
 		switch (type) {
 			case 'create':
-				createHandler(board);
-				return;
+				await createHandler(board);
+				return true;
 			case 'update':
-				updateHandler(board);
-				return;
+				await updateHandler(board);
+				return true;
 		}
+		return false;
 	}
 
 	const onEditBoardAction = async (board: BoardDto): Promise<void> => {
@@ -65,14 +68,8 @@ const TaskBoardsPage = () => {
 		});
 	};
 
-	return (
-		<div>
-			<Button
-				clickHandler={() => setActionState({ actionType: 'create' })}
-				title={'Добавить новую доску'}
-				className={`w-50 p-3 text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark mb-6`}
-			/>
-
+	const content = useMemo(() => {
+		return (
 			<div className="flex flex-wrap">
 				{data.map(board => {
 					return (
@@ -86,6 +83,18 @@ const TaskBoardsPage = () => {
 					);
 				})}
 			</div>
+		);
+	}, [data]);
+
+	return (
+		<div>
+			<Button
+				clickHandler={() => setActionState({ actionType: 'create' })}
+				title={'Добавить доску'}
+				className={`p-3 text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark mb-6`}
+			/>
+
+			{isLoading ? <PageLoader /> : content}
 			<ModalWrapper isOpen={actionState?.actionType === 'create' || actionState?.actionType === 'update'}>
 				<CreateUpdateBoardModal
 					onCreateUpdateTask={onCreateUpdateHandler}

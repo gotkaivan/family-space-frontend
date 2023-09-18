@@ -45,7 +45,7 @@ const CapitalizationPage = () => {
 				title={`Удалить транзакцию ?`}
 				description={`Вы точно хотите удалить транзакцию ?`}
 				cancel={() => setActionData(null)}
-				confirm={() => deleteInvestment()}
+				confirm={deleteInvestment}
 				isOpen={!!(actionData?.typeAction === 'delete' && actionData?.id)}
 			/>
 		</div>

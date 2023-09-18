@@ -3,7 +3,7 @@ const MenuBurger = (props: { isOpen: boolean; clickHandler: (e: any) => void }) 
 		<button
 			aria-controls="sidebar"
 			onClick={e => props.clickHandler(e)}
-			className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark"
+			className="z-99999 block rounded-md border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark"
 		>
 			<span className="relative block h-3.5 w-3.5 cursor-pointer">
 				<span className="du-block absolute right-0 h-full w-full">

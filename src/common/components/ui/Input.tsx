@@ -52,7 +52,7 @@ const Input: FC<IProps> = ({
 		}
 
 		if (classesType === 'base') {
-			return `w-full rounded-sm border bg-white  focus-visible:outline-none  dark:bg-boxdark  ${
+			return `w-full rounded-md border bg-white  focus-visible:outline-none  dark:bg-boxdark  ${
 				hasError ? 'border-danger' : 'border-stroke focus:border-primary dark:border-strokedark dark:focus:border-primary'
 			} ${inputClassName} ${size}`;
 		}

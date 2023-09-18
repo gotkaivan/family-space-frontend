@@ -111,9 +111,9 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data 
 	}, [data, openDelete, openEdit]);
 
 	return (
-		<div className="rounded-sm border border-stroke bg-white px-5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5">
+		<div className="rounded-md border border-stroke bg-white px-5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5">
 			<div className="max-w-full overflow-x-auto">
-				{!data.length && <div className="flex justify-center">Транзакций пока нет</div>}
+				{!data.length && <div className="flex justify-center text-sm">Транзакций пока нет</div>}
 				{!!data.length && (
 					<table className="w-full table-auto">
 						<thead>

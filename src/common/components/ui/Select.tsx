@@ -32,7 +32,7 @@ const Select: FC<IProps> = ({ label = '', left, value, options, className, onCha
 					value={value}
 					disabled={disabled}
 					onChange={onChange}
-					className={`relative appearance-none border-stroke bg-transparent py-3 outline-none transition active:border-primary  w-full rounded-sm border bg-white focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary ${
+					className={`relative appearance-none border-stroke bg-transparent py-3 outline-none transition active:border-primary  w-full rounded-md border bg-white focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary ${
 						left ? 'px-12' : 'px-4.5'
 					}`}
 				>

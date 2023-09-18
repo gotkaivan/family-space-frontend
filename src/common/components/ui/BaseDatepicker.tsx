@@ -37,7 +37,7 @@ const BaseDatepicker: FC<IProps> = ({ label = '', value, onChange, className = '
 				useRange={false}
 				asSingle={true}
 				displayFormat={'DD.MM.YYYY'}
-				inputClassName={`relative appearance-none border-stroke bg-transparent py-3 outline-none transition active:border-primary  w-full rounded-sm border bg-white focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary px-4.5`}
+				inputClassName={`relative appearance-none border-stroke bg-transparent py-3 outline-none transition active:border-primary  w-full rounded-md border bg-white focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary px-4.5`}
 			/>
 			{getErrorMessage()}
 		</div>

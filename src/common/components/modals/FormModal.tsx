@@ -15,7 +15,7 @@ const FormModal: FC<IProps> = ({ content, button, close }) => {
 		>
 			<div
 				onClick={e => e.stopPropagation()}
-				className="relative m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10"
+				className="relative m-auto w-full max-w-180 rounded-md border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10"
 			>
 				<button
 					onClick={() => close()}

@@ -1,20 +1,34 @@
 import { BoardDto, CreateBoardDto, DeleteBoardResponseDto } from 'generated/api';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import { createBoardApi, deleteBoardApi, getBoardsApi, updateBoardApi } from '../api';
 
 const useTaskBoards = () => {
 	const { notify } = useNotify();
 
+	const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
+
+	const [isPageLoaded, setIsPageLoaded] = useState<boolean>(false);
+
+	const isLoading = useMemo(() => {
+		if (!isPageLoaded && isLoadingData) return true;
+		return false;
+	}, [isLoadingData, isPageLoaded]);
+
 	const [data, setData] = useState<BoardDto[]>([]);
 
 	async function getData() {
+		setIsLoadingData(true);
 		try {
 			const boards = await getBoardsApi();
 			setData(boards);
+			setIsPageLoaded(true);
+			setIsPageLoaded(true);
 			return;
 		} catch (e) {
 			notify(NOTIFY_TYPES.ERROR, 'Не удалось получить доски');
+		} finally {
+			setIsLoadingData(false);
 		}
 	}
 
@@ -68,6 +82,7 @@ const useTaskBoards = () => {
 
 	return {
 		data,
+		isLoading,
 		createNewBoard,
 		updateBoard,
 		deleteBoard,

@@ -1,8 +1,10 @@
 import { MouseEventHandler, useMemo } from 'react';
+import Loader from './Loader';
 
 type ButtonType = 'base' | 'custom';
 
 interface IProps {
+	isLoading?: boolean;
 	title: string;
 	leftIcon?: JSX.Element;
 	rightIcon?: JSX.Element;
@@ -14,7 +16,7 @@ interface IProps {
 	buttonType?: ButtonType;
 }
 
-const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bgColor, className = '', buttonType = 'base' }: IProps) => {
+const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bgColor, className = '', buttonType = 'base', isLoading = false }: IProps) => {
 	const classes = useMemo(() => {
 		switch (buttonType) {
 			case 'base':
@@ -25,16 +27,32 @@ const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bg
 		}
 	}, [buttonType, className]);
 
+	function onClick(e: any) {
+		if (!isLoading && clickHandler) clickHandler(e);
+	}
+
+	const content = useMemo(() => {
+		const content = isLoading ? (
+			<Loader />
+		) : (
+			<>
+				{leftIcon && leftIcon}
+				{title}
+				{rightIcon && rightIcon}
+			</>
+		);
+
+		return content;
+	}, [leftIcon, title, rightIcon, isLoading]);
+
 	return (
 		<button
 			type="button"
 			disabled={disabled}
-			className={classes}
-			onClick={clickHandler}
+			className={'min-w-160 ' + classes}
+			onClick={onClick}
 		>
-			{leftIcon && leftIcon}
-			{title}
-			{rightIcon && rightIcon}
+			{content}
 		</button>
 	);
 };

@@ -1,5 +1,5 @@
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
 	getStatusesByGroupIdApi,
 	createStatusApi,
@@ -22,15 +22,30 @@ const useTask = () => {
 	const { boardId } = useParams();
 	const [data, setData] = useState<TaskStatusDto[]>([]);
 
+	const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
+
+	const [isPageLoaded, setIsPageLoaded] = useState<boolean>(false);
+
+	const isLoading = useMemo(() => {
+		if (!isPageLoaded && isLoadingData) return true;
+		return false;
+	}, [isLoadingData, isPageLoaded]);
+
 	async function getData() {
+		setIsLoadingData(true);
+
 		try {
 			if (!boardId) return;
 			const statuses = await getStatusesByGroupIdApi(+boardId);
 			setData(statuses);
+			setIsPageLoaded(true);
+			setIsPageLoaded(true);
 			return;
 		} catch (e) {
 			notify(NOTIFY_TYPES.ERROR, 'Не удалось получить задачи');
 			redirect('/tasks');
+		} finally {
+			setIsLoadingData(false);
 		}
 	}
 
@@ -257,6 +272,7 @@ const useTask = () => {
 	}, [boardId]);
 	return {
 		data,
+		isLoading,
 		createNewTask,
 		createNewStatus,
 		updateStatus,

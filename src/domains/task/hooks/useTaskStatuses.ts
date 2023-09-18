@@ -114,17 +114,20 @@ const useTaskStatuses = (props: ITaskStatusesProps) => {
 		setActionData(null);
 	};
 
-	const deleteElement = async () => {
+	async function deleteElement(): Promise<boolean> {
 		if (actionData?.typeItem === 'status' && actionData.statusId) {
 			await props.deleteStatus(actionData.statusId);
 			setActionData(null);
+			return true;
 		}
 
 		if (actionData?.typeItem === 'task' && actionData.statusId && actionData.taskId) {
 			await props.deleteTask(actionData?.taskId);
 			setActionData(null);
+			return true;
 		}
-	};
+		return false;
+	}
 
 	const onActionHandler = async (actionData: IActionTaskResponseParams<TaskDto | TaskStatusDto | null>): Promise<boolean> => {
 		setActionData(actionData);

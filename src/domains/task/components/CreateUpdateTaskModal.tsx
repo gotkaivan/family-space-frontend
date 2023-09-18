@@ -32,6 +32,8 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 
 	const [boards, setBoards] = useState<BoardDto[]>([]);
 
+	const [isLoadingBtn, setIsLoadingBtn] = useState<boolean>(false);
+
 	const boardsOptions = useMemo(() => {
 		const options = boards
 			.filter(board => {
@@ -110,17 +112,23 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 	const buttonTitle = useMemo(() => (id ? 'Обновить задачу' : 'Создать задачу'), [id]);
 
 	const onClickHandler = async () => {
-		if (!statusId) return;
-		const requestType = id ? 'update' : 'create';
-		const subtasks = state.subtasks
-			.filter(subtask => subtask.title.length)
-			.map((subtask: LocalSubtask) => {
-				if (subtask.isNewSubtask) subtask.id = 0;
-				return subtask;
-			});
-		const request = { ...state, statusId, subtasks, linkBoardId: !!state.linkBoardId ? state.linkBoardId : null };
+		try {
+			if (!statusId) return;
+			setIsLoadingBtn(true);
 
-		await onCreateUpdateTask(requestType, request);
+			const requestType = id ? 'update' : 'create';
+			const subtasks = state.subtasks
+				.filter(subtask => subtask.title.length)
+				.map((subtask: LocalSubtask) => {
+					if (subtask.isNewSubtask) subtask.id = 0;
+					return subtask;
+				});
+			const request = { ...state, statusId, subtasks, linkBoardId: !!state.linkBoardId ? state.linkBoardId : null };
+
+			await onCreateUpdateTask(requestType, request);
+		} finally {
+			setIsLoadingBtn(false);
+		}
 	};
 
 	const renderSubtasks = useMemo(() => {
@@ -212,8 +220,9 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 			}
 			button={
 				<Button
-					className="text-white font-medium py-2.5 px-4.5 rounded-sm"
+					className="text-white font-medium py-2.5 px-4.5 rounded-md"
 					title={buttonTitle}
+					isLoading={isLoadingBtn}
 					clickHandler={() => onClickHandler()}
 				/>
 			}

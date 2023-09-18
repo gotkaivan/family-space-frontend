@@ -96,7 +96,7 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 		>
 			<div
 				onClick={e => e.stopPropagation()}
-				className="relative m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10"
+				className="relative m-auto w-full max-w-180 rounded-md border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10"
 			>
 				<button
 					onClick={() => close()}
@@ -166,7 +166,7 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 				/>
 				<div className="flex justify-end pt-4">
 					<Button
-						className="text-white font-medium py-2.5 px-4.5 rounded-sm"
+						className="text-white font-medium py-2.5 px-4.5 rounded-md"
 						title={buttonTitle}
 						clickHandler={() => onClickHandler()}
 					/>

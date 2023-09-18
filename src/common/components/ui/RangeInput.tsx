@@ -46,7 +46,7 @@ const RangeInput: FC<IProps> = ({
 	};
 
 	const getInputClasses = useMemo(() => {
-		return `w-full rounded-sm border bg-white  focus-visible:outline-none  dark:bg-boxdark py-3 px-4.5  ${
+		return `w-full rounded-md border bg-white  focus-visible:outline-none  dark:bg-boxdark py-3 px-4.5  ${
 			hasError ? 'border-danger' : 'border-stroke focus:border-primary dark:border-strokedark dark:focus:border-primary'
 		} ${inputClassName}`;
 	}, [hasError, inputClassName]);

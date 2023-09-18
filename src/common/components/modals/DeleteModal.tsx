@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, useState } from 'react';
 import Icon from '../ui/Icon';
 import Button from '../ui/Button';
 
@@ -6,12 +6,24 @@ interface IProps {
 	title: string;
 	description: string;
 	isOpen: boolean;
-	confirm: () => void;
+	confirm: () => Promise<boolean>;
 	cancel: () => void;
 }
 
 const DeleteModal: FC<IProps> = ({ isOpen, title, description, cancel, confirm }) => {
+	const [isLoadingBtn, setIsLoadingBtn] = useState<boolean>(false);
+
 	if (!isOpen) return null;
+
+	async function deleteHandler() {
+		setIsLoadingBtn(true);
+
+		try {
+			if (!isLoadingBtn) await confirm();
+		} finally {
+			setIsLoadingBtn(false);
+		}
+	}
 
 	return (
 		<div
@@ -37,7 +49,7 @@ const DeleteModal: FC<IProps> = ({ isOpen, title, description, cancel, confirm }
 				<div className="flex justify-between flex-wrap gap-y-4">
 					<div className="w-full px-3 2xsm:w-1/2">
 						<Button
-							title={'cancel'}
+							title={'Отменить'}
 							buttonType="custom"
 							clickHandler={cancel}
 							className={`block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white hover:bg-opacity-90`}
@@ -45,9 +57,10 @@ const DeleteModal: FC<IProps> = ({ isOpen, title, description, cancel, confirm }
 					</div>
 					<div className="w-full px-3 2xsm:w-1/2">
 						<Button
-							title={'delete'}
+							title={'Удалить'}
 							buttonType="custom"
-							clickHandler={confirm}
+							isLoading={isLoadingBtn}
+							clickHandler={deleteHandler}
 							className={`block w-full rounded border border-meta-1 bg-meta-1 p-3 text-center font-medium text-white transition hover:bg-opacity-90`}
 						/>
 					</div>

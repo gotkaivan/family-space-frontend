@@ -8,7 +8,7 @@ import Board from '../entities/Board';
 
 interface IProps {
 	id?: number | undefined;
-	onCreateUpdateTask: (type: 'create' | 'update', board: BoardDto) => void;
+	onCreateUpdateTask: (type: 'create' | 'update', board: BoardDto) => Promise<boolean>;
 	close: () => void;
 	data?: BoardDto | null;
 }
@@ -16,12 +16,20 @@ interface IProps {
 const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateTask, close, data, id }) => {
 	const [state, setState] = useState<BoardDto>(data || new Board());
 
+	const [isLoadingBtn, setIsLoadingBtn] = useState<boolean>(false);
+
 	const buttonTitle = useMemo(() => (id ? 'Обновить доску' : 'Создать доску'), [id]);
 
 	const onClickHandler = async () => {
-		const requestType = id ? 'update' : 'create';
+		setIsLoadingBtn(true);
 
-		await onCreateUpdateTask(requestType, { ...state });
+		try {
+			const requestType = id ? 'update' : 'create';
+
+			await onCreateUpdateTask(requestType, { ...state });
+		} finally {
+			setIsLoadingBtn(false);
+		}
 	};
 
 	useEffect(() => {
@@ -52,9 +60,10 @@ const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateTask, close, data, i
 			}
 			button={
 				<Button
-					className="text-white font-medium py-2.5 px-4.5 rounded-sm"
+					className="text-white font-medium py-2.5 px-4.5 rounded-md"
 					title={buttonTitle}
-					clickHandler={() => onClickHandler()}
+					isLoading={isLoadingBtn}
+					clickHandler={onClickHandler}
 				/>
 			}
 		/>

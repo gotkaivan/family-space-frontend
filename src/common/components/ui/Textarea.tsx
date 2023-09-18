@@ -19,7 +19,7 @@ const Textarea: FC<IProps> = ({ label, className = '', rows = 7, value = '', pla
 				onChange={onChange}
 				rows={rows}
 				placeholder={placeholder}
-				className="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary"
+				className="w-full rounded-md border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary"
 			></textarea>
 		</div>
 	);
