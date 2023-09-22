@@ -117,7 +117,7 @@ const TaskStatus = ({ taskStatus, createNewTask, onActionHandler, onUpdateStatus
 						<Button
 							clickHandler={() => createNewTask(taskStatus.id)}
 							title={'Добавить задачу'}
-							className={`w-36 p-3 text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark`}
+							className={`w-36 p-2 text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark`}
 						/>
 					</div>
 				)}

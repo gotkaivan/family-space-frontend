@@ -1,5 +1,6 @@
 export type IconName =
 	| 'calendar'
+	| 'exit'
 	| 'profile'
 	| 'table'
 	| 'settings'
@@ -13,11 +14,15 @@ export type IconName =
 	| 'edit'
 	| 'danger'
 	| 'check'
-	| 'checkbox';
+	| 'checkbox'
+	| 'chevron'
+	| 'sun'
+	| 'moon';
 
 export interface IPropsIcon {
 	name: IconName;
 	width: number;
 	height: number;
-	color?: string;
+	className?: string;
+	viewBox?: string;
 }

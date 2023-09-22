@@ -104,8 +104,8 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 				>
 					<Icon
 						name={'close'}
-						width={20}
-						height={20}
+						width={16}
+						height={16}
 					/>
 				</button>
 				<Input

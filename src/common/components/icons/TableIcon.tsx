@@ -1,13 +1,13 @@
 import React from 'react';
 import { IPropsIcon } from './types';
 
-const TableIcon = ({ width, height }: Omit<IPropsIcon, 'name'>) => {
+const TableIcon = ({ width, height, className = '', viewBox = '0 0 18 19' }: Omit<IPropsIcon, 'name'>) => {
 	return (
 		<svg
-			className="fill-current"
+			className={`fill-current ${className}`}
 			width={width}
 			height={height}
-			viewBox="0 0 18 19"
+			viewBox={viewBox}
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>

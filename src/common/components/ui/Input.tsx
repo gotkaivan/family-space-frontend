@@ -52,7 +52,7 @@ const Input: FC<IProps> = ({
 		}
 
 		if (classesType === 'base') {
-			return `w-full rounded-md border bg-white  focus-visible:outline-none  dark:bg-boxdark  ${
+			return `w-full text-sm rounded-md border bg-white  focus-visible:outline-none  dark:bg-boxdark  ${
 				hasError ? 'border-danger' : 'border-stroke focus:border-primary dark:border-strokedark dark:focus:border-primary'
 			} ${inputClassName} ${size}`;
 		}
@@ -65,7 +65,7 @@ const Input: FC<IProps> = ({
 
 	return (
 		<div className={'mb-4 w-full ' + className}>
-			{label && <label className="mb-2.5 block font-medium text-black dark:text-white">{label}</label>}
+			{label && <label className="mb-2.5 text-sm  block font-medium text-black dark:text-white">{label}</label>}
 			<div className="flex gap-2.5">
 				{left}
 				<div className="relative w-full">

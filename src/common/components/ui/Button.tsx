@@ -20,7 +20,7 @@ const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bg
 	const classes = useMemo(() => {
 		switch (buttonType) {
 			case 'base':
-				return `flexCenter gap-3 cursor-pointer rounded-lg border transition hover:bg-opacity-90 ${className}
+				return `flexCenter text-sm gap-3 cursor-pointer rounded-lg border transition hover:bg-opacity-90 ${className}
         ${bgColor ? bgColor : 'border-primary bg-primary'}`;
 			default:
 				return className;

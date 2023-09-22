@@ -1,12 +1,13 @@
 import React from 'react';
 import { IPropsIcon } from './types';
 
-const EllipsisIcon = ({ width, height }: Omit<IPropsIcon, 'name'>) => {
+const EllipsisIcon = ({ width, height, className = '', viewBox = '0 0 18 18' }: Omit<IPropsIcon, 'name'>) => {
 	return (
 		<svg
+			className={`fill-current ${className}`}
 			width={width}
 			height={height}
-			viewBox="0 0 18 18"
+			viewBox={viewBox}
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>

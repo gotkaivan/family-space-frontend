@@ -35,12 +35,12 @@ const SubTask: FC<IProps> = ({ subtask, updateSubtask }) => {
 					className="taskCheckbox sr-only"
 					checked={isCompleted}
 				/>
-				<div className="box mr-3 flex h-5 w-5 min-w-5 min-h-5  items-center justify-center rounded border border-stroke dark:border-strokedark dark:bg-boxdark-2">
+				<div className="box mr-3 flex h-4.5 w-4.5 min-w-4.5 min-h-4.5 items-center justify-center rounded border border-stroke dark:border-strokedark dark:bg-boxdark-2">
 					<span className="text-white opacity-0">
 						<Icon
 							name={'checkbox'}
-							width={10}
-							height={7}
+							width={8}
+							height={8}
 						/>
 					</span>
 				</div>

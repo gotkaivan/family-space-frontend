@@ -1,13 +1,13 @@
 import React from 'react';
 import { IPropsIcon } from './types';
 
-const CheckboxIcon = ({ width, height }: Omit<IPropsIcon, 'name'>) => {
+const CheckboxIcon = ({ width, height, className = '', viewBox = '0 0 10 7' }: Omit<IPropsIcon, 'name'>) => {
 	return (
 		<svg
-			className="fill-current"
+			className={`fill-current ${className}`}
 			width={width}
 			height={height}
-			viewBox="0 0 10 7"
+			viewBox={viewBox}
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>

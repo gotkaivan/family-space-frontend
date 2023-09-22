@@ -104,7 +104,7 @@ const RegisterPage = () => {
 								name={'profile'}
 								width={22}
 								height={22}
-								color="text-body opacity-65"
+								className="text-body opacity-65"
 							/>
 						}
 					/>

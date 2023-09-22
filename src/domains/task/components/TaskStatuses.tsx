@@ -87,7 +87,7 @@ const TaskStatuses: FC<ITaskStatusesProps> = props => {
 							<Button
 								clickHandler={createHandler}
 								title={'Добавить статус'}
-								className={`p-3 text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark`}
+								className={`p-2 text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark`}
 							/>
 						</div>
 					</div>

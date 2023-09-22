@@ -1,10 +1,10 @@
 import React from 'react';
 import { IPropsIcon } from './types';
 
-const CalendarIcon = ({ width, height, color = '' }: Omit<IPropsIcon, 'name'>) => {
+const CalendarIcon = ({ width, height, className = '' }: Omit<IPropsIcon, 'name'>) => {
 	return (
 		<svg
-			className="fill-current"
+			className={`fill-current ${className}`}
 			width={width}
 			height={height}
 			viewBox="0 0 18 18"

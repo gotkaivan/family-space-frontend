@@ -91,7 +91,7 @@ const TaskBoardsPage = () => {
 			<Button
 				clickHandler={() => setActionState({ actionType: 'create' })}
 				title={'Добавить доску'}
-				className={`p-3 text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark mb-6`}
+				className={`p-2 text-sm  dark:bg-boxdark dark:border-boxdark dark:text-white mr-4 bg-white border-white text-boxdark mb-6`}
 			/>
 
 			{isLoading ? <PageLoader /> : content}

@@ -202,7 +202,7 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 						<div className="flex justify-between">
 							<label
 								htmlFor="taskList"
-								className="mb-2.5 block font-medium text-black dark:text-white"
+								className="mb-2.5 block font-medium text-sm text-black dark:text-white"
 							>
 								Список подзадач
 							</label>

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
 	CalendarIcon,
 	ProfileIcon,
@@ -15,17 +14,21 @@ import {
 	DangerIcon,
 	CheckIcon,
 	CheckboxIcon,
+	ExitIcon,
+	ChevronIcon,
+	SunIcon,
+	MoonIcon,
 } from '../icons';
 import { IPropsIcon } from '../icons/types';
 
-const Icon = ({ name, width, height, color }: IPropsIcon) => {
+const Icon = ({ name, width, viewBox, height, className }: IPropsIcon) => {
 	switch (name) {
 		case 'calendar':
 			return (
 				<CalendarIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'profile':
@@ -33,7 +36,8 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<ProfileIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
+					viewBox={viewBox}
 				/>
 			);
 		case 'table':
@@ -41,7 +45,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<TableIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'settings':
@@ -49,7 +53,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<SettingsIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'email':
@@ -57,7 +61,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<EmailIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'lock':
@@ -65,7 +69,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<LockIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'ellipsis':
@@ -73,7 +77,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<EllipsisIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'close':
@@ -81,7 +85,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<CloseIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'plus':
@@ -89,7 +93,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<PlusIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'minus':
@@ -97,7 +101,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<MinusIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'trash':
@@ -105,7 +109,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<TrashIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'edit':
@@ -113,7 +117,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<EditIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'danger':
@@ -121,7 +125,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<DangerIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		case 'check': {
@@ -129,7 +133,7 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<CheckIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		}
@@ -138,10 +142,59 @@ const Icon = ({ name, width, height, color }: IPropsIcon) => {
 				<CheckboxIcon
 					width={width}
 					height={height}
-					color={color}
+					className={className}
 				/>
 			);
 		}
+		case 'exit': {
+			return (
+				<ExitIcon
+					width={width}
+					height={height}
+					className={className}
+					viewBox={viewBox}
+				/>
+			);
+		}
+		case 'chevron': {
+			return (
+				<ChevronIcon
+					width={width}
+					height={height}
+					className={className}
+					viewBox={viewBox}
+				/>
+			);
+		}
+		case 'sun': {
+			return (
+				<SunIcon
+					width={width}
+					height={height}
+					className={className}
+					viewBox={viewBox}
+				/>
+			);
+		}
+		case 'moon': {
+			return (
+				<MoonIcon
+					width={width}
+					height={height}
+					className={className}
+					viewBox={viewBox}
+				/>
+			);
+		}
+		default:
+			return (
+				<ProfileIcon
+					width={width}
+					height={height}
+					className={className}
+					viewBox={viewBox}
+				/>
+			);
 	}
 };
 

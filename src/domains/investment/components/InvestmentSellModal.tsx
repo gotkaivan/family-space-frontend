@@ -75,8 +75,8 @@ const InvestmentnSellModal: FC<IProps> = ({ onSellInvestment, close, data, id })
 				>
 					<Icon
 						name={'close'}
-						width={20}
-						height={20}
+						width={16}
+						height={16}
 					/>
 				</button>
 				<Input
