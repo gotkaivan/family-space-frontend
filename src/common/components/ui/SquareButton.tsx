@@ -1,9 +1,10 @@
 import React, { FC, InputHTMLAttributes, useMemo } from 'react';
-import Icon from './Icon';
-import { IconName } from '../icons/types';
+import Icon from './LucideIcon';
+import dynamicIconImports from 'lucide-react/dynamicIconImports';
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
-	iconName: IconName;
+	iconName: keyof typeof dynamicIconImports;
+
 	size?: number;
 	onClick: () => void;
 	buttonSize?: 'sm' | 'md' | 'lg';
@@ -11,7 +12,7 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const SquareButton: FC<IProps> = ({ onClick, iconName, size = 20, buttonSize }) => {
 	const buttonSizeClasses = useMemo(() => {
-		return buttonSize === 'sm' ? 'p-2 h-10.5 w-10.5' : 'p-4 h-12.5 w-12.5';
+		return buttonSize === 'sm' ? 'p-2 h-9.5 w-10' : 'p-4 h-12.5 w-12.5';
 	}, [buttonSize]);
 
 	return (
@@ -21,6 +22,7 @@ const SquareButton: FC<IProps> = ({ onClick, iconName, size = 20, buttonSize }) 
 		>
 			<Icon
 				name={iconName}
+				size={size}
 				width={size}
 				height={size}
 			/>

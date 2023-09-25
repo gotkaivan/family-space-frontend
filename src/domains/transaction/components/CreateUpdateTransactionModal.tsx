@@ -1,12 +1,12 @@
 import { FC, useMemo, useState } from 'react';
 import Input from 'common/components/ui/Input';
-import Icon from 'common/components/ui/Icon';
 import Button from 'common/components/ui/Button';
 import { CURRENCY_TYPE, ITransaction, TRANSACTION_TYPES } from '../types';
 import Transaction from '../entities/Transaction';
 import Select from 'common/components/ui/Select';
 import { getRandomId } from 'common/helpers';
 import Datepicker from 'common/components/ui/BaseDatepicker';
+import Icon from 'common/components/ui/LucideIcon';
 
 interface IProps {
 	id?: number | undefined;
@@ -103,9 +103,8 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 					className="absolute right-1 top-1 sm:right-5 sm:top-5"
 				>
 					<Icon
-						name={'close'}
-						width={16}
-						height={16}
+						name={'x'}
+						size={20}
 					/>
 				</button>
 				<Input

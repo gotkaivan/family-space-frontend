@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Icon from './Icon';
+import Icon from './LucideIcon';
 
 interface IProps {
 	text?: string;
@@ -38,8 +38,7 @@ const Checkbox: FC<IProps> = ({ text = '', id, value, onChange, disabled = false
 						<span className={` ${disabled ? 'text-gray-light dark:text-gray-light' : 'text-primary dark:text-bodydark1'} ${value ? '!opacity-100' : 'opacity-0'}`}>
 							<Icon
 								name={'check'}
-								width={10}
-								height={10}
+								size={10}
 							/>
 						</span>
 					</div>

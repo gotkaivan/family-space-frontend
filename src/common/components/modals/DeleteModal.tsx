@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import Icon from '../ui/Icon';
+import Icon from '../ui/LucideIcon';
 import Button from '../ui/Button';
 
 interface IProps {
@@ -39,12 +39,12 @@ const DeleteModal: FC<IProps> = ({ isOpen, title, description, cancel, confirm }
 					className="mx-auto inline-block"
 				>
 					<Icon
-						name={'danger'}
-						width={60}
-						height={60}
+						name={'alert-triangle'}
+						size={45}
+						color="red"
 					/>
 				</span>
-				<h3 className="mt-5.5 pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">{title}</h3>
+				<h3 className="mt-3 pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">{title}</h3>
 				<p className="mb-10">{description}</p>
 				<div className="flex justify-between flex-wrap gap-y-4">
 					<div className="w-full px-3 2xsm:w-1/2">

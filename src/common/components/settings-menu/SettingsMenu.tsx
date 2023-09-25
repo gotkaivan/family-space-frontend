@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useClickOutside } from '../../hooks/useClickOutside';
-import Icon from '../ui/Icon';
+import Icon from '../ui/LucideIcon';
 import SettingsDropdown from './SettingsDropdown';
 
 interface IProps {
@@ -38,9 +38,8 @@ const SettingsMenu = ({ className = '', onEdit, onDelete }: IProps) => {
 				className="relative p-1 cursor-pointer"
 			>
 				<Icon
-					name={'ellipsis'}
-					width={18}
-					height={18}
+					name={'more-vertical'}
+					size={18}
 				/>
 			</div>
 			<SettingsDropdown

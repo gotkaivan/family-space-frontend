@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Icon from '../ui/Icon';
+import Icon from '../ui/LucideIcon';
 
 interface IProps {
 	content: JSX.Element;
@@ -22,9 +22,8 @@ const FormModal: FC<IProps> = ({ content, button, close }) => {
 					className="absolute right-1 top-1 sm:right-5 sm:top-5"
 				>
 					<Icon
-						name={'close'}
-						width={16}
-						height={16}
+						name={'x'}
+						size={20}
 					/>
 				</button>
 				{content}

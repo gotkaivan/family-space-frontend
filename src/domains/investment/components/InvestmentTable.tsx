@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import Icon from 'common/components/ui/Icon';
+import Icon from 'common/components/ui/LucideIcon';
 import columns from '../config/investmentTableOptions';
 import { formatDate } from 'common/helpers/formatDate';
 import { IActionTransactionResponseParams, ITransaction } from 'domains/transaction/types';
@@ -16,7 +16,7 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 			return (
 				<th
 					key={column.id}
-					className="py-4 px-4 font-medium text-black dark:text-white"
+					className="py-4 px-4 font-medium text-sm text-black dark:text-white"
 				>
 					{column.title}
 				</th>
@@ -77,9 +77,8 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 								className="hover:text-primary"
 							>
 								<Icon
-									name="edit"
-									width={18}
-									height={18}
+									name="pencil"
+									size={18}
 								/>
 							</button>
 							<button
@@ -94,8 +93,7 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 							>
 								<Icon
 									name={'trash'}
-									width={18}
-									height={18}
+									size={18}
 								/>
 							</button>
 						</div>

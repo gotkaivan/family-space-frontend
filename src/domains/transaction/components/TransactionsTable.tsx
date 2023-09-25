@@ -1,8 +1,8 @@
 import { FC, useMemo } from 'react';
-import Icon from 'common/components/ui/Icon';
 import columns from '../config/transactionTableOptions';
 import { IActionTransactionResponseParams, ITransaction, TRANSACTION_TYPES } from '../types';
 import { formatDate } from 'common/helpers/formatDate';
+import Icon from 'common/components/ui/LucideIcon';
 
 interface IProps {
 	data: ITransaction[];
@@ -16,7 +16,7 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data 
 			return (
 				<th
 					key={column.id}
-					className="py-4 px-4 font-medium text-black dark:text-white"
+					className="py-4 px-4 text-sm font-medium text-black dark:text-white"
 				>
 					{column.title}
 				</th>
@@ -88,9 +88,8 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data 
 								className="hover:text-primary"
 							>
 								<Icon
-									name="edit"
-									width={18}
-									height={18}
+									name="pencil"
+									size={18}
 								/>
 							</button>
 							<button
@@ -99,8 +98,7 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data 
 							>
 								<Icon
 									name={'trash'}
-									width={18}
-									height={18}
+									size={18}
 								/>
 							</button>
 						</div>

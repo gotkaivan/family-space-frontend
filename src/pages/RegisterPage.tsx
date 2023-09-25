@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from 'common/components/ui/Input';
-import Icon from 'common/components/ui/Icon';
 import { useAppDispatch } from 'store';
 import { isEmail } from 'common/helpers';
 import { changeIsAuth, setUser } from 'store/features/profile';
@@ -10,6 +9,7 @@ import { registerApi } from 'api/auth';
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import Button from 'common/components/ui/Button';
 import { RegisterRequestDto } from 'generated/api';
+import Icon from 'common/components/ui/LucideIcon';
 
 const RegisterPage = () => {
 	const navigate = useNavigate();
@@ -101,9 +101,8 @@ const RegisterPage = () => {
 						onChange={e => setCurrentUser({ ...currentUser, name: e.target.value })}
 						icon={
 							<Icon
-								name={'profile'}
-								width={22}
-								height={22}
+								name={'user'}
+								size={22}
 								className="text-body opacity-65"
 							/>
 						}
@@ -120,9 +119,8 @@ const RegisterPage = () => {
 						onChange={e => setCurrentUser({ ...currentUser, email: e.target.value })}
 						icon={
 							<Icon
-								width={22}
-								height={22}
-								name={'email'}
+								size={22}
+								name={'mail'}
 							/>
 						}
 					/>
@@ -139,8 +137,7 @@ const RegisterPage = () => {
 						icon={
 							<Icon
 								name={'lock'}
-								width={22}
-								height={22}
+								size={22}
 							/>
 						}
 					/>
@@ -158,8 +155,7 @@ const RegisterPage = () => {
 						icon={
 							<Icon
 								name={'lock'}
-								width={22}
-								height={22}
+								size={22}
 							/>
 						}
 					/>

@@ -1,10 +1,10 @@
-'use client';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import Icon from '../ui/Icon';
+import Icon from '../ui/LucideIcon';
 import menu from './menu';
 import { Link } from 'react-router-dom';
 import MenuBurger from '../burger/MenuBurger';
+import SwipeButton from './SwipeButton';
 
 interface SidebarProps {
 	isSidebarOpen: boolean;
@@ -50,12 +50,31 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }: SidebarProps) => {
 							pathname?.includes(item.url) && 'bg-graydark dark:bg-meta-4'
 						}`}
 					>
-						<Icon
-							name={item.icon.name}
-							width={item.icon.width}
-							height={item.icon.height}
-						/>
-						{item.name}
+						<div className="w-5">
+							<div
+								data-tooltip-target="tooltip-right"
+								data-tooltip-placement="right"
+							>
+								<Icon
+									name={item.icon.name}
+									size={20}
+								/>
+							</div>
+
+							<div
+								id="tooltip-right"
+								role="tooltip"
+								className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+							>
+								Tooltip on right
+								<div
+									className="tooltip-arrow"
+									data-popper-arrow
+								></div>
+							</div>
+						</div>
+
+						{<div className={`transition ${!isSidebarOpen ? '' : 'hidden'}`}>{item.name}</div>}
 					</Link>
 				</li>
 			);
@@ -65,11 +84,16 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }: SidebarProps) => {
 	return (
 		<aside
 			ref={sidebar}
-			className={`absolute left-0 top-0 z-9999 flex h-screen flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark
-			lg:static translate-x-0 ${isSidebarOpen ? 'translate-x-0 w-0' : '-translate-x-full w-60'}`}
+			className={`absolute left-0 top-0 z-9999 flex h-screen flex-col bg-black duration-300 ease-linear dark:bg-boxdark
+			lg:static translate-x-0 ${isSidebarOpen ? 'translate-x-0 w-22' : '-translate-x-full w-60'} border-r border-solid border-black dark:border-gray-light`}
 		>
-			<div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-				<nav className="px-4 mt-6 lg:mt-10.5 lg:px-6">
+			<div className="flex flex-col duration-300 ease-linear relative">
+				<SwipeButton
+					onClick={() => setSidebarOpen(!isSidebarOpen)}
+					className={`${!isSidebarOpen ? '' : 'rotate-180'}`}
+				/>
+
+				<nav className={`px-4 mt-6 lg:mt-10.5`}>
 					<div>
 						<div className="mb-6 ml-4  flex justify-end items-center">
 							<div className="lg:hidden">

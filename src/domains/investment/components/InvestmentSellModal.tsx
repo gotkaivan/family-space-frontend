@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from 'react';
 import Input from 'common/components/ui/Input';
-import Icon from 'common/components/ui/Icon';
+import Icon from 'common/components/ui/LucideIcon';
 import Button from 'common/components/ui/Button';
 import Select from 'common/components/ui/Select';
 import { getRandomId } from 'common/helpers';
@@ -74,9 +74,8 @@ const InvestmentnSellModal: FC<IProps> = ({ onSellInvestment, close, data, id })
 					className="absolute right-1 top-1 sm:right-5 sm:top-5"
 				>
 					<Icon
-						name={'close'}
-						width={16}
-						height={16}
+						name={'x'}
+						size={20}
 					/>
 				</button>
 				<Input

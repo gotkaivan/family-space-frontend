@@ -2,11 +2,13 @@ import DeleteModal from 'common/components/modals/DeleteModal';
 import Button from 'common/components/ui/Button';
 import CreateUpdateBoardModal from 'domains/task/components/CreateUpdateBoardModal';
 import { BoardDto } from 'generated/api';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import BoardItem from 'domains/task/components/BoardItem';
 import useTaskBoards from 'domains/task/hooks/useTaskBoards';
 import ModalWrapper from 'common/components/modals/ModalWrapper';
 import PageLoader from 'common/components/ui/Loader/PageLoader';
+import { useAppDispatch } from 'store';
+import { changeBreadcrumbs } from 'store/features/common';
 
 interface IActionState {
 	id?: number;
@@ -15,6 +17,23 @@ interface IActionState {
 }
 
 const TaskBoardsPage = () => {
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(
+			changeBreadcrumbs([
+				{
+					title: 'Доски c задачами',
+					url: '',
+				},
+			])
+		);
+
+		return function clean() {
+			dispatch(changeBreadcrumbs([]));
+		};
+	});
+
 	const { data, isLoading, createNewBoard, updateBoard, deleteBoard } = useTaskBoards();
 
 	const [actionState, setActionState] = useState<IActionState | null>(null);

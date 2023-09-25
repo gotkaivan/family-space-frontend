@@ -1,5 +1,5 @@
 import useColorMode from '../../hooks/useColorMode';
-import Icon from './Icon';
+import Icon from './LucideIcon';
 
 const DarkModeSwitcher = () => {
 	const [colorMode, setColorMode] = useColorMode();
@@ -24,17 +24,13 @@ const DarkModeSwitcher = () => {
 					<span className="dark:hidden">
 						<Icon
 							name={'sun'}
-							width={16}
-							height={16}
-							viewBox="0 0 16 16"
+							size={16}
 						/>
 					</span>
 					<span className="hidden dark:inline-block">
 						<Icon
 							name={'moon'}
-							width={16}
-							height={16}
-							viewBox="0 0 16 16"
+							size={16}
 						/>
 					</span>
 				</span>

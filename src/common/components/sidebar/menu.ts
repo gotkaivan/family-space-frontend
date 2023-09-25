@@ -1,9 +1,10 @@
-import { IPropsIcon, IconName } from '../icons/types';
+import {} from 'lucide-react';
+import { IIconProps } from '../ui/LucideIcon';
 
 interface IMenuItem {
 	name: string;
 	url: string;
-	icon: IPropsIcon & { name: IconName };
+	icon: Omit<IIconProps, 'size'>;
 }
 
 const menu: IMenuItem[] = [
@@ -11,9 +12,7 @@ const menu: IMenuItem[] = [
 		name: 'Задачи',
 		url: 'tasks',
 		icon: {
-			name: 'table',
-			width: 18,
-			height: 19,
+			name: 'clipboard-list',
 		},
 	},
 
@@ -21,29 +20,16 @@ const menu: IMenuItem[] = [
 		name: 'Транзакции',
 		url: 'transactions',
 		icon: {
-			name: 'calendar',
-			width: 18,
-			height: 18,
+			name: 'arrow-left-right',
 		},
 	},
 	{
 		name: 'Капитализация',
 		url: 'capitalization',
 		icon: {
-			name: 'calendar',
-			width: 18,
-			height: 18,
+			name: 'circle-dollar-sign',
 		},
 	},
-	// {
-	// 	name: 'Аналитика',
-	// 	url: 'analytics',
-	// 	icon: {
-	// 		name: 'calendar',
-	// 		width: 18,
-	// 		height: 18,
-	// 	},
-	// },
 ];
 
 export default menu;

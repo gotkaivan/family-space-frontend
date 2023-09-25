@@ -1,4 +1,4 @@
-import Icon from '../ui/Icon';
+import Icon from '../ui/LucideIcon';
 
 interface IProps {
 	isOpen: boolean;
@@ -18,9 +18,8 @@ const SettingsDropdown = ({ isOpen = false, onEdit, onDelete }: IProps) => {
 				className="flex w-full items-center gap-2 rounded-md py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
 			>
 				<Icon
-					name={'edit'}
-					width={16}
-					height={16}
+					name={'pencil'}
+					size={16}
 				/>
 				Обновить
 			</button>
@@ -30,8 +29,7 @@ const SettingsDropdown = ({ isOpen = false, onEdit, onDelete }: IProps) => {
 			>
 				<Icon
 					name={'trash'}
-					width={16}
-					height={16}
+					size={16}
 				/>
 				Удалить
 			</button>

@@ -18,18 +18,15 @@ export default function DefaultLayout() {
 
 	return (
 		<div className="dark:bg-boxdark-2 dark:text-bodydark">
-			<div className="flex h-screen overflow-hidden">
+			<div className="flex h-screen">
 				<Sidebar
 					isSidebarOpen={isSidebarOpen}
 					setSidebarOpen={changeSidebarState}
 				/>
-				<div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-					<Header
-						isSideberOpen={isSidebarOpen}
-						setSidebarOpen={changeSidebarState}
-					/>
+				<div className="relative flex flex-1 flex-col">
+					<Header />
 					<main>
-						<div className="mx-auto max-w-screen p-4 md:p-6">
+						<div className="mx-auto max-w-screen p-4 md:p-6 overflow-y-auto overflow-x-hidden">
 							<Outlet />
 						</div>
 					</main>

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../store';
 import { logoutApi } from 'api/auth';
 import { KEY__AUTH_TOKEN, ROUTE__LOGIN } from '../../constants';
 import { changeIsAuth, setUser } from '../../../store/features/profile';
-import Icon from '../ui/Icon';
+import Icon from '../ui/LucideIcon';
 
 const DropdownUser = () => {
 	const navigate = useNavigate();
@@ -62,7 +62,7 @@ const DropdownUser = () => {
 					<span className="block font-medium text-black dark:text-white text-sm">{user?.name}</span>
 				</span>
 
-				<span className="h-12 w-12 rounded-full">
+				<span className="h-11 w-11 rounded-full">
 					<img
 						src={UserImg}
 						alt="User"
@@ -70,10 +70,8 @@ const DropdownUser = () => {
 				</span>
 
 				<Icon
-					name={'chevron'}
-					width={12}
-					height={8}
-					viewBox="0 0 12 8"
+					name={'chevron-down'}
+					size={14}
 					className={`hidden fill-current sm:block ${dropdownOpen ? 'rotate-180' : ''}`}
 				/>
 			</Link>
@@ -93,10 +91,8 @@ const DropdownUser = () => {
 							className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary text-md"
 						>
 							<Icon
-								name={'profile'}
-								width={18}
-								height={18}
-								viewBox="0 0 22 22"
+								name={'user'}
+								size={18}
 							/>
 							Мой профиль
 						</Link>
@@ -107,10 +103,8 @@ const DropdownUser = () => {
 					className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary text-md"
 				>
 					<Icon
-						name={'exit'}
-						width={18}
-						height={18}
-						viewBox="0 0 24 24"
+						name={'log-out'}
+						size={18}
 					/>
 					Выйти
 				</button>

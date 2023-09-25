@@ -2,7 +2,6 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from 'common/components/ui/Input';
 import Button from 'common/components/ui/Button';
-import Icon from 'common/components/ui/Icon';
 import { useAppDispatch, useAppSelector } from 'store';
 import { changeIsAuth, setUser } from 'store/features/profile';
 import { loginApi } from 'api/auth';
@@ -10,6 +9,7 @@ import { KEY__AUTH_TOKEN, ROUTE__MAIN } from 'common/constants';
 import { isEmail } from 'common/helpers';
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import { LoginRequestDto } from 'generated/api';
+import Icon from 'common/components/ui/LucideIcon';
 
 const SignIn: FC = () => {
 	const navigate = useNavigate();
@@ -85,9 +85,8 @@ const SignIn: FC = () => {
 						onChange={e => setCurrentUser({ ...currentUser, email: e.target.value })}
 						icon={
 							<Icon
-								name={'email'}
-								width={22}
-								height={22}
+								name={'mail'}
+								size={22}
 							/>
 						}
 					/>
@@ -105,8 +104,7 @@ const SignIn: FC = () => {
 						icon={
 							<Icon
 								name={'lock'}
-								width={22}
-								height={22}
+								size={22}
 							/>
 						}
 					/>

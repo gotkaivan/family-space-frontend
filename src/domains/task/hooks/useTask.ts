@@ -1,5 +1,5 @@
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	getStatusesByGroupIdApi,
 	createStatusApi,
@@ -11,25 +11,65 @@ import {
 	createSubtaskApi,
 	updateSubtaskApi,
 	deleteSubtaskApi,
+	getBoardByIdApi,
 } from '../api';
-import { CancelablePromise, CreateTaskStatusDto, DeleteTaskResponseDto, DeleteTaskStatusResponseDto, SubtaskDto, TaskDto, TaskStatusDto } from 'generated/api';
+import { BoardDto, CancelablePromise, CreateTaskStatusDto, DeleteTaskResponseDto, DeleteTaskStatusResponseDto, SubtaskDto, TaskDto, TaskStatusDto } from 'generated/api';
 import { redirect, useParams } from 'react-router-dom';
+import { useAppDispatch } from 'store';
+import { changeBreadcrumbs } from 'store/features/common';
+import Board from '../entities/Board';
 
 const INITIAL_POSITION = 10000000;
 
 const useTask = () => {
 	const { notify } = useNotify();
 	const { boardId } = useParams();
+	const dispatch = useAppDispatch();
+
 	const [data, setData] = useState<TaskStatusDto[]>([]);
+
+	const [board, setBoard] = useState<BoardDto>(new Board());
 
 	const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
 
 	const [isPageLoaded, setIsPageLoaded] = useState<boolean>(false);
 
+	useEffect(() => {
+		dispatch(
+			changeBreadcrumbs([
+				{
+					title: 'Доски c задачами',
+					url: '/tasks',
+				},
+				{
+					title: board.title,
+					url: '',
+				},
+			])
+		);
+		return function clean() {
+			dispatch(changeBreadcrumbs([]));
+		};
+	}, [board.title]);
+
 	const isLoading = useMemo(() => {
 		if (!isPageLoaded && isLoadingData) return true;
 		return false;
 	}, [isLoadingData, isPageLoaded]);
+
+	async function getBoardById() {
+		try {
+			if (!boardId) return;
+			const response = await getBoardByIdApi(+boardId);
+			if (response) setBoard(response);
+		} catch (e) {
+			notify(NOTIFY_TYPES.ERROR, 'Не удалось получить доску');
+		}
+	}
+
+	useEffect(() => {
+		getBoardById();
+	}, []);
 
 	async function getData() {
 		setIsLoadingData(true);

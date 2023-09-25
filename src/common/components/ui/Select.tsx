@@ -1,5 +1,4 @@
 import { ChangeEvent, FC, SelectHTMLAttributes } from 'react';
-import Icon from './Icon';
 
 export interface ISelectOption {
 	id: number;
