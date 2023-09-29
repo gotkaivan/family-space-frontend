@@ -43,7 +43,7 @@ const Checkbox: FC<IProps> = ({ text = '', id, value, onChange, disabled = false
 						</span>
 					</div>
 				</div>
-				{text && <div className={`${disabled && 'text-gray-light'}`}>{text}</div>}
+				{text && <div className={`text-sm ${disabled && 'text-gray-light'}`}>{text}</div>}
 			</label>
 		</div>
 	);

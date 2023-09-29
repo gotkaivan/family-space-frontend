@@ -1,8 +1,9 @@
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import useTransaction from 'domains/transaction/hooks/useTransaction';
-import { IActionTransactionResponseParams, TRANSACTION_TYPES } from 'domains/transaction/types';
+import { IActionTransactionResponseParams } from 'domains/transaction/types';
 import { useMemo, useState } from 'react';
 import { IInvestment, ISellInvestment } from '../types';
+import { TransactionDto } from 'generated/api';
 
 const useCapitalizationPage = () => {
 	const { notify } = useNotify();
@@ -12,7 +13,7 @@ const useCapitalizationPage = () => {
 	const [actionData, setActionData] = useState<IActionTransactionResponseParams | null>(null);
 
 	const investments = useMemo(() => {
-		return transactions.filter(transaction => transaction.transactionType === TRANSACTION_TYPES.INVESTMENT__TRANSACTION__TYPE && !!transaction.amount);
+		return transactions.filter(transaction => transaction.transactionType === TransactionDto.transactionType.INVESTMENT && !!transaction.amount);
 	}, [transactions]);
 
 	async function createInvestment(investment: IInvestment) {
@@ -50,7 +51,7 @@ const useCapitalizationPage = () => {
 			const sellRequest = {
 				...other,
 				amount: sellItem.sellAmount,
-				transactionType: TRANSACTION_TYPES.SALE__TRANSACTION__TYPE,
+				transactionType: TransactionDto.transactionType.SALE,
 			};
 			await createTransaction(sellRequest);
 			await updateTransaction(updateRequest);

@@ -1,7 +1,8 @@
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import { useState } from 'react';
-import { IActionTransactionResponseParams, ITransaction } from '../types';
+import { IActionTransactionResponseParams } from '../types';
 import useTransaction from './useTransaction';
+import { TransactionDto } from 'generated/api';
 
 const useTransactionPage = () => {
 	const { notify } = useNotify();
@@ -10,7 +11,7 @@ const useTransactionPage = () => {
 
 	const [actionData, setActionData] = useState<IActionTransactionResponseParams | null>(null);
 
-	async function onCreateUpdateTransaction(type: 'create' | 'update', transaction: ITransaction) {
+	async function onCreateUpdateTransaction(type: 'create' | 'update', transaction: TransactionDto) {
 		try {
 			if (type === 'create') {
 				await createTransaction(transaction);

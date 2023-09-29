@@ -5,10 +5,10 @@ import Button from 'common/components/ui/Button';
 import Select from 'common/components/ui/Select';
 import { getRandomId } from 'common/helpers';
 import Datepicker from 'common/components/ui/BaseDatepicker';
-import { CURRENCY_TYPE, TRANSACTION_TYPES } from 'domains/transaction/types';
 import { IInvestment } from '../types';
 import Investment from '../entities/Investment';
 import Checkbox from 'common/components/ui/Ckeckbox';
+import { TransactionDto } from 'generated/api';
 
 interface IProps {
 	id?: number | undefined;
@@ -17,7 +17,7 @@ interface IProps {
 	data?: IInvestment | null;
 }
 
-const curencyTypes = Object.keys(CURRENCY_TYPE).map(item => {
+const curencyTypes = Object.keys(TransactionDto.currencyType).map(item => {
 	return {
 		id: getRandomId(),
 		title: item,
@@ -52,11 +52,10 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 
 	useEffect(() => {
 		if (data?.amount) setAmount(data.amount);
-		if (data?.value) setValue(data.value);
 	}, [data]);
 
 	const isDisabledAmount = useMemo(() => {
-		return state.transactionType === TRANSACTION_TYPES.INCOME__TRANSACTION__TYPE || state.transactionType === TRANSACTION_TYPES.EXPENSES__TRANSACTION__TYPE;
+		return state.transactionType === TransactionDto.transactionType.INCOME || state.transactionType === TransactionDto.transactionType.EXPENSES;
 	}, [state.transactionType]);
 
 	const [currentyTypes] = useState(curencyTypes);
@@ -160,8 +159,8 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 					id={'isUncountable'}
 					text="Не учавствует в вычислениях"
 					className="pl-1"
-					value={state.isUncountable}
-					onChange={value => setState({ ...state, isUncountable: value })}
+					value={false}
+					onChange={value => null}
 				/>
 				<div className="flex justify-end pt-4">
 					<Button

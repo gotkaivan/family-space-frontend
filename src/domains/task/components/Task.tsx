@@ -42,7 +42,7 @@ const DraggableItem = ({ item, index, onDelete, onEdit, updateSubtask }: IProps)
 						/>
 						<div>
 							<div className="mb-2 text-lg font-medium text-black dark:text-white">{item.title}</div>
-							<div className={`${item.linkBoardId ? 'mb-2' : 'mb-6'} text-sm`}>{item.description}</div>
+							<div className={`${item.linkBoardId ? 'mb-2' : 'mb-6'} text-sm text-body dark:text-white`}>{item.description}</div>
 							{item.linkBoardId && (
 								<Link to={`/tasks/${item.linkBoardId}`}>
 									<div className="mb-6 text-sm text-meta-5">Перейти на доску</div>

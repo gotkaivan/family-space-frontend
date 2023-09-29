@@ -1,39 +1,39 @@
 import { getRandomId } from 'common/helpers';
 import { IInvestment } from '../types';
-import { CURRENCY_TYPE, TRANSACTION_TYPES } from 'domains/transaction/types';
+import { TransactionDto } from 'generated/api';
 
-class Investment implements IInvestment {
+class Investment implements TransactionDto {
 	constructor(investment?: IInvestment) {
 		this.id = investment?.id || getRandomId();
 		this.title = investment?.title || '';
-		this.transactionType = TRANSACTION_TYPES.INVESTMENT__TRANSACTION__TYPE;
-		this.currencyType = investment?.currencyType || CURRENCY_TYPE.RUB;
-		this.value = investment?.value || 0;
+		this.description = investment?.description || '';
+		this.purchasePrice = investment?.purchasePrice || 0;
+		this.currentPrice = investment?.currentPrice || 0;
+		this.transactionType = TransactionDto.transactionType.INVESTMENT;
+		this.currencyType = investment?.currencyType || TransactionDto.currencyType.RUB;
 		this.amount = investment?.amount || 1;
 		this.transactionDate = investment?.transactionDate || new Date().toISOString();
-		this.isUncountable = investment?.isUncountable || false;
-		this.created = investment?.created || new Date().toISOString();
-		this.updated = investment?.updated || new Date().toISOString();
 	}
+
 	id: number;
 
 	title: string;
 
-	transactionType: TRANSACTION_TYPES.INVESTMENT__TRANSACTION__TYPE;
+	description: string;
 
-	currencyType: CURRENCY_TYPE;
+	purchasePrice: number;
 
-	value: number;
+	owesPrice?: number | undefined;
+
+	currentPrice: number;
+
+	transactionType: TransactionDto.transactionType.INVESTMENT;
+
+	currencyType: TransactionDto.currencyType;
 
 	amount: number;
 
 	transactionDate: string | null;
-
-	isUncountable: boolean;
-
-	created: string;
-
-	updated: string;
 }
 
 export default Investment;

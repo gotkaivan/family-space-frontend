@@ -85,7 +85,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }: SidebarProps) => {
 		<aside
 			ref={sidebar}
 			className={`absolute left-0 top-0 z-9999 flex h-screen flex-col bg-black duration-300 ease-linear dark:bg-boxdark
-			lg:static translate-x-0 ${isSidebarOpen ? 'translate-x-0 w-22' : '-translate-x-full w-60'} border-r border-solid border-black dark:border-gray-light`}
+			lg:static translate-x-0 ${isSidebarOpen ? 'translate-x-0 w-22' : '-translate-x-full w-60'} border-r border-solid border-black`}
 		>
 			<div className="flex flex-col duration-300 ease-linear relative">
 				<SwipeButton

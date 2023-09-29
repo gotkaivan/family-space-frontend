@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ITransaction } from '../types';
 import { TRANSACTION__DATA } from '../constants';
+import { TransactionDto } from 'generated/api';
 
 const useTransaction = () => {
-	const [transactions, setTransactions] = useState<ITransaction[]>([]);
+	const [transactions, setTransactions] = useState<TransactionDto[]>([]);
 
-	async function saveTransactions(data: ITransaction[]) {
+	async function saveTransactions(data: TransactionDto[]) {
 		await localStorage.setItem(TRANSACTION__DATA, JSON.stringify(data));
 		return setTransactions(data);
 		return;
 	}
 
-	const createTransaction = async (transaction: ITransaction) => {
+	const createTransaction = async (transaction: TransactionDto) => {
 		try {
 			const result = [...transactions];
 			result.push(transaction);
@@ -21,7 +21,7 @@ const useTransaction = () => {
 		}
 	};
 
-	const updateTransaction = async (transaction: ITransaction) => {
+	const updateTransaction = async (transaction: TransactionDto) => {
 		try {
 			const result = transactions.map(item => {
 				if (item.id === transaction.id) {

@@ -1,21 +1,23 @@
 import { FC, useMemo, useState } from 'react';
 import Input from 'common/components/ui/Input';
 import Button from 'common/components/ui/Button';
-import { CURRENCY_TYPE, ITransaction, TRANSACTION_TYPES } from '../types';
 import Transaction from '../entities/Transaction';
 import Select from 'common/components/ui/Select';
 import { getRandomId } from 'common/helpers';
 import Datepicker from 'common/components/ui/BaseDatepicker';
 import Icon from 'common/components/ui/LucideIcon';
+import { TransactionDto } from 'generated/api';
+import Textarea from 'common/components/ui/Textarea';
+import Checkbox from 'common/components/ui/Ckeckbox';
 
 interface IProps {
 	id?: number | undefined;
-	onCreateUpdateTask: (type: 'create' | 'update', transaction: ITransaction) => void;
+	onCreateUpdateTask: (type: 'create' | 'update', transaction: TransactionDto) => void;
 	close: () => void;
-	data?: ITransaction | null;
+	data?: TransactionDto | null;
 }
 
-const curencyTypes = Object.keys(CURRENCY_TYPE).map(item => {
+const curencyTypes = Object.keys(TransactionDto.currencyType).map(item => {
 	return {
 		id: getRandomId(),
 		title: item,
@@ -28,13 +30,13 @@ const VALUE_ERROR = 'Введите сумму транзакции';
 const AMOUNT_ERROR = 'Введите количество значения транзакции';
 
 const transactionsTypeLocales = {
-	[TRANSACTION_TYPES.INCOME__TRANSACTION__TYPE]: 'Доходы',
-	[TRANSACTION_TYPES.EXPENSES__TRANSACTION__TYPE]: 'Расходы',
-	[TRANSACTION_TYPES.INVESTMENT__TRANSACTION__TYPE]: 'Покупка инвестиции',
-	[TRANSACTION_TYPES.SALE__TRANSACTION__TYPE]: 'Продажа инвестиции',
+	[TransactionDto.transactionType.INCOME]: 'Доходы',
+	[TransactionDto.transactionType.EXPENSES]: 'Расходы',
+	[TransactionDto.transactionType.INVESTMENT]: 'Покупка инвестиции',
+	[TransactionDto.transactionType.SALE]: 'Продажа инвестиции',
 };
 
-const transactionEditTypes = Object.values(TRANSACTION_TYPES).map(item => {
+const transactionEditTypes = Object.values(TransactionDto.transactionType).map(item => {
 	return {
 		id: getRandomId(),
 		title: transactionsTypeLocales[item],
@@ -42,42 +44,43 @@ const transactionEditTypes = Object.values(TRANSACTION_TYPES).map(item => {
 	};
 });
 
-const transactionCreateTypes = Object.values(TRANSACTION_TYPES)
-	.filter(item => item === TRANSACTION_TYPES.INCOME__TRANSACTION__TYPE || item === TRANSACTION_TYPES.EXPENSES__TRANSACTION__TYPE)
-	.map(item => {
-		return {
-			id: getRandomId(),
-			title: transactionsTypeLocales[item],
-			value: item,
-		};
-	});
+const transactionCreateTypes = Object.values(TransactionDto.transactionType).map(item => {
+	return {
+		id: getRandomId(),
+		title: transactionsTypeLocales[item],
+		value: item,
+	};
+});
 
 const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, data, id }) => {
-	const [state, setState] = useState<ITransaction>(data || new Transaction());
+	const [state, setState] = useState<TransactionDto>(data || new Transaction());
+
 	const [isTouched, setIsTouched] = useState<boolean>(false);
+
+	const [isOwe, setIsOwe] = useState<boolean>(false);
 
 	const hasTitleError = useMemo(() => !state.title.length, [state.title.length]);
 
-	const hasValueError = useMemo(() => !state.value, [state.value]);
+	const hasCurrentProceError = useMemo(() => !state.currentPrice, [state.currentPrice]);
 
 	const hasAmountError = useMemo(() => !state.amount && id, [state.amount, id]);
 
 	const hasTouchedTitleError: boolean = useMemo(() => hasTitleError && isTouched, [hasTitleError, isTouched]);
 
-	const hasTouchedValueError: boolean = useMemo(() => hasValueError && isTouched, [hasValueError, isTouched]);
+	const hasTouchedCurrentPriceError: boolean = useMemo(() => hasCurrentProceError && isTouched, [hasCurrentProceError, isTouched]);
 
 	const hasTouchedAmountError: boolean = useMemo(() => !!hasAmountError && isTouched, [hasAmountError, isTouched]);
 
-	const isDisabledAmount = useMemo(() => {
-		return !id || state.transactionType === TRANSACTION_TYPES.INCOME__TRANSACTION__TYPE || state.transactionType === TRANSACTION_TYPES.EXPENSES__TRANSACTION__TYPE;
-	}, [state.transactionType, id]);
+	const isVisibleAmount = useMemo(() => {
+		return state.transactionType === TransactionDto.transactionType.INVESTMENT || state.transactionType === TransactionDto.transactionType.SALE;
+	}, [state.transactionType]);
 
 	const [currentyTypes] = useState(curencyTypes);
 
-	const buttonTitle = useMemo(() => (id ? 'Update task' : 'Create task'), [id]);
+	const buttonTitle = useMemo(() => (id ? 'Обновить транзакцию' : 'Создать транзакцию'), [id]);
 
 	const validateForm = () => {
-		if (hasTitleError || hasValueError || hasAmountError) return false;
+		if (hasTitleError || hasTouchedCurrentPriceError || hasAmountError) return false;
 		return true;
 	};
 
@@ -118,22 +121,38 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 					className="mb-8"
 					withError={hasTouchedTitleError}
 				/>
+				<Textarea
+					label="Описание транзакции"
+					placeholder="Введите описание транзакции"
+					value={state.description}
+					onChange={e => setState({ ...state, description: e.target.value })}
+				/>
 				<Input
-					label="Сумма"
-					placeholder="Введите сумму транзакции"
-					hasError={hasTouchedValueError}
+					label="Стоимость покупки единицы"
+					placeholder="Введите сумму"
+					hasError={hasTouchedCurrentPriceError}
 					errorMessage={VALUE_ERROR}
-					value={state.value || ''}
-					onChange={e => setState({ ...state, value: +e.target.value })}
+					value={state.purchasePrice || ''}
+					onChange={e => setState({ ...state, purchasePrice: +e.target.value })}
 					type="number"
 					className="mb-8"
-					withError={hasTouchedValueError}
+					withError={hasTouchedCurrentPriceError}
 				/>
-				{id && (
+				<Input
+					label="Текущая стоимость единицы"
+					placeholder="Введите сумму"
+					hasError={hasTouchedCurrentPriceError}
+					errorMessage={VALUE_ERROR}
+					value={state.currentPrice || ''}
+					onChange={e => setState({ ...state, currentPrice: +e.target.value })}
+					type="number"
+					className="mb-8"
+					withError={hasTouchedCurrentPriceError}
+				/>
+				{isVisibleAmount && (
 					<Input
 						label="Количество"
 						placeholder="Введите количество"
-						disabled={isDisabledAmount}
 						hasError={!!hasTouchedAmountError}
 						errorMessage={AMOUNT_ERROR}
 						value={state.amount}
@@ -143,6 +162,27 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 						withError={!!hasTouchedAmountError}
 					/>
 				)}
+				<Checkbox
+					text="Долг по транзакции"
+					id={'oweCheckbox'}
+					className="mb-8"
+					value={isOwe}
+					onChange={() => setIsOwe(!isOwe)}
+				/>
+				{isOwe && (
+					<Input
+						label="Долг по текущей транзакции"
+						placeholder="Введите сумму"
+						hasError={hasTouchedCurrentPriceError}
+						errorMessage={VALUE_ERROR}
+						value={state.owesPrice || ''}
+						onChange={e => setState({ ...state, owesPrice: +e.target.value })}
+						type="number"
+						className="mb-8"
+						withError={hasTouchedCurrentPriceError}
+					/>
+				)}
+
 				<Select
 					label="Тип валюты"
 					value={state.currencyType}

@@ -1,11 +1,12 @@
 import { FC, useMemo } from 'react';
 import columns from '../config/transactionTableOptions';
-import { IActionTransactionResponseParams, ITransaction, TRANSACTION_TYPES } from '../types';
+import { IActionTransactionResponseParams } from '../types';
 import { formatDate } from 'common/helpers/formatDate';
 import Icon from 'common/components/ui/LucideIcon';
+import { TransactionDto } from 'generated/api';
 
 interface IProps {
-	data: ITransaction[];
+	data: TransactionDto[];
 	hasActions?: boolean;
 	setActionData: (data: IActionTransactionResponseParams) => void;
 }
@@ -28,25 +29,25 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data 
 		if (hasActions) return <th className="py-4 px-4 font-medium text-black dark:text-white"></th>;
 	}, [hasActions]);
 
-	const getTransactionTypeItem = (type: TRANSACTION_TYPES) => {
-		if (type === TRANSACTION_TYPES.INCOME__TRANSACTION__TYPE) {
+	const getTransactionTypeItem = (type: TransactionDto.transactionType) => {
+		if (type === TransactionDto.transactionType.INCOME) {
 			return <div className="inline-flex rounded-full bg-success bg-opacity-10 py-1 px-3 text-sm font-medium text-success">Income</div>;
 		}
 
-		if (type === TRANSACTION_TYPES.EXPENSES__TRANSACTION__TYPE) {
+		if (type === TransactionDto.transactionType.EXPENSES) {
 			return <p className="inline-flex rounded-full bg-meta-1 bg-opacity-10 py-1 px-3 text-sm font-medium text-meta-1">Expenses</p>;
 		}
 
-		if (type === TRANSACTION_TYPES.INVESTMENT__TRANSACTION__TYPE) {
+		if (type === TransactionDto.transactionType.INVESTMENT) {
 			return <p className="inline-flex rounded-full bg-meta-5 bg-opacity-10 py-1 px-3 text-sm font-medium text-meta-5">Investment</p>;
 		}
 
-		if (type === TRANSACTION_TYPES.SALE__TRANSACTION__TYPE) {
+		if (type === TransactionDto.transactionType.SALE) {
 			return <p className="inline-flex rounded-full bg-meta-8 bg-opacity-10 py-1 px-3 text-sm font-medium text-meta-8">Sales</p>;
 		}
 	};
 
-	const openEdit = (data: ITransaction) => {
+	const openEdit = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
 			typeAction: 'edit',
@@ -54,7 +55,7 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data 
 		});
 	};
 
-	const openDelete = (data: ITransaction) => {
+	const openDelete = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
 			typeAction: 'delete',
@@ -69,7 +70,7 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data 
 						<div className="font-medium text-black dark:text-white text-sm">{item.title}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-						<div className="font-medium text-black dark:text-white text-sm">{item.value}</div>
+						<div className="font-medium text-black dark:text-white text-sm">{item.currentPrice}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 						<div className="font-medium text-black dark:text-white text-sm">{item.amount}</div>

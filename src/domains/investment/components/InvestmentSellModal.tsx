@@ -4,10 +4,10 @@ import Icon from 'common/components/ui/LucideIcon';
 import Button from 'common/components/ui/Button';
 import Select from 'common/components/ui/Select';
 import { getRandomId } from 'common/helpers';
-import { CURRENCY_TYPE, ITransaction, TRANSACTION_TYPES } from 'domains/transaction/types';
 import Transaction from 'domains/transaction/entities/Transaction';
 import { IInvestment, ISellInvestment } from '../types';
 import RangeInput from 'common/components/ui/RangeInput';
+import { TransactionDto } from 'generated/api';
 
 interface IProps {
 	id?: number | undefined;
@@ -16,7 +16,7 @@ interface IProps {
 	data: IInvestment;
 }
 
-const curencyTypes = Object.keys(CURRENCY_TYPE).map(item => {
+const curencyTypes = Object.keys(TransactionDto.currencyType).map(item => {
 	return {
 		id: getRandomId(),
 		title: item,
@@ -28,13 +28,13 @@ const VALUE_ERROR = 'Введите сумму транзакции';
 const AMOUNT_ERROR = 'Введите количество значения транзакции';
 
 const InvestmentnSellModal: FC<IProps> = ({ onSellInvestment, close, data, id }) => {
-	const [state, setState] = useState<ITransaction>(data || new Transaction());
+	const [state, setState] = useState<TransactionDto>(data || new Transaction());
 
 	const [isTouched, setIsTouched] = useState<boolean>(false);
 
 	const [sellAmount, setSellAmount] = useState<number>(1);
 
-	const hasValueError = useMemo(() => !state.value, [state.value]);
+	const hasValueError = useMemo(() => !state.currentPrice, [state.currentPrice]);
 
 	const hasAmountError = useMemo(() => !state.amount && id, [state.amount, id]);
 
@@ -93,8 +93,8 @@ const InvestmentnSellModal: FC<IProps> = ({ onSellInvestment, close, data, id })
 					placeholder="Введите сумму транзакции"
 					hasError={hasTouchedValueError}
 					errorMessage={VALUE_ERROR}
-					value={state.value || ''}
-					onChange={e => setState({ ...state, value: +e.target.value })}
+					value={state.currentPrice || ''}
+					onChange={e => setState({ ...state, currentPrice: +e.target.value })}
 					type="number"
 					className="mb-8"
 					withError={hasTouchedValueError}

@@ -2,10 +2,11 @@ import { FC, useMemo } from 'react';
 import Icon from 'common/components/ui/LucideIcon';
 import columns from '../config/investmentTableOptions';
 import { formatDate } from 'common/helpers/formatDate';
-import { IActionTransactionResponseParams, ITransaction } from 'domains/transaction/types';
+import { IActionTransactionResponseParams } from 'domains/transaction/types';
+import { TransactionDto } from 'generated/api';
 
 interface IProps {
-	data: ITransaction[];
+	data: TransactionDto[];
 	hasActions?: boolean;
 	setActionData: (data: IActionTransactionResponseParams) => void;
 }
@@ -28,7 +29,7 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 		if (hasActions) return <th className="py-4 px-4 font-medium text-black dark:text-white"></th>;
 	}, [hasActions]);
 
-	const openEdit = (data: ITransaction) => {
+	const openEdit = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
 			typeAction: 'edit',
@@ -36,7 +37,7 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 		});
 	};
 
-	const openSell = (data: ITransaction) => {
+	const openSell = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
 			typeAction: 'sell',
@@ -44,7 +45,7 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 		});
 	};
 
-	const openDelete = (data: ITransaction) => {
+	const openDelete = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
 			typeAction: 'delete',
@@ -59,7 +60,7 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 						<div className="font-medium text-black dark:text-white text-sm">{item.title}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-						<div className="font-medium text-black dark:text-white text-sm">{item.value}</div>
+						<div className="font-medium text-black dark:text-white text-sm">{item.currentPrice}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 						<div className="font-medium text-black dark:text-white text-sm">{item.amount}</div>
