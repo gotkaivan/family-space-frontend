@@ -1,5 +1,5 @@
 import React, { FC, InputHTMLAttributes, useMemo } from 'react';
-import Icon from './LucideIcon';
+import Icon from './Icon';
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {

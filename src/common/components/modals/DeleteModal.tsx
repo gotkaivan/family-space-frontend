@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import Icon from '../ui/LucideIcon';
+import Icon from '../ui/Icon';
 import Button from '../ui/Button';
 
 interface IProps {

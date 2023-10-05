@@ -1,5 +1,5 @@
 import {} from 'lucide-react';
-import { IIconProps } from '../ui/LucideIcon';
+import { IIconProps } from '../ui/Icon';
 
 interface IMenuItem {
 	name: string;

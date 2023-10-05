@@ -1,104 +1,73 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from 'common/components/ui/Input';
 import { useAppDispatch } from 'store';
 import { isEmail } from 'common/helpers';
 import { changeIsAuth, setUser } from 'store/features/profile';
-import { KEY__AUTH_TOKEN, ROUTE__MAIN } from 'common/constants';
+import { ROUTE__MAIN } from 'common/constants';
 import { registerApi } from 'api/auth';
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import Button from 'common/components/ui/Button';
 import { RegisterRequestDto } from 'generated/api';
-import Icon from 'common/components/ui/LucideIcon';
+import Icon from 'common/components/ui/Icon';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+type WithRepeatedPassword = {
+	repeatedPassword: string;
+};
 
 const RegisterPage = () => {
 	const navigate = useNavigate();
+
 	const dispatch = useAppDispatch();
 
 	const { notify } = useNotify();
 
-	const EMAIL_ERROR = 'Введите корректный email';
+	const {
+		register,
+		handleSubmit,
+		getValues,
+		watch,
+		formState: { errors },
+	} = useForm<RegisterRequestDto & WithRepeatedPassword>({});
 
-	const NAME_ERROR = 'Имя должно содерждать минимум 2 символа';
+	const onClickHandler: SubmitHandler<RegisterRequestDto & WithRepeatedPassword> = async (form: RegisterRequestDto & WithRepeatedPassword) => {
+		try {
+			const { repeatedPassword, ...currentUser } = form;
 
-	const PASSWORD_ERROR = 'Пароль должен содерждать минимум 3 символа';
+			const user = await registerApi(currentUser);
 
-	const REPEATED_PASSWORD_ERROR = 'Введите пароль повторно';
+			dispatch(changeIsAuth(true));
 
-	// const profile = useAppSelector(state => state.profile);
+			dispatch(setUser(user));
 
-	const [currentUser, setCurrentUser] = useState<RegisterRequestDto>({ email: '', name: '', password: '' });
+			notify(NOTIFY_TYPES.SUCCESS, 'Пользователь успешно создан');
 
-	const [isTouched, setIsTouched] = useState<boolean>(false);
-
-	const [repeatedPassword, setRepeatedPassword] = useState<string>('');
-
-	const hasNameError = useMemo(() => !currentUser.name, [currentUser.name]);
-
-	const hasEmailError = useMemo(() => !currentUser.email || !isEmail(currentUser.email), [currentUser.email]);
-
-	const hasPasswordError = useMemo(() => !currentUser.password, [currentUser.password]);
-
-	const hasRepeatedPasswordError = useMemo(() => currentUser.password !== repeatedPassword, [currentUser.password, repeatedPassword]);
-
-	const hasTouchedNameError = useMemo(() => hasNameError && isTouched, [hasNameError, isTouched]);
-
-	const hasTouchedEmailError = useMemo(() => hasEmailError && isTouched, [hasEmailError, isTouched]);
-
-	const hasTouchedPasswordError = useMemo(() => hasPasswordError && isTouched, [hasPasswordError, isTouched]);
-
-	const hasTouchedRepeatedPasswordError = useMemo(() => hasRepeatedPasswordError && isTouched, [hasRepeatedPasswordError, isTouched]);
-
-	const validateForm = () => {
-		if (hasNameError || hasEmailError || hasPasswordError || hasRepeatedPasswordError) return false;
-		return true;
-	};
-
-	const clickHandler = useCallback(async () => {
-		setIsTouched(true);
-
-		if (validateForm()) {
-			try {
-				const user = await registerApi(currentUser);
-
-				dispatch(changeIsAuth(true));
-
-				dispatch(setUser(user));
-
-				notify(NOTIFY_TYPES.SUCCESS, 'Пользователь успешно создан');
-
-				navigate(ROUTE__MAIN, {
-					replace: true,
-				});
-			} catch (e: any) {
-				notify(NOTIFY_TYPES.ERROR, e.body?.message);
-			}
+			navigate(ROUTE__MAIN, {
+				replace: true,
+			});
+		} catch (e: any) {
+			notify(NOTIFY_TYPES.ERROR, e.body?.message);
 		}
-	}, [navigate, currentUser, dispatch, repeatedPassword]);
-
-	useEffect(() => {
-		const keyHandler = ({ keyCode }: KeyboardEvent) => {
-			if (keyCode === 13) clickHandler();
-		};
-		document.addEventListener('keydown', keyHandler);
-		return () => document.removeEventListener('keydown', keyHandler);
-	});
+	};
 
 	return (
 		<>
 			<div className="w-full p-4 sm:p-12.5 xl:p-17.5">
 				<h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">Регистрация</h2>
 
-				<form>
+				<form onSubmit={handleSubmit(onClickHandler)}>
 					<Input
+						id="name"
 						type={'text'}
 						label="Имя"
 						classesType="auth"
 						placeholder="Введите ваше полное имя"
-						hasError={hasTouchedNameError}
-						errorMessage={NAME_ERROR}
-						value={currentUser.name}
-						onChange={e => setCurrentUser({ ...currentUser, name: e.target.value })}
+						hasError={!!errors.name?.message}
+						errorMessage={errors.name?.message}
+						register={register('name', {
+							required: 'Имя должно содерждать минимум 2 символа',
+						})}
 						icon={
 							<Icon
 								name={'user'}
@@ -109,14 +78,18 @@ const RegisterPage = () => {
 					/>
 
 					<Input
+						id="email"
 						type={'text'}
 						label="Email"
 						classesType="auth"
 						placeholder="Введите ваш email"
-						value={currentUser.email}
-						hasError={hasTouchedEmailError}
-						errorMessage={EMAIL_ERROR}
-						onChange={e => setCurrentUser({ ...currentUser, email: e.target.value })}
+						hasError={!!errors.email?.message}
+						errorMessage={errors.email?.message}
+						register={register('email', {
+							validate: {
+								matchPattern: v => isEmail(v) || 'Введите корректный email',
+							},
+						})}
 						icon={
 							<Icon
 								size={22}
@@ -126,14 +99,16 @@ const RegisterPage = () => {
 					/>
 
 					<Input
+						id="password"
 						type={'password'}
 						label="Пароль"
 						classesType="auth"
 						placeholder="Введите ваш пароль"
-						value={currentUser.password}
-						hasError={hasTouchedPasswordError}
-						errorMessage={PASSWORD_ERROR}
-						onChange={e => setCurrentUser({ ...currentUser, password: e.target.value })}
+						hasError={!!errors.password?.message}
+						errorMessage={errors.password?.message}
+						register={register('password', {
+							required: 'Пароль должен содерждать минимум 3 символа',
+						})}
 						icon={
 							<Icon
 								name={'lock'}
@@ -143,14 +118,21 @@ const RegisterPage = () => {
 					/>
 
 					<Input
+						id="re-password"
 						type={'password'}
 						label="Повторный пароль"
 						classesType="auth"
 						placeholder="Повторите пароль"
-						value={repeatedPassword}
-						onChange={e => setRepeatedPassword(e.target.value)}
-						hasError={hasTouchedRepeatedPasswordError}
-						errorMessage={REPEATED_PASSWORD_ERROR}
+						register={register('repeatedPassword', {
+							required: 'Пароль должен содерждать минимум 3 символа',
+							validate: (val: string) => {
+								if (watch('password') != val) {
+									return 'Введите пароль повторно';
+								}
+							},
+						})}
+						hasError={!!errors.repeatedPassword?.message}
+						errorMessage={errors.repeatedPassword?.message}
 						className="mb-6"
 						icon={
 							<Icon
@@ -161,8 +143,8 @@ const RegisterPage = () => {
 					/>
 
 					<Button
+						type="submit"
 						title={'Зарегистрироваться'}
-						clickHandler={clickHandler}
 						className="mb-5 p-4 text-white"
 					/>
 

@@ -66,6 +66,7 @@ const TaskStatus = ({ taskStatus, createNewTask, onActionHandler, onUpdateStatus
 		<div className="mr-6 relative h-100">
 			<div className={`mb-18px ${!isUpdateStatus && 'hidden'}`}>
 				<Input
+					id="title"
 					value={item.title}
 					onChange={e => setItem({ ...item, title: e.target.value })}
 					withError={false}

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import Icon from '../ui/LucideIcon';
+import Icon from '../ui/Icon';
 import menu from './menu';
 import { Link } from 'react-router-dom';
 import MenuBurger from '../burger/MenuBurger';

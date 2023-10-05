@@ -1,4 +1,4 @@
-import Icon from 'common/components/ui/LucideIcon';
+import Icon from 'common/components/ui/Icon';
 import toast, { Toast } from 'react-hot-toast';
 
 export enum NOTIFY_TYPES {

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../store';
 import { logoutApi } from 'api/auth';
 import { KEY__AUTH_TOKEN, ROUTE__LOGIN } from '../../constants';
 import { changeIsAuth, setUser } from '../../../store/features/profile';
-import Icon from '../ui/LucideIcon';
+import Icon from '../ui/Icon';
 
 const DropdownUser = () => {
 	const navigate = useNavigate();

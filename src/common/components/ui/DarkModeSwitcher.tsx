@@ -1,5 +1,5 @@
 import useColorMode from '../../hooks/useColorMode';
-import Icon from './LucideIcon';
+import Icon from './Icon';
 
 const DarkModeSwitcher = () => {
 	const [colorMode, setColorMode] = useColorMode();

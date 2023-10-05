@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from 'react';
 import Input from 'common/components/ui/Input';
-import Icon from 'common/components/ui/LucideIcon';
+import Icon from 'common/components/ui/Icon';
 import Button from 'common/components/ui/Button';
 import Select from 'common/components/ui/Select';
 import { getRandomId } from 'common/helpers';
@@ -79,6 +79,7 @@ const InvestmentnSellModal: FC<IProps> = ({ onSellInvestment, close, data, id })
 					/>
 				</button>
 				<Input
+					id="title"
 					label="Название транзакции"
 					placeholder="Введите название транзакции"
 					disabled={true}
@@ -89,6 +90,7 @@ const InvestmentnSellModal: FC<IProps> = ({ onSellInvestment, close, data, id })
 					withError={false}
 				/>
 				<Input
+					id="currentPrice"
 					label="Сумма"
 					placeholder="Введите сумму транзакции"
 					hasError={hasTouchedValueError}
@@ -101,6 +103,7 @@ const InvestmentnSellModal: FC<IProps> = ({ onSellInvestment, close, data, id })
 				/>
 				{state.amount > 1 && (
 					<Input
+						id="amount"
 						label="Общее количество"
 						placeholder="Введите количество"
 						disabled={true}
@@ -126,11 +129,11 @@ const InvestmentnSellModal: FC<IProps> = ({ onSellInvestment, close, data, id })
 					/>
 				)}
 				<Select
+					id="currencyType"
 					label="Тип валюты"
 					value={state.currencyType}
 					onChange={e => setState({ ...state, currencyType: (e.target as any).value })}
 					className="mb-8"
-					withError={false}
 					options={currentyTypes}
 				/>
 				<div className="flex justify-end">

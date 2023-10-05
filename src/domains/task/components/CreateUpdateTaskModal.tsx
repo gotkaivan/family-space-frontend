@@ -139,6 +139,7 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 					className="w-full flex items-center gap-2.5"
 				>
 					<Input
+						id="subtaskTitle"
 						type="text"
 						placeholder="Введите название подзадачи"
 						value={subtask.title}
@@ -176,6 +177,7 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 			content={
 				<>
 					<Input
+						id="title"
 						label="Название задачи"
 						placeholder="Введите название задачи"
 						value={state.title}
@@ -185,17 +187,18 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 						withError={false}
 					/>
 					<Textarea
+						id="description"
 						label="Описание задачи"
 						placeholder="Введите описание задачи"
 						value={state.description}
 						onChange={e => setState({ ...state, description: e.target.value })}
 					/>
 					<Select
+						id="linkBoardId"
 						label="Ссылка на доску"
 						value={state.linkBoardId || ''}
 						onChange={e => setState({ ...state, linkBoardId: (e.target as any).value })}
 						className="mb-8"
-						withError={false}
 						options={boardsOptions}
 					/>
 					<div className="mb-5">

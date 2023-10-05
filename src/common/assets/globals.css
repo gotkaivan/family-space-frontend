@@ -151,6 +151,10 @@ span.flatpickr-weekday,
 	@apply bg-primary border-primary dark:border-primary;
 }
 
+.default-select {
+	@apply text-red-50;
+}
+
 .custom-input-date::-webkit-calendar-picker-indicator {
 	background-position: center;
 	background-repeat: no-repeat;

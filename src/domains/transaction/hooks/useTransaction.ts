@@ -1,67 +1,66 @@
-import { useEffect, useMemo, useState } from 'react';
-import { TRANSACTION__DATA } from '../constants';
-import { TransactionDto } from 'generated/api';
+import { useMemo, useState } from 'react';
+import { CreateTransactionResponseDto, GetTransactionsResponseDto, TransactionDto, UpdateTransactionResponseDto } from 'generated/api';
+import { createTransactionApi, deleteTransactionApi, getTransactionsApi, updateTransactionApi } from '../api';
+import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
+import TransactionOptions from '../entities/TransactionOptions';
 
 const useTransaction = () => {
+	const { notify } = useNotify();
+
+	const [isLoadingData, setIsLoadingData] = useState<boolean>(false);
+
+	const [isPageLoaded, setIsPageLoaded] = useState<boolean>(false);
+
 	const [transactions, setTransactions] = useState<TransactionDto[]>([]);
 
-	async function saveTransactions(data: TransactionDto[]) {
-		await localStorage.setItem(TRANSACTION__DATA, JSON.stringify(data));
-		return setTransactions(data);
-		return;
+	const isLoading = useMemo(() => {
+		if (!isPageLoaded && isLoadingData) return true;
+		return false;
+	}, [isLoadingData, isPageLoaded]);
+
+	async function getTransactions(options?: TransactionOptions): Promise<GetTransactionsResponseDto | undefined> {
+		setIsLoadingData(true);
+
+		try {
+			const response = await getTransactionsApi(options);
+			setTransactions(response.items);
+			setIsPageLoaded(true);
+			return response;
+		} catch (e) {
+			notify(NOTIFY_TYPES.ERROR, 'Не удалось получить транзакции');
+		} finally {
+			setIsLoadingData(false);
+		}
 	}
 
-	const createTransaction = async (transaction: TransactionDto) => {
+	async function createTransaction(transaction: TransactionDto): Promise<CreateTransactionResponseDto> {
 		try {
-			const result = [...transactions];
-			result.push(transaction);
-			return await saveTransactions(result);
+			const { id, ...request } = transaction;
+			return await createTransactionApi(request);
 		} catch (e) {
-			throw new Error('Не удалось создать транзакцию');
+			throw 'Не удалось создать новую транзакцию';
 		}
-	};
+	}
 
-	const updateTransaction = async (transaction: TransactionDto) => {
+	const updateTransaction = async (transaction: TransactionDto): Promise<UpdateTransactionResponseDto> => {
 		try {
-			const result = transactions.map(item => {
-				if (item.id === transaction.id) {
-					return {
-						...transaction,
-						updated: new Date().toISOString(),
-					};
-				}
-				return item;
-			});
-			return await saveTransactions(result);
+			return await updateTransactionApi(transaction);
 		} catch (e) {
-			throw new Error('Не удалось обновить транзакцию');
+			throw 'Не удалось обновить транзакцию';
 		}
 	};
 
 	const deleteTransaction = async (id: number) => {
 		try {
-			const result = transactions.filter(transaction => transaction.id !== id);
-			return await saveTransactions(result);
+			return await deleteTransactionApi(id);
 		} catch (e) {
-			throw new Error('Не удалось удалить транзакцию');
+			throw 'Не удалось удалить транзакцию';
 		}
 	};
-
-	const getTransactions = () => {
-		try {
-			const data = localStorage.getItem(TRANSACTION__DATA);
-			if (data) setTransactions(JSON.parse(data));
-		} catch (e) {
-			throw new Error('Не удалось получить транзакции');
-		}
-	};
-
-	useEffect(() => {
-		getTransactions();
-	}, []);
 
 	return {
 		transactions,
+		isLoading,
 		createTransaction,
 		updateTransaction,
 		deleteTransaction,

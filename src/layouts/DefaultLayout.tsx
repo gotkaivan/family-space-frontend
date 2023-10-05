@@ -26,7 +26,7 @@ export default function DefaultLayout() {
 				<div className="relative flex flex-1 flex-col">
 					<Header />
 					<main>
-						<div className="mx-auto max-w-screen p-4 md:p-6 overflow-y-auto overflow-x-hidden">
+						<div className="mx-auto max-w-screen p-4 md:p-6">
 							<Outlet />
 						</div>
 					</main>

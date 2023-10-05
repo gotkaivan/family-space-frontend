@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import Icon from 'common/components/ui/LucideIcon';
+import Icon from 'common/components/ui/Icon';
 import columns from '../config/investmentTableOptions';
 import { formatDate } from 'common/helpers/formatDate';
 import { IActionTransactionResponseParams } from 'domains/transaction/types';

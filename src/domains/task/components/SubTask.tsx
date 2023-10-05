@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import Subtask from '../entities/SubTask';
 import { SubtaskDto } from 'generated/api';
-import Icon from 'common/components/ui/LucideIcon';
+import Icon from 'common/components/ui/Icon';
 
 interface IProps {
 	subtask: SubtaskDto;

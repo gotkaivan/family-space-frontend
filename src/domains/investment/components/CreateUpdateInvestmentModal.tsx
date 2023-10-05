@@ -1,10 +1,10 @@
 import { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
 import Input from 'common/components/ui/Input';
-import Icon from 'common/components/ui/LucideIcon';
+import Icon from 'common/components/ui/Icon';
 import Button from 'common/components/ui/Button';
 import Select from 'common/components/ui/Select';
 import { getRandomId } from 'common/helpers';
-import Datepicker from 'common/components/ui/BaseDatepicker';
+import Datepicker from 'common/components/ui/Datepicker';
 import { IInvestment } from '../types';
 import Investment from '../entities/Investment';
 import Checkbox from 'common/components/ui/Ckeckbox';
@@ -107,6 +107,7 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 					/>
 				</button>
 				<Input
+					id="title"
 					label="Название инвестиции"
 					placeholder="Введите название инвестиции"
 					hasError={hasTouchedTitleError}
@@ -118,6 +119,7 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 					withError={hasTouchedTitleError}
 				/>
 				<Input
+					id="value"
 					label="Сумма"
 					placeholder="Введите сумму инвестиции"
 					hasError={hasTouchedValueError}
@@ -129,6 +131,7 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 					withError={hasTouchedValueError}
 				/>
 				<Input
+					id="amount"
 					label="Количество"
 					placeholder="Введите количество"
 					disabled={isDisabledAmount}
@@ -141,19 +144,16 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 					withError={!!hasTouchedAmountError}
 				/>
 				<Select
+					id="currencyType"
 					label="Тип валюты"
 					value={state.currencyType}
 					onChange={e => setState({ ...state, currencyType: (e.target as any).value })}
 					className="mb-8"
-					withError={false}
 					options={currentyTypes}
 				/>
 				<Datepicker
+					id="transactionDto"
 					label="Дата создания инвестиции"
-					value={state.transactionDate}
-					onChange={function (value: string | null): void {
-						setState({ ...state, transactionDate: value });
-					}}
 				/>
 				<Checkbox
 					id={'isUncountable'}

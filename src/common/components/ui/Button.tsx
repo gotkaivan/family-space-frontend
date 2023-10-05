@@ -14,9 +14,10 @@ interface IProps {
 	textColor?: string;
 	className?: string;
 	buttonType?: ButtonType;
+	type?: 'button' | 'submit';
 }
 
-const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bgColor, className = '', buttonType = 'base', isLoading = false }: IProps) => {
+const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bgColor, className = '', buttonType = 'base', type = 'button', isLoading = false }: IProps) => {
 	const classes = useMemo(() => {
 		switch (buttonType) {
 			case 'base':
@@ -47,7 +48,7 @@ const Button = ({ title, leftIcon, rightIcon, clickHandler, disabled = false, bg
 
 	return (
 		<button
-			type="button"
+			type={type}
 			disabled={disabled}
 			className={'min-w-160 ' + classes}
 			onClick={onClick}

@@ -8,6 +8,7 @@ class Transaction implements TransactionDto {
 		this.description = transaction?.description || '';
 		this.purchasePrice = transaction?.purchasePrice || 0;
 		this.currentPrice = transaction?.currentPrice || 0;
+		this.owesPrice = transaction?.owesPrice || 0;
 		this.transactionType = transaction?.transactionType || TransactionDto.transactionType.INCOME;
 		this.currencyType = transaction?.currencyType || TransactionDto.currencyType.RUB;
 		this.amount = transaction?.amount || 1;

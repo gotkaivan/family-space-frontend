@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Icon from '../ui/LucideIcon';
+import Icon from '../ui/Icon';
 
 interface IProps {
 	content: JSX.Element;

@@ -5,6 +5,7 @@ type InputType = 'auth' | 'base' | 'custom';
 type InputSize = 'sm' | 'md' | 'lg';
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
+	id: string;
 	label?: string;
 	icon?: JSX.Element;
 	className?: string;
@@ -17,11 +18,13 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {
 	withError?: boolean;
 	inputSize?: InputSize;
 	disabled?: boolean;
+	register?: any;
 }
 
 const DEFAULT_ERROR_MESSAGE = '';
 
 const Input: FC<IProps> = ({
+	id,
 	label,
 	className = '',
 	inputClassName = '',
@@ -34,6 +37,7 @@ const Input: FC<IProps> = ({
 	withError = true,
 	inputSize = 'md',
 	disabled = false,
+	register,
 	...rest
 }) => {
 	const getIocn = () => {
@@ -70,9 +74,12 @@ const Input: FC<IProps> = ({
 				{left}
 				<div className="relative w-full">
 					<input
-						{...rest}
+						id={id}
+						name={id}
 						disabled={disabled}
 						className={getInputClasses}
+						{...register}
+						{...rest}
 					/>
 					{icon && getIocn()}
 				</div>

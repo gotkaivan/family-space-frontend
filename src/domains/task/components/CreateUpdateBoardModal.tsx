@@ -42,6 +42,7 @@ const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateTask, close, data, i
 			content={
 				<>
 					<Input
+						id="title"
 						label="Название доски"
 						placeholder="Введите название доски"
 						value={state.title}
@@ -51,6 +52,7 @@ const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateTask, close, data, i
 						withError={false}
 					/>
 					<Textarea
+						id="description"
 						label="Описание доски"
 						placeholder="Введите описание доски"
 						value={state.description}

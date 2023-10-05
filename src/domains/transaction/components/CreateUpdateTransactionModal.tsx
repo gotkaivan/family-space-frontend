@@ -1,14 +1,15 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import Input from 'common/components/ui/Input';
 import Button from 'common/components/ui/Button';
-import Transaction from '../entities/Transaction';
 import Select from 'common/components/ui/Select';
-import { getRandomId } from 'common/helpers';
-import Datepicker from 'common/components/ui/BaseDatepicker';
-import Icon from 'common/components/ui/LucideIcon';
+import Datepicker from 'common/components/ui/Datepicker';
+import Icon from 'common/components/ui/Icon';
 import { TransactionDto } from 'generated/api';
 import Textarea from 'common/components/ui/Textarea';
 import Checkbox from 'common/components/ui/Ckeckbox';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import Transaction from '../entities/Transaction';
+import { transactionTypes, currencyTypes } from '../helpers';
 
 interface IProps {
 	id?: number | undefined;
@@ -17,80 +18,42 @@ interface IProps {
 	data?: TransactionDto | null;
 }
 
-const curencyTypes = Object.keys(TransactionDto.currencyType).map(item => {
-	return {
-		id: getRandomId(),
-		title: item,
-		value: item,
-	};
-});
-
-const TITLE_ERROR = 'Введите название транзакции';
-const VALUE_ERROR = 'Введите сумму транзакции';
-const AMOUNT_ERROR = 'Введите количество значения транзакции';
-
-const transactionsTypeLocales = {
-	[TransactionDto.transactionType.INCOME]: 'Доходы',
-	[TransactionDto.transactionType.EXPENSES]: 'Расходы',
-	[TransactionDto.transactionType.INVESTMENT]: 'Покупка инвестиции',
-	[TransactionDto.transactionType.SALE]: 'Продажа инвестиции',
-};
-
-const transactionEditTypes = Object.values(TransactionDto.transactionType).map(item => {
-	return {
-		id: getRandomId(),
-		title: transactionsTypeLocales[item],
-		value: item,
-	};
-});
-
-const transactionCreateTypes = Object.values(TransactionDto.transactionType).map(item => {
-	return {
-		id: getRandomId(),
-		title: transactionsTypeLocales[item],
-		value: item,
-	};
-});
-
 const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, data, id }) => {
-	const [state, setState] = useState<TransactionDto>(data || new Transaction());
-
-	const [isTouched, setIsTouched] = useState<boolean>(false);
-
 	const [isOwe, setIsOwe] = useState<boolean>(false);
 
-	const hasTitleError = useMemo(() => !state.title.length, [state.title.length]);
+	const {
+		register,
+		handleSubmit,
+		setValue,
+		reset,
+		watch,
+		formState: { errors },
+	} = useForm<TransactionDto>({
+		defaultValues: {
+			...data,
+		},
+	});
 
-	const hasCurrentProceError = useMemo(() => !state.currentPrice, [state.currentPrice]);
+	function isVisibleAmountCallback(transactionType: TransactionDto.transactionType) {
+		return transactionType === TransactionDto.transactionType.INVESTMENT || transactionType === TransactionDto.transactionType.SALE;
+	}
 
-	const hasAmountError = useMemo(() => !state.amount && id, [state.amount, id]);
-
-	const hasTouchedTitleError: boolean = useMemo(() => hasTitleError && isTouched, [hasTitleError, isTouched]);
-
-	const hasTouchedCurrentPriceError: boolean = useMemo(() => hasCurrentProceError && isTouched, [hasCurrentProceError, isTouched]);
-
-	const hasTouchedAmountError: boolean = useMemo(() => !!hasAmountError && isTouched, [hasAmountError, isTouched]);
-
-	const isVisibleAmount = useMemo(() => {
-		return state.transactionType === TransactionDto.transactionType.INVESTMENT || state.transactionType === TransactionDto.transactionType.SALE;
-	}, [state.transactionType]);
-
-	const [currentyTypes] = useState(curencyTypes);
+	const isVisibleAmount = useMemo(() => isVisibleAmountCallback(watch('transactionType')), [watch('transactionType')]);
 
 	const buttonTitle = useMemo(() => (id ? 'Обновить транзакцию' : 'Создать транзакцию'), [id]);
 
-	const validateForm = () => {
-		if (hasTitleError || hasTouchedCurrentPriceError || hasAmountError) return false;
-		return true;
+	const onClickHandler: SubmitHandler<TransactionDto> = async (form: TransactionDto) => {
+		const requestType = id ? 'update' : 'create';
+		await onCreateUpdateTask(requestType, new Transaction(form));
 	};
 
-	const onClickHandler = async () => {
-		setIsTouched(true);
-		if (validateForm()) {
-			const requestType = id ? 'update' : 'create';
-			await onCreateUpdateTask(requestType, state);
-		}
-	};
+	useEffect(() => {
+		reset();
+	}, [data]);
+
+	useEffect(() => {
+		setIsOwe(!!data?.owesPrice);
+	}, [data?.owesPrice]);
 
 	return (
 		<div
@@ -101,119 +64,137 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 				onClick={e => e.stopPropagation()}
 				className="relative m-auto w-full max-w-180 rounded-md border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10"
 			>
-				<button
-					onClick={() => close()}
-					className="absolute right-1 top-1 sm:right-5 sm:top-5"
-				>
-					<Icon
-						name={'x'}
-						size={20}
-					/>
-				</button>
-				<Input
-					label="Название транзакции"
-					placeholder="Введите название транзакции"
-					hasError={hasTouchedTitleError}
-					errorMessage={TITLE_ERROR}
-					value={state.title}
-					onChange={e => setState({ ...state, title: e.target.value })}
-					type="text"
-					className="mb-8"
-					withError={hasTouchedTitleError}
-				/>
-				<Textarea
-					label="Описание транзакции"
-					placeholder="Введите описание транзакции"
-					value={state.description}
-					onChange={e => setState({ ...state, description: e.target.value })}
-				/>
-				<Input
-					label="Стоимость покупки единицы"
-					placeholder="Введите сумму"
-					hasError={hasTouchedCurrentPriceError}
-					errorMessage={VALUE_ERROR}
-					value={state.purchasePrice || ''}
-					onChange={e => setState({ ...state, purchasePrice: +e.target.value })}
-					type="number"
-					className="mb-8"
-					withError={hasTouchedCurrentPriceError}
-				/>
-				<Input
-					label="Текущая стоимость единицы"
-					placeholder="Введите сумму"
-					hasError={hasTouchedCurrentPriceError}
-					errorMessage={VALUE_ERROR}
-					value={state.currentPrice || ''}
-					onChange={e => setState({ ...state, currentPrice: +e.target.value })}
-					type="number"
-					className="mb-8"
-					withError={hasTouchedCurrentPriceError}
-				/>
-				{isVisibleAmount && (
+				<form onSubmit={handleSubmit(onClickHandler)}>
+					<button
+						onClick={() => close()}
+						className="absolute right-1 top-1 sm:right-5 sm:top-5"
+					>
+						<Icon
+							name={'x'}
+							size={20}
+						/>
+					</button>
 					<Input
-						label="Количество"
-						placeholder="Введите количество"
-						hasError={!!hasTouchedAmountError}
-						errorMessage={AMOUNT_ERROR}
-						value={state.amount}
-						onChange={e => setState({ ...state, amount: +e.target.value })}
-						type="number"
+						id="title"
+						label="Название транзакции"
+						placeholder="Введите название транзакции"
+						register={register('title', {
+							required: 'Поле должно быть заполнено',
+						})}
+						hasError={!!errors.title?.message}
+						errorMessage={errors.title?.message}
+						type="text"
 						className="mb-8"
-						withError={!!hasTouchedAmountError}
+						withError={!!errors.title?.message}
 					/>
-				)}
-				<Checkbox
-					text="Долг по транзакции"
-					id={'oweCheckbox'}
-					className="mb-8"
-					value={isOwe}
-					onChange={() => setIsOwe(!isOwe)}
-				/>
-				{isOwe && (
-					<Input
-						label="Долг по текущей транзакции"
-						placeholder="Введите сумму"
-						hasError={hasTouchedCurrentPriceError}
-						errorMessage={VALUE_ERROR}
-						value={state.owesPrice || ''}
-						onChange={e => setState({ ...state, owesPrice: +e.target.value })}
-						type="number"
+					<Textarea
+						id="description"
+						label="Описание транзакции"
+						rows={3}
+						placeholder="Введите описание транзакции"
+						register={register('description')}
+					/>
+					<div className="flex gap-6">
+						<Input
+							id="purchasePrice"
+							register={register('purchasePrice', {
+								required: 'Поле должно быть заполнено',
+							})}
+							label="Стоимость покупки единицы"
+							placeholder="Введите сумму"
+							type="number"
+							className="mb-8"
+							withError={!!errors.purchasePrice?.message}
+							hasError={!!errors.purchasePrice?.message}
+							errorMessage={errors.purchasePrice?.message}
+						/>
+						<Input
+							id="currentPrice"
+							label="Текущая стоимость единицы"
+							placeholder="Введите сумму"
+							register={register('currentPrice', {
+								required: 'Поле должно быть заполнено',
+							})}
+							hasError={!!errors.currentPrice?.message}
+							errorMessage={errors.currentPrice?.message}
+							type="number"
+							className="mb-8"
+							withError={!!errors.currentPrice?.message}
+						/>
+					</div>
+					<div className="flex gap-6">
+						<Select
+							id="currencyType"
+							value={watch('currencyType')}
+							label="Тип валюты"
+							register={register('currencyType')}
+							className="mb-8 w-full"
+							options={currencyTypes}
+						/>
+						<Select
+							id="transactionType"
+							value={watch('transactionType')}
+							label="Тип транзакции"
+							register={register('transactionType')}
+							disabled={!!id}
+							className="mb-8 w-full"
+							options={transactionTypes}
+						/>
+					</div>
+					<Checkbox
+						text="Долг по транзакции"
+						id={'oweCheckbox'}
 						className="mb-8"
-						withError={hasTouchedCurrentPriceError}
+						value={isOwe}
+						onChange={() => setIsOwe(!isOwe)}
 					/>
-				)}
+					<div className="flex gap-6">
+						{isOwe && (
+							<Input
+								id="owesPrice"
+								label="Долг по текущей транзакции"
+								placeholder="Введите сумму"
+								register={register('owesPrice', {
+									required: 'Поле должно быть заполнено',
+								})}
+								hasError={!!errors.owesPrice?.message}
+								errorMessage={errors.owesPrice?.message}
+								type="number"
+								className="mb-8"
+								withError={!!errors.owesPrice?.message}
+							/>
+						)}
+						{isVisibleAmount && (
+							<Input
+								id="amount"
+								label="Количество"
+								register={register('amount', {
+									required: 'Поле должно быть заполнено',
+								})}
+								placeholder="Введите количество"
+								hasError={!!errors.amount?.message}
+								errorMessage={errors.amount?.message}
+								type="number"
+								className="mb-8"
+								withError={!!errors.amount?.message}
+							/>
+						)}
+					</div>
 
-				<Select
-					label="Тип валюты"
-					value={state.currencyType}
-					onChange={e => setState({ ...state, currencyType: (e.target as any).value })}
-					className="mb-8"
-					withError={false}
-					options={currentyTypes}
-				/>
-				<Select
-					label="Тип транзакции"
-					disabled={!!id}
-					value={state.transactionType}
-					onChange={e => setState({ ...state, transactionType: (e.target as any).value })}
-					className="mb-8"
-					withError={false}
-					options={id ? transactionEditTypes : transactionCreateTypes}
-				/>
-				<Datepicker
-					label="Дата создания транзакции"
-					value={state.transactionDate}
-					onChange={function (value: string | null): void {
-						setState({ ...state, transactionDate: value });
-					}}
-				/>
-				<div className="flex justify-end">
-					<Button
-						className="text-white font-medium py-2.5 px-4.5 rounded-md"
-						title={buttonTitle}
-						clickHandler={() => onClickHandler()}
+					<Datepicker
+						id="transactionDate"
+						label="Дата создания транзакции"
+						value={watch('transactionDate')}
+						setValue={setValue}
 					/>
-				</div>
+					<div className="flex justify-end">
+						<Button
+							type="submit"
+							className="text-white font-medium py-2.5 px-4.5 rounded-md"
+							title={buttonTitle}
+						/>
+					</div>
+				</form>
 			</div>
 		</div>
 	);

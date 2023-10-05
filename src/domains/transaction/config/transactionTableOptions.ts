@@ -1,21 +1,32 @@
 import { getRandomId } from 'common/helpers';
+import { TransactionDto } from 'generated/api';
 
 export interface ITransactionTableColumn {
 	id: number;
-	value: string;
+	value: keyof TransactionDto;
 	title: string;
 }
 
 const tableOptions: ITransactionTableColumn[] = [
 	{
 		id: getRandomId(),
-		value: 'Название',
+		value: 'title',
 		title: 'Название транзакции',
 	},
 	{
 		id: getRandomId(),
-		value: 'value',
-		title: 'Сумма',
+		value: 'description',
+		title: 'Описание транзакции',
+	},
+	{
+		id: getRandomId(),
+		value: 'purchasePrice',
+		title: 'Цена покупки единицы',
+	},
+	{
+		id: getRandomId(),
+		value: 'currentPrice',
+		title: 'Текущая стоимость единицы',
 	},
 	{
 		id: getRandomId(),
@@ -29,7 +40,7 @@ const tableOptions: ITransactionTableColumn[] = [
 	},
 	{
 		id: getRandomId(),
-		value: 'TransactionType',
+		value: 'transactionType',
 		title: 'Тип транзакции',
 	},
 	{

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Icon from './LucideIcon';
+import Icon from './Icon';
 
 interface IProps {
 	text?: string;

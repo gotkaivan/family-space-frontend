@@ -1,4 +1,4 @@
-import Icon from '../ui/LucideIcon';
+import Icon from '../ui/Icon';
 
 interface IProps {
 	isOpen: boolean;

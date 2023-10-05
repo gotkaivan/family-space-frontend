@@ -6,10 +6,14 @@ import {
 	UpdateTransactionResponseDto,
 	CreateTransactionDto,
 	CreateTransactionResponseDto,
+	TransactionFiltersRequestDto,
+	GetTransactionsResponseDto,
 } from 'api';
+import TransactionFilterOption from '../entities/TransactionFilters';
+import TransactionOptions from '../entities/TransactionOptions';
 
-export const getTransactionsApi = (): CancelablePromise<TransactionDto[]> => {
-	return TransactionsService.transactionControllerGetTransactions();
+export const getTransactionsApi = (options?: TransactionOptions): CancelablePromise<GetTransactionsResponseDto> => {
+	return TransactionsService.transactionControllerGetTransactions(new TransactionOptions(options));
 };
 
 export const getTransactionByIdApi = (id: number): CancelablePromise<TransactionDto> => {

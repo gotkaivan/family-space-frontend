@@ -4,9 +4,12 @@ import CreateUpdateModal from 'domains/transaction/components/CreateUpdateTransa
 import Button from 'common/components/ui/Button';
 import useTransactionPage from 'domains/transaction/hooks/useTransactionPage';
 import { useMemo } from 'react';
+import PageHeader from 'common/components/page-header/PageHeader';
+import Pagination from 'common/components/pagination/Pagination';
+import TableFilters from 'domains/transaction/components/TableFilters';
 
 const TransactionsPage = () => {
-	const { transactions, setActionData, actionData, onCreateUpdateTransaction, onDeleteTransaction } = useTransactionPage();
+	const { transactions, actionData, filters, pageCount, page, setPage, setFilters, setActionData, onCreateUpdateTransaction, onDeleteTransaction } = useTransactionPage();
 
 	const reversedTransactions = useMemo(() => {
 		return transactions.reverse();
@@ -14,18 +17,34 @@ const TransactionsPage = () => {
 
 	return (
 		<div>
-			<div className="flex justify-end mb-4 md:mb-6">
-				<Button
-					clickHandler={() => setActionData({ typeAction: 'create' })}
-					title={'Добавить'}
-					className={`w-36 p-2 text-sm  text-boxdark dark:bg-boxdark dark:border-boxdark dark:text-white bg-white border-white`}
-				/>
-			</div>
+			<PageHeader
+				title="Транзакции"
+				right={
+					<Button
+						clickHandler={() => setActionData({ typeAction: 'create' })}
+						title={'Добавить'}
+						className={`w-36 p-2 text-sm  text-boxdark dark:bg-boxdark dark:border-boxdark dark:text-white bg-white border-white`}
+					/>
+				}
+			/>
 
 			<TransactionTable
 				data={reversedTransactions}
 				setActionData={setActionData}
 				hasActions={true}
+				filters={
+					<TableFilters
+						filters={filters}
+						setFilters={setFilters}
+					/>
+				}
+				pagination={
+					<Pagination
+						pageCount={pageCount}
+						page={page}
+						setPage={setPage}
+					/>
+				}
 			/>
 			{(actionData?.typeAction === 'create' || actionData?.typeAction === 'edit') && (
 				<CreateUpdateModal
