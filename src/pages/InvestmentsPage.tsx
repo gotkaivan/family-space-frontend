@@ -11,7 +11,8 @@ import { useEffect } from 'react';
 import { changeBreadcrumbs } from 'store/features/common';
 
 const InvestmentsPage = () => {
-	const { investments, filters, actionData, pageCount, page, setPage, setFilters, setActionData, deleteInvestment, onCreateUpdateSaleInvestment } = useCapitalizationPage();
+	const { investments, isLoading, filters, actionData, pageCount, page, setPage, setFilters, setActionData, deleteInvestment, onCreateUpdateSaleInvestment } =
+		useCapitalizationPage();
 
 	const dispatch = useAppDispatch();
 
@@ -43,6 +44,7 @@ const InvestmentsPage = () => {
 				}
 			/>
 			<InvestmentTable
+				isLoading={isLoading}
 				hasActions={true}
 				data={investments}
 				setActionData={setActionData}

@@ -4,8 +4,10 @@ import columns from '../config/investmentTableOptions';
 import { formatDate } from 'common/helpers/formatDate';
 import { IActionTransactionResponseParams } from 'domains/transaction/types';
 import { TransactionDto } from 'generated/api';
+import PageLoader from 'common/components/ui/Loader/PageLoader';
 
 interface IProps {
+	isLoading: boolean;
 	data: TransactionDto[];
 	hasActions?: boolean;
 	setActionData: (data: IActionTransactionResponseParams) => void;
@@ -13,7 +15,7 @@ interface IProps {
 	pagination?: JSX.Element;
 }
 
-const InvestmentTable: FC<IProps> = ({ hasActions = false, setActionData, data, filters, pagination }) => {
+const InvestmentTable: FC<IProps> = ({ hasActions = false, isLoading, setActionData, data, filters, pagination }) => {
 	const headerColumn = useMemo(() => {
 		return columns.map(column => {
 			return (
@@ -125,11 +127,16 @@ const InvestmentTable: FC<IProps> = ({ hasActions = false, setActionData, data, 
 		});
 	}, [data, openDelete, openEdit]);
 
+	const emptyWrap = useMemo(() => {
+		if (isLoading) return <PageLoader />;
+		if (!data.length) return <div className="flex justify-center items-center text-sm h-30">Инвестиций не найдены</div>;
+	}, [isLoading, data.length]);
+
 	return (
 		<div className="rounded-md border border-stroke bg-white px-5 pb-3 pt-5 shadow-default dark:border-strokedark dark:bg-boxdark">
 			{filters}
 			<div className="max-w-full overflow-x-auto">
-				{!data.length && <div className="flex justify-center items-center text-sm h-30">Инвестиций не найдены</div>}
+				{emptyWrap}
 				{!!data.length && (
 					<table className="w-full table-auto">
 						<thead>

@@ -11,7 +11,8 @@ import { useAppDispatch } from 'store';
 import { changeBreadcrumbs } from 'store/features/common';
 
 const TransactionsPage = () => {
-	const { transactions, actionData, filters, pageCount, page, setPage, setFilters, setActionData, onCreateUpdateTransaction, onDeleteTransaction } = useTransactionPage();
+	const { transactions, actionData, filters, pageCount, page, isLoading, setPage, setFilters, setActionData, onCreateUpdateTransaction, onDeleteTransaction } =
+		useTransactionPage();
 
 	const dispatch = useAppDispatch();
 
@@ -51,6 +52,7 @@ const TransactionsPage = () => {
 				data={reversedTransactions}
 				setActionData={setActionData}
 				hasActions={true}
+				isLoading={isLoading}
 				filters={
 					<TableFilters
 						filters={filters}

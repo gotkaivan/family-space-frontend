@@ -37,6 +37,8 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 
 	const isSale = useMemo(() => !!(typeAction === 'sell'), [typeAction]);
 
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+
 	const buttonTitle = useMemo(() => {
 		if (typeAction === 'create') return 'Создать инвестицию';
 		if (typeAction === 'update') return 'Обновить инвестицию';
@@ -45,7 +47,12 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 	}, [id]);
 
 	const onClickHandler: SubmitHandler<TransactionDto> = async (form: TransactionDto) => {
-		await onCreateUpdateInvestment(typeAction, new Investment({ ...form, transactionSaleId: id }));
+		setIsLoading(true);
+		try {
+			await onCreateUpdateInvestment(typeAction, new Investment({ ...form, transactionSaleId: id }));
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	useEffect(() => {
@@ -220,6 +227,7 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 					/>
 					<div className="flex justify-end">
 						<Button
+							isLoading={isLoading}
 							type="submit"
 							className="text-white font-medium py-2.5 px-4.5 rounded-md"
 							title={buttonTitle}

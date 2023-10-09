@@ -36,6 +36,8 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 
 	const { transactionType } = watch();
 
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+
 	const isSale = useMemo(() => {
 		return transactionType === TransactionDto.transactionType.SALE;
 	}, [transactionType]);
@@ -56,7 +58,12 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 
 	const onClickHandler: SubmitHandler<TransactionDto> = async (form: TransactionDto) => {
 		const requestType = id ? 'update' : 'create';
-		await onCreateUpdateTask(requestType, new Transaction(form));
+		setIsLoading(true);
+		try {
+			await onCreateUpdateTask(requestType, new Transaction(form));
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	useEffect(() => {
@@ -233,6 +240,7 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 					/>
 					<div className="flex justify-end">
 						<Button
+							isLoading={isLoading}
 							type="submit"
 							className="text-white font-medium py-2.5 px-4.5 rounded-md"
 							title={buttonTitle}

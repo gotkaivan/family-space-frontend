@@ -2,11 +2,10 @@ import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import { useEffect, useMemo, useState } from 'react';
 import { IActionTransactionResponseParams } from '../types';
 import useTransaction from './useTransaction';
-import { InvestmentDto, PaginationRequestDto, TransactionDto, TransactionFiltersRequestDto } from 'generated/api';
+import { PaginationRequestDto, TransactionDto, TransactionFiltersRequestDto } from 'generated/api';
 import TransactionFilterOption from '../entities/TransactionFilters';
 import TransactionOptions from '../entities/TransactionOptions';
 import { PAGE_LIMIT } from 'common/constants';
-import { updateSaleTransactionApi } from '../api';
 
 const useTransactionPage = () => {
 	const { notify } = useNotify();
@@ -17,7 +16,7 @@ const useTransactionPage = () => {
 
 	const [page, setPage] = useState<number>(1);
 
-	const { transactions, createTransaction, updateTransaction, deleteTransaction, getTransactions, updateSaleTransaction, deleteSaleTransaction } = useTransaction();
+	const { transactions, isLoading, createTransaction, updateTransaction, deleteTransaction, getTransactions, updateSaleTransaction, deleteSaleTransaction } = useTransaction();
 
 	const [actionData, setActionData] = useState<IActionTransactionResponseParams | null>(null);
 
@@ -100,6 +99,7 @@ const useTransactionPage = () => {
 
 	return {
 		transactions,
+		isLoading,
 		page,
 		filters,
 		pagination,

@@ -12,7 +12,7 @@ import { saleInvestmentApi } from '../api';
 const useInvestmentPage = () => {
 	const { notify } = useNotify();
 
-	const { transactions, getTransactions, deleteTransaction, createTransaction, updateTransaction } = useTransaction();
+	const { transactions, isLoading, getTransactions, deleteTransaction, createTransaction, updateTransaction } = useTransaction();
 
 	const [filters, setFilters] = useState<InvestmentFiltersRequestDto>(new InvestmentFilters());
 
@@ -112,6 +112,7 @@ const useInvestmentPage = () => {
 
 	return {
 		investments,
+		isLoading,
 		actionData,
 		page,
 		filters,
