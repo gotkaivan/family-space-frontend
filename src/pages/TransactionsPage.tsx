@@ -3,7 +3,7 @@ import DeleteModal from 'common/components/modals/DeleteModal';
 import CreateUpdateModal from 'domains/transaction/components/CreateUpdateTransactionModal';
 import Button from 'common/components/ui/Button';
 import useTransactionPage from 'domains/transaction/hooks/useTransactionPage';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import PageHeader from 'common/components/page-header/PageHeader';
 import Pagination from 'common/components/pagination/Pagination';
 import TableFilters from 'domains/transaction/components/TransactionTableFilters';
@@ -31,10 +31,6 @@ const TransactionsPage = () => {
 		};
 	});
 
-	const reversedTransactions = useMemo(() => {
-		return transactions.reverse();
-	}, [transactions]);
-
 	return (
 		<div>
 			<PageHeader
@@ -49,7 +45,7 @@ const TransactionsPage = () => {
 			/>
 
 			<TransactionTable
-				data={reversedTransactions}
+				data={transactions}
 				setActionData={setActionData}
 				hasActions={true}
 				isLoading={isLoading}
