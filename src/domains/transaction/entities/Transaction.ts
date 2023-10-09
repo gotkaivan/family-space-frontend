@@ -7,13 +7,18 @@ class Transaction implements TransactionDto {
 		this.title = transaction?.title || '';
 		this.description = transaction?.description || '';
 		this.purchasePrice = transaction?.purchasePrice || 0;
-		this.currentPrice = transaction?.currentPrice || 0;
+		this.currentPrice = transaction?.currentPrice || this.purchasePrice;
 		this.owesPrice = transaction?.owesPrice || 0;
 		this.transactionType = transaction?.transactionType || TransactionDto.transactionType.INCOME;
 		this.currencyType = transaction?.currencyType || TransactionDto.currencyType.RUB;
-		this.amount = transaction?.amount || 1;
+		this.purchaseAmount = transaction?.purchaseAmount || 1;
+		this.currentAmount = transaction?.currentAmount || this.purchaseAmount;
 		this.transactionDate = transaction?.transactionDate || new Date().toISOString();
+		this.transactionSaleId = transaction?.transactionSaleId;
+		this.status = transaction?.status || TransactionDto.status.ACTIVE;
 	}
+
+	status: TransactionDto.status;
 
 	id: number;
 
@@ -31,9 +36,13 @@ class Transaction implements TransactionDto {
 
 	currencyType: TransactionDto.currencyType;
 
-	amount: number;
+	purchaseAmount: number;
+
+	currentAmount: number;
 
 	transactionDate: string | null;
+
+	transactionSaleId?: number | undefined;
 }
 
 export default Transaction;

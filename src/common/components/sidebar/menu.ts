@@ -24,8 +24,8 @@ const menu: IMenuItem[] = [
 		},
 	},
 	{
-		name: 'Капитализация',
-		url: 'capitalization',
+		name: 'Инвестиции',
+		url: 'investments',
 		icon: {
 			name: 'circle-dollar-sign',
 		},

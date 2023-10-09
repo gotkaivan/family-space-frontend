@@ -17,3 +17,7 @@ export const KEY__AUTH_TOKEN = 'jwt';
 export const TASK__STORE = 'taskStore';
 
 export const IS__SIDEBAR__OPEN = 'isSidebarOpen';
+
+export const FILTERS_DELAY = 300;
+
+export const PAGE_LIMIT = 7;

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { CreateTransactionResponseDto, GetTransactionsResponseDto, TransactionDto, UpdateTransactionResponseDto } from 'generated/api';
-import { createTransactionApi, deleteTransactionApi, getTransactionsApi, updateTransactionApi } from '../api';
+import { CreateTransactionResponseDto, GetTransactionsResponseDto, TransactionDto, UpdateSaleTransactionResponseDto, UpdateTransactionResponseDto } from 'generated/api';
+import { createTransactionApi, deleteSaleTransactionApi, deleteTransactionApi, getTransactionsApi, updateSaleTransactionApi, updateTransactionApi } from '../api';
 import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import TransactionOptions from '../entities/TransactionOptions';
 
@@ -50,9 +50,25 @@ const useTransaction = () => {
 		}
 	};
 
+	async function updateSaleTransaction(transaction: TransactionDto): Promise<UpdateSaleTransactionResponseDto> {
+		try {
+			return await updateSaleTransactionApi(transaction);
+		} catch (e) {
+			throw 'Не удалось обновить транзакцию';
+		}
+	}
+
 	const deleteTransaction = async (id: number) => {
 		try {
 			return await deleteTransactionApi(id);
+		} catch (e) {
+			throw 'Не удалось удалить транзакцию';
+		}
+	};
+
+	const deleteSaleTransaction = async (id: number) => {
+		try {
+			return await deleteSaleTransactionApi(id);
 		} catch (e) {
 			throw 'Не удалось удалить транзакцию';
 		}
@@ -63,8 +79,10 @@ const useTransaction = () => {
 		isLoading,
 		createTransaction,
 		updateTransaction,
+		updateSaleTransaction,
 		deleteTransaction,
 		getTransactions,
+		deleteSaleTransaction,
 	};
 };
 

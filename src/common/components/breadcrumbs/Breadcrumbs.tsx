@@ -10,10 +10,10 @@ const Breadcrumbs = () => {
 				return (
 					<div key={index}>
 						{index === arr.length - 1 ? (
-							<span className="text-black dark:text-white">{breadrumb.title}</span>
+							<span className="text-body dark:text-white">{breadrumb.title}</span>
 						) : (
 							<Link
-								className="text-body dark:text-white"
+								className="text-black dark:text-white"
 								to={breadrumb.url}
 							>
 								{breadrumb.title}

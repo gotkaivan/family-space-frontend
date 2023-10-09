@@ -8,6 +8,7 @@ import {
 	CreateTransactionResponseDto,
 	TransactionFiltersRequestDto,
 	GetTransactionsResponseDto,
+	UpdateSaleTransactionResponseDto,
 } from 'api';
 import TransactionFilterOption from '../entities/TransactionFilters';
 import TransactionOptions from '../entities/TransactionOptions';
@@ -28,6 +29,14 @@ export const updateTransactionApi = (transaction: TransactionDto): CancelablePro
 	return TransactionsService.transactionControllerUpdateTransaction(transaction);
 };
 
+export const updateSaleTransactionApi = (transaction: TransactionDto): CancelablePromise<UpdateSaleTransactionResponseDto> => {
+	return TransactionsService.transactionControllerUpdateSaleTransaction(transaction);
+};
+
 export const deleteTransactionApi = (id: number): CancelablePromise<DeleteTransactionResponseDto> => {
 	return TransactionsService.transactionControllerDeleteTransaction(id);
+};
+
+export const deleteSaleTransactionApi = (id: number): CancelablePromise<DeleteTransactionResponseDto> => {
+	return TransactionsService.transactionControllerDeleteSaleTransaction(id);
 };

@@ -9,7 +9,7 @@ import Textarea from 'common/components/ui/Textarea';
 import Checkbox from 'common/components/ui/Ckeckbox';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Transaction from '../entities/Transaction';
-import { transactionTypes, currencyTypes } from '../helpers';
+import { transactionTypes, currencyTypes, transactionTypesForCreate } from '../helpers';
 
 interface IProps {
 	id?: number | undefined;
@@ -34,11 +34,23 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 		},
 	});
 
-	function isVisibleAmountCallback(transactionType: TransactionDto.transactionType) {
-		return transactionType === TransactionDto.transactionType.INVESTMENT || transactionType === TransactionDto.transactionType.SALE;
-	}
+	const { transactionType } = watch();
 
-	const isVisibleAmount = useMemo(() => isVisibleAmountCallback(watch('transactionType')), [watch('transactionType')]);
+	const isSale = useMemo(() => {
+		return transactionType === TransactionDto.transactionType.SALE;
+	}, [transactionType]);
+
+	const isInvestment = useMemo(() => {
+		return transactionType === TransactionDto.transactionType.INVESTMENT;
+	}, [transactionType]);
+
+	const isInvestmentOrSale = useMemo(() => {
+		return isInvestment || isSale;
+	}, [isInvestment, isSale]);
+
+	const priceTitle = useMemo(() => {
+		return isInvestmentOrSale ? 'Cтоимость продажи единицы' : 'Сумма';
+	}, [isInvestmentOrSale]);
 
 	const buttonTitle = useMemo(() => (id ? 'Обновить транзакцию' : 'Создать транзакцию'), [id]);
 
@@ -95,34 +107,15 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 						register={register('description')}
 					/>
 					<div className="flex gap-6">
-						<Input
-							id="purchasePrice"
-							register={register('purchasePrice', {
-								required: 'Поле должно быть заполнено',
-							})}
-							label="Стоимость покупки единицы"
-							placeholder="Введите сумму"
-							type="number"
-							className="mb-8"
-							withError={!!errors.purchasePrice?.message}
-							hasError={!!errors.purchasePrice?.message}
-							errorMessage={errors.purchasePrice?.message}
+						<Select
+							id="transactionType"
+							value={watch('transactionType')}
+							label="Тип транзакции"
+							register={register('transactionType')}
+							disabled={!!id}
+							className="mb-8 w-full"
+							options={id ? transactionTypes : transactionTypesForCreate}
 						/>
-						<Input
-							id="currentPrice"
-							label="Текущая стоимость единицы"
-							placeholder="Введите сумму"
-							register={register('currentPrice', {
-								required: 'Поле должно быть заполнено',
-							})}
-							hasError={!!errors.currentPrice?.message}
-							errorMessage={errors.currentPrice?.message}
-							type="number"
-							className="mb-8"
-							withError={!!errors.currentPrice?.message}
-						/>
-					</div>
-					<div className="flex gap-6">
 						<Select
 							id="currencyType"
 							value={watch('currencyType')}
@@ -131,31 +124,76 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 							className="mb-8 w-full"
 							options={currencyTypes}
 						/>
-						<Select
-							id="transactionType"
-							value={watch('transactionType')}
-							label="Тип транзакции"
-							register={register('transactionType')}
-							disabled={!!id}
-							className="mb-8 w-full"
-							options={transactionTypes}
-						/>
 					</div>
-					<Checkbox
-						text="Долг по транзакции"
-						id={'oweCheckbox'}
-						className="mb-8"
-						value={isOwe}
-						onChange={() => setIsOwe(!isOwe)}
-					/>
 					<div className="flex gap-6">
-						{isOwe && (
+						{isInvestment && (
+							<Input
+								id="purchasePrice"
+								register={register('purchasePrice', {
+									valueAsNumber: true,
+									required: true,
+									validate: (val: number) => {
+										if (!+val) {
+											return 'Поле должно быть заполнено';
+										}
+									},
+								})}
+								label="Стоимость покупки единицы"
+								placeholder="Введите сумму"
+								type="number"
+								className="mb-8"
+								withError={!!errors.purchasePrice?.message}
+								hasError={!!errors.purchasePrice?.message}
+								errorMessage={errors.purchasePrice?.message}
+							/>
+						)}
+						{!isInvestment && (
+							<Input
+								id="currentPrice"
+								label={priceTitle}
+								placeholder="Введите сумму"
+								register={register('currentPrice', {
+									valueAsNumber: true,
+									required: true,
+									validate: (val: number) => {
+										if (!+val) {
+											return 'Поле должно быть заполнено';
+										}
+									},
+								})}
+								hasError={!!errors.currentPrice?.message}
+								errorMessage={errors.currentPrice?.message}
+								type="number"
+								className="mb-8"
+								withError={!!errors.currentPrice?.message}
+							/>
+						)}
+					</div>
+
+					{isInvestment && (
+						<Checkbox
+							text="Долг по транзакции"
+							id={'oweCheckbox'}
+							className="mb-8"
+							value={isOwe}
+							onChange={() => setIsOwe(!isOwe)}
+						/>
+					)}
+
+					<div className="flex gap-6">
+						{isOwe && isInvestment && (
 							<Input
 								id="owesPrice"
 								label="Долг по текущей транзакции"
 								placeholder="Введите сумму"
 								register={register('owesPrice', {
-									required: 'Поле должно быть заполнено',
+									valueAsNumber: true,
+									required: true,
+									validate: (val: number | undefined) => {
+										if (val && !+val) {
+											return 'Поле должно быть заполнено';
+										}
+									},
 								})}
 								hasError={!!errors.owesPrice?.message}
 								errorMessage={errors.owesPrice?.message}
@@ -164,19 +202,25 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 								withError={!!errors.owesPrice?.message}
 							/>
 						)}
-						{isVisibleAmount && (
+						{isInvestmentOrSale && (
 							<Input
-								id="amount"
+								id={isSale ? 'currentAmount' : 'purchaseAmount'}
 								label="Количество"
-								register={register('amount', {
-									required: 'Поле должно быть заполнено',
+								register={register(isSale ? 'currentAmount' : 'purchaseAmount', {
+									valueAsNumber: true,
+									required: true,
+									validate: (val: number) => {
+										if (!+val) {
+											return 'Поле должно быть заполнено';
+										}
+									},
 								})}
 								placeholder="Введите количество"
-								hasError={!!errors.amount?.message}
-								errorMessage={errors.amount?.message}
+								hasError={!!errors[isSale ? 'currentAmount' : 'purchaseAmount']?.message}
+								errorMessage={errors[isSale ? 'currentAmount' : 'purchaseAmount']?.message}
 								type="number"
 								className="mb-8"
-								withError={!!errors.amount?.message}
+								withError={!!errors[isSale ? 'currentAmount' : 'purchaseAmount']?.message}
 							/>
 						)}
 					</div>

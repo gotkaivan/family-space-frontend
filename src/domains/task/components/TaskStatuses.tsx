@@ -93,7 +93,7 @@ const TaskStatuses: FC<ITaskStatusesProps> = props => {
 					</div>
 				</Drop>
 			</DragDropContext>
-			<ModalWrapper isOpen={!!(actionData?.statusId && actionData.typeItem === 'task' && (actionData.typeAction === 'create' || actionData?.typeAction === 'edit'))}>
+			<ModalWrapper isOpen={!!(actionData?.statusId && actionData.typeItem === 'task' && (actionData.typeAction === 'create' || actionData?.typeAction === 'update'))}>
 				<CreateUpdateTaskModal
 					id={actionData?.taskId}
 					statusId={actionData?.statusId}

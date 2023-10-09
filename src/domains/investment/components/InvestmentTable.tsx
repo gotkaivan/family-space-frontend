@@ -9,21 +9,29 @@ interface IProps {
 	data: TransactionDto[];
 	hasActions?: boolean;
 	setActionData: (data: IActionTransactionResponseParams) => void;
+	filters?: JSX.Element;
+	pagination?: JSX.Element;
 }
 
-const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, data }) => {
+const InvestmentTable: FC<IProps> = ({ hasActions = false, setActionData, data, filters, pagination }) => {
 	const headerColumn = useMemo(() => {
 		return columns.map(column => {
 			return (
 				<th
 					key={column.id}
-					className="py-4 px-4 font-medium text-sm text-black dark:text-white"
+					className="py-4 px-4 font-medium text-sm text-black dark:text-white align-top"
 				>
 					{column.title}
 				</th>
 			);
 		});
 	}, []);
+
+	const getTransactionTypeItem = (type: TransactionDto.transactionType) => {
+		if (type === TransactionDto.transactionType.INVESTMENT) {
+			return <p className="inline-flex rounded-full bg-meta-5 bg-opacity-10 py-1 px-3 text-sm font-medium text-meta-5">Инвестиция</p>;
+		}
+	};
 
 	const actionColumn = useMemo(() => {
 		if (hasActions) return <th className="py-4 px-4 font-medium text-black dark:text-white"></th>;
@@ -32,7 +40,7 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 	const openEdit = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
-			typeAction: 'edit',
+			typeAction: 'update',
 			data,
 		});
 	};
@@ -60,14 +68,27 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 						<div className="font-medium text-black dark:text-white text-sm">{item.title}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+						<div className="font-medium text-black dark:text-white text-sm">{item.description}</div>
+					</td>
+					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+						<div className="font-medium text-black dark:text-white text-sm">{item.purchasePrice}</div>
+					</td>
+					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 						<div className="font-medium text-black dark:text-white text-sm">{item.currentPrice}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-						<div className="font-medium text-black dark:text-white text-sm">{item.amount}</div>
+						<div className="font-medium text-black dark:text-white text-sm">{item.owesPrice}</div>
+					</td>
+					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+						<div className="font-medium text-black dark:text-white text-sm">{item.purchaseAmount}</div>
+					</td>
+					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+						<div className="font-medium text-black dark:text-white text-sm">{item.currentAmount}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 						<div className="font-medium text-black dark:text-white text-sm">{item.currencyType}</div>
 					</td>
+					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">{getTransactionTypeItem(item.transactionType)}</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 						{item.transactionDate && <div className="font-medium text-black dark:text-white text-sm">{formatDate(item.transactionDate)}</div>}
 					</td>
@@ -105,9 +126,10 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 	}, [data, openDelete, openEdit]);
 
 	return (
-		<div className="rounded-md border border-stroke bg-white px-5 py-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5">
+		<div className="rounded-md border border-stroke bg-white px-5 pb-3 pt-5 shadow-default dark:border-strokedark dark:bg-boxdark">
+			{filters}
 			<div className="max-w-full overflow-x-auto">
-				{!data.length && <div className="flex justify-center text-sm">Инвестиций пока нет</div>}
+				{!data.length && <div className="flex justify-center items-center text-sm h-30">Инвестиций не найдены</div>}
 				{!!data.length && (
 					<table className="w-full table-auto">
 						<thead>
@@ -121,8 +143,9 @@ const CapitalizationTable: FC<IProps> = ({ hasActions = false, setActionData, da
 					</table>
 				)}
 			</div>
+			{pagination}
 		</div>
 	);
 };
 
-export default CapitalizationTable;
+export default InvestmentTable;

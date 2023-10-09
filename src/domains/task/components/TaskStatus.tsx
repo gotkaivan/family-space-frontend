@@ -29,7 +29,7 @@ const TaskStatus = ({ taskStatus, createNewTask, onActionHandler, onUpdateStatus
 	const onEditTaskAction = async (taskId: number, data: TaskDto): Promise<void> => {
 		await onActionHandler({
 			typeItem: 'task',
-			typeAction: 'edit',
+			typeAction: 'update',
 			statusId: taskStatus.id,
 			taskId,
 			data,
@@ -48,7 +48,7 @@ const TaskStatus = ({ taskStatus, createNewTask, onActionHandler, onUpdateStatus
 	const onEditColumnAction = async (): Promise<void> => {
 		await onActionHandler({
 			typeItem: 'status',
-			typeAction: 'edit',
+			typeAction: 'update',
 			statusId: taskStatus.id,
 			data: item,
 		});

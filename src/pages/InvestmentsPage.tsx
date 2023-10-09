@@ -1,17 +1,17 @@
-import TransactionTable from 'domains/transaction/components/TransactionsTable';
 import DeleteModal from 'common/components/modals/DeleteModal';
-import CreateUpdateModal from 'domains/transaction/components/CreateUpdateTransactionModal';
+import InvestmentTable from 'domains/investment/components/InvestmentTable';
+import useCapitalizationPage from 'domains/investment/hooks/useInvestmentPage';
 import Button from 'common/components/ui/Button';
-import useTransactionPage from 'domains/transaction/hooks/useTransactionPage';
-import { useEffect, useMemo } from 'react';
-import PageHeader from 'common/components/page-header/PageHeader';
+import CreateUpdateInvestmentModal from 'domains/investment/components/CreateUpdateInvestmentModal';
+import TableFilters from 'domains/investment/components/InvestmentTableFilters';
 import Pagination from 'common/components/pagination/Pagination';
-import TableFilters from 'domains/transaction/components/TransactionTableFilters';
+import PageHeader from 'common/components/page-header/PageHeader';
 import { useAppDispatch } from 'store';
+import { useEffect } from 'react';
 import { changeBreadcrumbs } from 'store/features/common';
 
-const TransactionsPage = () => {
-	const { transactions, actionData, filters, pageCount, page, setPage, setFilters, setActionData, onCreateUpdateTransaction, onDeleteTransaction } = useTransactionPage();
+const InvestmentsPage = () => {
+	const { investments, filters, actionData, pageCount, page, setPage, setFilters, setActionData, deleteInvestment, onCreateUpdateSaleInvestment } = useCapitalizationPage();
 
 	const dispatch = useAppDispatch();
 
@@ -19,7 +19,7 @@ const TransactionsPage = () => {
 		dispatch(
 			changeBreadcrumbs([
 				{
-					title: 'Транзакции',
+					title: 'Инвестиции',
 					url: '',
 				},
 			])
@@ -30,14 +30,10 @@ const TransactionsPage = () => {
 		};
 	});
 
-	const reversedTransactions = useMemo(() => {
-		return transactions.reverse();
-	}, [transactions]);
-
 	return (
 		<div>
 			<PageHeader
-				title="Транзакции"
+				title="Инвестиции"
 				right={
 					<Button
 						clickHandler={() => setActionData({ typeAction: 'create' })}
@@ -46,11 +42,10 @@ const TransactionsPage = () => {
 					/>
 				}
 			/>
-
-			<TransactionTable
-				data={reversedTransactions}
-				setActionData={setActionData}
+			<InvestmentTable
 				hasActions={true}
+				data={investments}
+				setActionData={setActionData}
 				filters={
 					<TableFilters
 						filters={filters}
@@ -65,24 +60,25 @@ const TransactionsPage = () => {
 					/>
 				}
 			/>
-			{(actionData?.typeAction === 'create' || actionData?.typeAction === 'update') && (
-				<CreateUpdateModal
+			{(actionData?.typeAction === 'create' || actionData?.typeAction === 'update' || actionData?.typeAction === 'sell') && (
+				<CreateUpdateInvestmentModal
 					id={actionData?.id}
 					data={actionData?.data}
-					onCreateUpdateTask={onCreateUpdateTransaction}
+					typeAction={actionData?.typeAction}
+					onCreateUpdateInvestment={onCreateUpdateSaleInvestment}
 					close={() => setActionData(null)}
 				/>
 			)}
 
 			<DeleteModal
-				title={`Удалить транзакцию ?`}
-				description={`Вы точно хотите удалить транзакцию ?`}
+				title={`Удалить инвестицию ?`}
+				description={`Вы точно хотите удалить инвестицию ?`}
 				cancel={() => setActionData(null)}
-				confirm={onDeleteTransaction}
+				confirm={deleteInvestment}
 				isOpen={!!(actionData?.typeAction === 'delete' && actionData?.id)}
 			/>
 		</div>
 	);
 };
 
-export default TransactionsPage;
+export default InvestmentsPage;

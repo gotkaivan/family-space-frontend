@@ -10,7 +10,7 @@ import NotesPage from '../pages/NotesPage';
 import TasksPage from '../pages/TasksPage';
 
 import { useAuth } from '../common/hooks/useAuth';
-import CapitalizationPage from 'pages/CapitalizationPage';
+import InvestmentsPage from 'pages/InvestmentsPage';
 import TransactionsPage from 'pages/TransactionsPage';
 import TaskBoardsPage from 'pages/TaskBoardsPage';
 
@@ -36,8 +36,8 @@ const CustomRoutes: FC = () => {
 					element={<TransactionsPage />}
 				/>
 				<Route
-					path="capitalization/"
-					element={<CapitalizationPage />}
+					path="investments/"
+					element={<InvestmentsPage />}
 				/>
 				<Route
 					path="tasks"

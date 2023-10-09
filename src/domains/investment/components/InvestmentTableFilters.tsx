@@ -1,13 +1,13 @@
 import { Dispatch, FC, SetStateAction } from 'react';
 import Input from '../../../common/components/ui/Input';
 import Select from '../../../common/components/ui/Select';
-import { currencyTypes, transactionTypes } from '../helpers';
 import { useForm } from 'react-hook-form';
 import { TransactionFiltersRequestDto } from 'generated/api';
 import Datepicker from 'common/components/ui/Datepicker';
-import TransactionFilterOption from '../entities/TransactionFilters';
 import { useDebounce } from 'common/hooks/useDebounce';
-import { FILTERS_DELAY } from './constants';
+import { FILTERS_DELAY } from 'common/constants';
+import { currencyTypes } from 'domains/transaction/helpers';
+import InvestmentFilterOption from '../entities/InvestmentFilters';
 
 interface IProps {
 	filters: TransactionFiltersRequestDto;
@@ -24,7 +24,7 @@ const TableFilters: FC<IProps> = ({ filters, setFilters }) => {
 	});
 
 	watch(data => {
-		debounceChangeFilters(new TransactionFilterOption(formatFilters(data)));
+		debounceChangeFilters(new InvestmentFilterOption(formatFilters(data)));
 	});
 
 	function formatFilters(data: any): TransactionFiltersRequestDto {
@@ -57,14 +57,6 @@ const TableFilters: FC<IProps> = ({ filters, setFilters }) => {
 					register={register('currencyType')}
 					className="w-50"
 					options={currencyTypes}
-				/>
-				<Select
-					id="transactionType"
-					value={watch('transactionType')}
-					defaultValue="Все типы транзакций"
-					register={register('transactionType')}
-					className="w-50"
-					options={transactionTypes}
 				/>
 				<Datepicker
 					className="w-60"

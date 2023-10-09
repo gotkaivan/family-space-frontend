@@ -1,19 +1,24 @@
 import { getRandomId } from 'common/helpers';
-import { IInvestment } from '../types';
 import { TransactionDto } from 'generated/api';
 
 class Investment implements TransactionDto {
-	constructor(investment?: IInvestment) {
+	constructor(investment?: TransactionDto) {
 		this.id = investment?.id || getRandomId();
 		this.title = investment?.title || '';
 		this.description = investment?.description || '';
 		this.purchasePrice = investment?.purchasePrice || 0;
-		this.currentPrice = investment?.currentPrice || 0;
+		this.currentPrice = investment?.currentPrice || this.purchasePrice;
+		this.owesPrice = investment?.owesPrice || 0;
 		this.transactionType = TransactionDto.transactionType.INVESTMENT;
 		this.currencyType = investment?.currencyType || TransactionDto.currencyType.RUB;
-		this.amount = investment?.amount || 1;
+		this.purchaseAmount = investment?.purchaseAmount || 1;
+		this.currentAmount = investment?.currentAmount || this.purchaseAmount;
 		this.transactionDate = investment?.transactionDate || new Date().toISOString();
+		this.transactionSaleId = investment?.transactionSaleId;
+		this.status = investment?.status || TransactionDto.status.ACTIVE;
 	}
+
+	status: TransactionDto.status;
 
 	id: number;
 
@@ -31,9 +36,13 @@ class Investment implements TransactionDto {
 
 	currencyType: TransactionDto.currencyType;
 
-	amount: number;
+	purchaseAmount: number;
+
+	currentAmount: number;
 
 	transactionDate: string | null;
+
+	transactionSaleId?: number | undefined;
 }
 
 export default Investment;

@@ -19,7 +19,7 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data,
 			return (
 				<th
 					key={column.id}
-					className="py-4 px-4 text-sm font-medium text-black dark:text-white"
+					className="py-4 px-4 text-sm font-medium text-black dark:text-white align-top"
 				>
 					{column.title}
 				</th>
@@ -52,7 +52,7 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data,
 	const openEdit = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
-			typeAction: 'edit',
+			typeAction: 'update',
 			data,
 		});
 	};
@@ -60,6 +60,7 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data,
 	const openDelete = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
+			data,
 			typeAction: 'delete',
 		});
 	};
@@ -81,7 +82,13 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, setActionData, data,
 						<div className="font-medium text-black dark:text-white text-sm">{item.currentPrice}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-						<div className="font-medium text-black dark:text-white text-sm">{item.amount}</div>
+						<div className="font-medium text-black dark:text-white text-sm">{item.owesPrice}</div>
+					</td>
+					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+						<div className="font-medium text-black dark:text-white text-sm">{item.purchaseAmount}</div>
+					</td>
+					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+						<div className="font-medium text-black dark:text-white text-sm">{item.currentAmount}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 						<div className="font-medium text-black dark:text-white text-sm">{item.currencyType}</div>

@@ -24,4 +24,16 @@ const transactionTypes = Object.values(TransactionDto.transactionType).map(item 
 	};
 });
 
-export { currencyTypes, transactionTypes };
+const transactionTypesForCreate = Object.values(TransactionDto.transactionType)
+	.filter(item => {
+		return item === TransactionDto.transactionType.INCOME || item === TransactionDto.transactionType.EXPENSES;
+	})
+	.map(item => {
+		return {
+			id: getRandomId(),
+			title: transactionsTypeLocales[item],
+			value: item,
+		};
+	});
+
+export { currencyTypes, transactionTypes, transactionTypesForCreate };

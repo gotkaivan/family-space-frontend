@@ -1,92 +1,64 @@
-import { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import Input from 'common/components/ui/Input';
-import Icon from 'common/components/ui/Icon';
 import Button from 'common/components/ui/Button';
 import Select from 'common/components/ui/Select';
-import { getRandomId } from 'common/helpers';
 import Datepicker from 'common/components/ui/Datepicker';
-import { IInvestment } from '../types';
-import Investment from '../entities/Investment';
+import Icon from 'common/components/ui/Icon';
+import { InvestmentDto, TransactionDto } from 'generated/api';
+import Textarea from 'common/components/ui/Textarea';
 import Checkbox from 'common/components/ui/Ckeckbox';
-import { TransactionDto } from 'generated/api';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import Investment from '../entities/Investment';
+import { currencyTypes } from 'domains/transaction/helpers';
 
 interface IProps {
 	id?: number | undefined;
-	onCreateUpdateInvestment: (type: 'create' | 'update', investment: IInvestment) => void;
+	onCreateUpdateInvestment: (type: 'create' | 'update' | 'sell', investment: InvestmentDto) => Promise<void>;
+	typeAction: 'create' | 'update' | 'sell';
 	close: () => void;
-	data?: IInvestment | null;
+	data?: InvestmentDto | null;
 }
 
-const curencyTypes = Object.keys(TransactionDto.currencyType).map(item => {
-	return {
-		id: getRandomId(),
-		title: item,
-		value: item,
+const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, close, data, typeAction, id }) => {
+	const [isOwe, setIsOwe] = useState<boolean>(false);
+
+	const {
+		register,
+		handleSubmit,
+		setValue,
+		reset,
+		watch,
+		formState: { errors },
+	} = useForm<InvestmentDto>({
+		defaultValues: {
+			...data,
+		},
+	});
+
+	const isSale = useMemo(() => !!(typeAction === 'sell'), [typeAction]);
+
+	const buttonTitle = useMemo(() => {
+		if (typeAction === 'create') return 'Создать инвестицию';
+		if (typeAction === 'update') return 'Обновить инвестицию';
+		if (typeAction === 'sell') return 'Продать';
+		return 'Создать инвестицию';
+	}, [id]);
+
+	const onClickHandler: SubmitHandler<TransactionDto> = async (form: TransactionDto) => {
+		await onCreateUpdateInvestment(typeAction, new Investment({ ...form, transactionSaleId: id }));
 	};
-});
-
-const TITLE_ERROR = 'Введите название инвестиции';
-const VALUE_ERROR = 'Введите сумму инвестиции';
-const AMOUNT_ERROR = 'Введите количество значения инвестиции';
-
-const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, close, data, id }) => {
-	const [state, setState] = useState<IInvestment>(data || new Investment());
-
-	const [value, setValue] = useState<string | number>('');
-
-	const [amount, setAmount] = useState<string | number>('');
-
-	const [isTouched, setIsTouched] = useState<boolean>(false);
-
-	const hasTitleError = useMemo(() => !state.title.length, [state.title.length]);
-
-	const hasValueError = useMemo(() => !value, [value]);
-
-	const hasAmountError = useMemo(() => !state.amount && id, [state.amount, id]);
-
-	const hasTouchedTitleError: boolean = useMemo(() => hasTitleError && isTouched, [hasTitleError, isTouched]);
-
-	const hasTouchedValueError: boolean = useMemo(() => hasValueError && isTouched, [hasValueError, isTouched]);
-
-	const hasTouchedAmountError: boolean = useMemo(() => !!hasAmountError && isTouched, [hasAmountError, isTouched]);
 
 	useEffect(() => {
-		if (data?.amount) setAmount(data.amount);
+		reset();
 	}, [data]);
 
-	const isDisabledAmount = useMemo(() => {
-		return state.transactionType === TransactionDto.transactionType.INCOME || state.transactionType === TransactionDto.transactionType.EXPENSES;
-	}, [state.transactionType]);
+	useEffect(() => {
+		if (typeAction === 'sell') setValue('currentPrice', 0);
+	}, [typeAction]);
 
-	const [currentyTypes] = useState(curencyTypes);
-
-	const buttonTitle = useMemo(() => (id ? 'Обновить инвестицию' : 'Создать инвестицию'), [id]);
-
-	const changeAmount = (e: ChangeEvent<HTMLInputElement>) => {
-		setAmount(e.target.value);
-	};
-
-	const changeValue = (e: ChangeEvent<HTMLInputElement>) => {
-		setValue(e.target.value);
-	};
-
-	const validateForm = () => {
-		if (hasTitleError || hasValueError || hasAmountError) return false;
-		return true;
-	};
-
-	const onClickHandler = async () => {
-		setIsTouched(true);
-		if (validateForm()) {
-			const requestType = id ? 'update' : 'create';
-			const request = {
-				...state,
-				value: +value || 0,
-				amount: +amount || 0,
-			};
-			await onCreateUpdateInvestment(requestType, request);
-		}
-	};
+	useEffect(() => {
+		setIsOwe(!!data?.owesPrice);
+	}, [data?.owesPrice]);
 
 	return (
 		<div
@@ -97,81 +69,166 @@ const CreateUpdateInvestmentnModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 				onClick={e => e.stopPropagation()}
 				className="relative m-auto w-full max-w-180 rounded-md border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10"
 			>
-				<button
-					onClick={() => close()}
-					className="absolute right-1 top-1 sm:right-5 sm:top-5"
-				>
-					<Icon
-						name={'x'}
-						size={20}
+				<form onSubmit={handleSubmit(onClickHandler)}>
+					<button
+						onClick={() => close()}
+						className="absolute right-1 top-1 sm:right-5 sm:top-5"
+					>
+						<Icon
+							name={'x'}
+							size={20}
+						/>
+					</button>
+					<Input
+						id="title"
+						label="Название инвестиции"
+						disabled={isSale}
+						placeholder="Введите название инвестиции"
+						register={register('title', {
+							required: 'Поле должно быть заполнено',
+						})}
+						hasError={!!errors.title?.message}
+						errorMessage={errors.title?.message}
+						type="text"
+						className="mb-8"
+						withError={!!errors.title?.message}
 					/>
-				</button>
-				<Input
-					id="title"
-					label="Название инвестиции"
-					placeholder="Введите название инвестиции"
-					hasError={hasTouchedTitleError}
-					errorMessage={TITLE_ERROR}
-					value={state.title}
-					onChange={e => setState({ ...state, title: e.target.value })}
-					type="text"
-					className="mb-8"
-					withError={hasTouchedTitleError}
-				/>
-				<Input
-					id="value"
-					label="Сумма"
-					placeholder="Введите сумму инвестиции"
-					hasError={hasTouchedValueError}
-					errorMessage={VALUE_ERROR}
-					value={value}
-					onChange={changeValue}
-					type="number"
-					className="mb-8"
-					withError={hasTouchedValueError}
-				/>
-				<Input
-					id="amount"
-					label="Количество"
-					placeholder="Введите количество"
-					disabled={isDisabledAmount}
-					hasError={!!hasTouchedAmountError}
-					errorMessage={AMOUNT_ERROR}
-					value={amount}
-					onChange={changeAmount}
-					type="number"
-					className="mb-8"
-					withError={!!hasTouchedAmountError}
-				/>
-				<Select
-					id="currencyType"
-					label="Тип валюты"
-					value={state.currencyType}
-					onChange={e => setState({ ...state, currencyType: (e.target as any).value })}
-					className="mb-8"
-					options={currentyTypes}
-				/>
-				<Datepicker
-					id="transactionDto"
-					label="Дата создания инвестиции"
-				/>
-				<Checkbox
-					id={'isUncountable'}
-					text="Не учавствует в вычислениях"
-					className="pl-1"
-					value={false}
-					onChange={value => null}
-				/>
-				<div className="flex justify-end pt-4">
-					<Button
-						className="text-white font-medium py-2.5 px-4.5 rounded-md"
-						title={buttonTitle}
-						clickHandler={() => onClickHandler()}
+					{!isSale && (
+						<Textarea
+							id="description"
+							label="Описание инвестиции"
+							rows={3}
+							placeholder="Введите описание инвестиции"
+							register={register('description')}
+						/>
+					)}
+
+					<div className="flex gap-6">
+						<Select
+							id="currencyType"
+							value={watch('currencyType')}
+							label="Тип валюты"
+							register={register('currencyType')}
+							className="mb-8 w-full"
+							options={currencyTypes}
+						/>
+					</div>
+					<div className="flex gap-6">
+						{!isSale && (
+							<Input
+								id="purchasePrice"
+								register={register('purchasePrice', {
+									valueAsNumber: true,
+									required: true,
+									validate: (val: number) => {
+										if (!+val) {
+											return 'Поле должно быть заполнено';
+										}
+									},
+								})}
+								label="Стоимость покупки единицы"
+								placeholder="Введите сумму"
+								type="number"
+								className="mb-8"
+								withError={!!errors.purchasePrice?.message}
+								hasError={!!errors.purchasePrice?.message}
+								errorMessage={errors.purchasePrice?.message}
+							/>
+						)}
+
+						{id && (
+							<Input
+								id="currentPrice"
+								label={typeAction === 'sell' ? 'Стоимость продаваемой единицы' : 'Текущая стоимость единицы'}
+								placeholder="Введите сумму"
+								register={register('currentPrice', {
+									valueAsNumber: true,
+									required: true,
+									validate: (val: number) => {
+										if (!+val) {
+											return 'Поле должно быть заполнено';
+										}
+									},
+								})}
+								hasError={!!errors.currentPrice?.message}
+								errorMessage={errors.currentPrice?.message}
+								type="number"
+								className="mb-8"
+								withError={!!errors.currentPrice?.message}
+							/>
+						)}
+					</div>
+
+					{!isSale && (
+						<Checkbox
+							text="Долг по инвестиции"
+							id={'oweCheckbox'}
+							className="mb-8"
+							value={isOwe}
+							onChange={() => setIsOwe(!isOwe)}
+						/>
+					)}
+
+					<div className="flex gap-6">
+						{isOwe && !isSale && (
+							<Input
+								id="owesPrice"
+								label="Долг по текущей инвестиции"
+								placeholder="Введите сумму"
+								register={register('owesPrice', {
+									valueAsNumber: true,
+									required: true,
+									validate: (val: number | undefined) => {
+										if (val && !+val) {
+											return 'Поле должно быть заполнено';
+										}
+									},
+								})}
+								hasError={!!errors.owesPrice?.message}
+								errorMessage={errors.owesPrice?.message}
+								type="number"
+								className="mb-8"
+								withError={!!errors.owesPrice?.message}
+							/>
+						)}
+						<Input
+							id={isSale ? 'currentAmount' : 'purchaseAmount'}
+							label="Количество"
+							register={register(isSale ? 'currentAmount' : 'purchaseAmount', {
+								valueAsNumber: true,
+								required: true,
+								validate: (val: number) => {
+									if (!+val) {
+										return 'Поле должно быть заполнено';
+									}
+								},
+							})}
+							placeholder="Введите количество"
+							hasError={!!errors[isSale ? 'currentAmount' : 'purchaseAmount']?.message}
+							errorMessage={errors[isSale ? 'currentAmount' : 'purchaseAmount']?.message}
+							type="number"
+							className="mb-8"
+							withError={!!errors[isSale ? 'currentAmount' : 'purchaseAmount']?.message}
+						/>
+					</div>
+
+					<Datepicker
+						id="transactionDate"
+						label={isSale ? 'Дата продажи инвестиции' : 'Дата создания инвестиции'}
+						value={watch('transactionDate')}
+						setValue={setValue}
 					/>
-				</div>
+					<div className="flex justify-end">
+						<Button
+							type="submit"
+							className="text-white font-medium py-2.5 px-4.5 rounded-md"
+							title={buttonTitle}
+						/>
+					</div>
+				</form>
 			</div>
 		</div>
 	);
 };
 
-export default CreateUpdateInvestmentnModal;
+export default CreateUpdateTransactionModal;

@@ -1,6 +1,6 @@
 import { PaginationRequestDto, TransactionFiltersRequestDto, TransactionRequestOptionsDto } from 'generated/api';
 import TransactionFilters from './TransactionFilters';
-import TransactionPagination from './TransactionPagination';
+import TransactionPagination from 'common/entities/PaginationRequest';
 
 class TransactionOptions implements TransactionRequestOptionsDto {
 	constructor(options?: TransactionRequestOptionsDto) {

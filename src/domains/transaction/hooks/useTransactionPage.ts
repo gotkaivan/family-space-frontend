@@ -2,10 +2,11 @@ import { NOTIFY_TYPES, useNotify } from 'common/hooks/useNotify';
 import { useEffect, useMemo, useState } from 'react';
 import { IActionTransactionResponseParams } from '../types';
 import useTransaction from './useTransaction';
-import { PaginationRequestDto, TransactionDto, TransactionFiltersRequestDto } from 'generated/api';
+import { InvestmentDto, PaginationRequestDto, TransactionDto, TransactionFiltersRequestDto } from 'generated/api';
 import TransactionFilterOption from '../entities/TransactionFilters';
 import TransactionOptions from '../entities/TransactionOptions';
-import { TRANSACTION_LIMIT } from '../components/constants';
+import { PAGE_LIMIT } from 'common/constants';
+import { updateSaleTransactionApi } from '../api';
 
 const useTransactionPage = () => {
 	const { notify } = useNotify();
@@ -16,20 +17,21 @@ const useTransactionPage = () => {
 
 	const [page, setPage] = useState<number>(1);
 
-	const { transactions, createTransaction, updateTransaction, deleteTransaction, getTransactions } = useTransaction();
+	const { transactions, createTransaction, updateTransaction, deleteTransaction, getTransactions, updateSaleTransaction, deleteSaleTransaction } = useTransaction();
 
 	const [actionData, setActionData] = useState<IActionTransactionResponseParams | null>(null);
 
 	const pagination: PaginationRequestDto = useMemo(() => {
 		return {
-			limit: TRANSACTION_LIMIT,
+			limit: PAGE_LIMIT,
 			page,
 		};
 	}, [page]);
 
 	const pageCount = useMemo(() => {
 		if (!total) return 1;
-		return Math.round(total / TRANSACTION_LIMIT);
+		const count = Math.round(total / PAGE_LIMIT);
+		return !!count ? count : 1;
 	}, [total]);
 
 	const options: TransactionOptions = useMemo(() => {
@@ -49,7 +51,15 @@ const useTransactionPage = () => {
 				notify(NOTIFY_TYPES.SUCCESS, 'Транзакция успешно создана');
 			}
 
-			if (type === 'update') {
+			if (type === 'update' && transaction.transactionType === TransactionDto.transactionType.SALE) {
+				await updateSaleTransaction(transaction);
+				const response = await getTransactions(options);
+				if (response?.total) setTotal(response.total);
+				setActionData(null);
+				notify(NOTIFY_TYPES.SUCCESS, 'Транзакция успешно обновлена');
+			}
+
+			if (type === 'update' && transaction.transactionType !== TransactionDto.transactionType.SALE) {
 				await updateTransaction(transaction);
 				const response = await getTransactions(options);
 				if (response?.total) setTotal(response.total);
@@ -65,7 +75,8 @@ const useTransactionPage = () => {
 	async function onDeleteTransaction(): Promise<boolean> {
 		if (actionData?.id && actionData?.typeAction === 'delete') {
 			try {
-				await deleteTransaction(actionData.id);
+				actionData.data?.transactionType === TransactionDto.transactionType.SALE ? await deleteSaleTransaction(actionData.id) : await deleteTransaction(actionData.id);
+
 				const response = await getTransactions(options);
 				if (response?.total) setTotal(response.total);
 				setActionData(null);
