@@ -70,7 +70,7 @@ const InvestmentTable: FC<IProps> = ({ hasActions = false, isLoading, setActionD
 						<div className="font-medium text-black dark:text-white text-sm">{item.title}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-						<div className="font-medium text-black dark:text-white text-sm">{item.description}</div>
+						<div className="font-medium text-body dark:text-white text-sm">{item.description}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 						<div className="font-medium text-black dark:text-white text-sm">{item.purchasePrice}</div>
@@ -79,10 +79,7 @@ const InvestmentTable: FC<IProps> = ({ hasActions = false, isLoading, setActionD
 						<div className="font-medium text-black dark:text-white text-sm">{item.currentPrice}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-						<div className="font-medium text-black dark:text-white text-sm">{item.owesPrice}</div>
-					</td>
-					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-						<div className="font-medium text-black dark:text-white text-sm">{item.purchaseAmount}</div>
+						<div className="font-medium text-black dark:text-white text-sm">{!!item.owesPrice ? item.owesPrice : '-'}</div>
 					</td>
 					<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 						<div className="font-medium text-black dark:text-white text-sm">{item.currentAmount}</div>

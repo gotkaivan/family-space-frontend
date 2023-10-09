@@ -35,11 +35,6 @@ const tableOptions: ITransactionTableColumn[] = [
 	},
 	{
 		id: getRandomId(),
-		value: 'purchaseAmount',
-		title: 'Количество при покупке',
-	},
-	{
-		id: getRandomId(),
 		value: 'currentAmount',
 		title: 'Текущее количество',
 	},
