@@ -89,7 +89,7 @@ const TaskStatus = ({ taskStatus, createNewTask, onActionHandler, onUpdateStatus
 				/>
 				<div
 					{...provided?.dragHandleProps}
-					className="text-lg font-semibold text-black dark:text-white mb-6 w-300"
+					className="text-lg font-semibold text-black dark:text-white mb-6 w-300 pr-10"
 				>
 					{`${item.title} (${item.tasks.length})`}{' '}
 				</div>
