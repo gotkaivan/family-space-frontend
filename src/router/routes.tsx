@@ -6,13 +6,14 @@ import ChatPage from '../pages/ChatPage';
 import AuthLayout from '../layouts/AuthLayout';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
-import NotesPage from '../pages/NotesPage';
+import NoteGroupsPage from '../pages/NoteGroupsPage';
 import TasksPage from '../pages/TasksPage';
 
 import { useAuth } from '../common/hooks/useAuth';
 import InvestmentsPage from 'pages/InvestmentsPage';
 import TransactionsPage from 'pages/TransactionsPage';
 import TaskBoardsPage from 'pages/TaskBoardsPage';
+import NotesPage from 'pages/NotesPage';
 
 const CustomRoutes: FC = () => {
 	const { isAuth, isInitialised } = useAuth();
@@ -53,6 +54,10 @@ const CustomRoutes: FC = () => {
 				/>
 				<Route
 					path="notes"
+					element={<NoteGroupsPage />}
+				/>
+				<Route
+					path="notes/:groupId"
 					element={<NotesPage />}
 				/>
 			</Route>

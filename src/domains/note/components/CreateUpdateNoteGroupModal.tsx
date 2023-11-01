@@ -2,25 +2,25 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import Input from 'common/components/ui/Input';
 import Textarea from 'common/components/ui/Textarea';
 import Button from 'common/components/ui/Button';
-import { BoardDto } from 'generated/api';
+import { BoardDto, NoteGroupDto } from 'generated/api';
 import FormModal from 'common/components/modals/FormModal';
-import Board from '../entities/Board';
+import NoteGroup from '../entities/NoteGroup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface IProps {
 	id?: number | undefined;
-	onCreateUpdateBoard: (type: 'create' | 'update', board: BoardDto) => Promise<boolean>;
+	onCreateUpdateNoteGroup: (type: 'create' | 'update', group: NoteGroupDto) => Promise<void>;
 	close: () => void;
-	data?: BoardDto | null;
+	data?: NoteGroupDto | null;
 }
 
-const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateBoard, close, data, id }) => {
+const CreateUpdateNoteGroupModal: FC<IProps> = ({ onCreateUpdateNoteGroup, close, data, id }) => {
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<BoardDto>({
+	} = useForm<NoteGroupDto>({
 		defaultValues: {
 			...data,
 		},
@@ -28,13 +28,13 @@ const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateBoard, close, data, 
 
 	const [isLoadingBtn, setIsLoadingBtn] = useState<boolean>(false);
 
-	const buttonTitle = useMemo(() => (id ? 'Обновить доску' : 'Создать доску'), [id]);
+	const buttonTitle = useMemo(() => (id ? 'Обновить группу' : 'Создать группу'), [id]);
 
-	const onClickHandler: SubmitHandler<BoardDto> = async (form: BoardDto) => {
+	const onClickHandler: SubmitHandler<NoteGroup> = async (form: NoteGroup) => {
 		setIsLoadingBtn(true);
 		try {
 			const requestType = id ? 'update' : 'create';
-			await onCreateUpdateBoard(requestType, new Board({ ...form }));
+			await onCreateUpdateNoteGroup(requestType, new NoteGroup({ ...form }));
 		} finally {
 			setIsLoadingBtn(false);
 		}
@@ -51,11 +51,11 @@ const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateBoard, close, data, 
 				<form onSubmit={handleSubmit(onClickHandler)}>
 					<Input
 						id="title"
-						label="Название доски"
+						label="Название группы для заметок"
 						register={register('title', {
 							required: 'Поле должно быть заполнено',
 						})}
-						placeholder="Введите название доски"
+						placeholder="Введите название группы для заметок"
 						type="text"
 						className="mb-8"
 						hasError={!!errors.title?.message}
@@ -65,8 +65,8 @@ const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateBoard, close, data, 
 					<Textarea
 						id="description"
 						register={register('description')}
-						label="Описание доски"
-						placeholder="Введите описание доски"
+						label="Описание группы для заметок"
+						placeholder="Введите описание группы для заметок"
 					/>
 					<Button
 						type="submit"
@@ -80,4 +80,4 @@ const CreateUpdateBoardModal: FC<IProps> = ({ onCreateUpdateBoard, close, data, 
 	);
 };
 
-export default CreateUpdateBoardModal;
+export default CreateUpdateNoteGroupModal;

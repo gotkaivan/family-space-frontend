@@ -88,7 +88,7 @@ const useInvestmentPage = () => {
 	};
 
 	async function deleteInvestment(): Promise<boolean> {
-		if (actionData?.id && actionData?.typeAction === 'delete') {
+		if (actionData?.id && actionData?.actionType === 'delete') {
 			try {
 				await deleteTransaction(actionData.id);
 				await getTransactions();

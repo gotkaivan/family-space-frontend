@@ -41,7 +41,7 @@ const TaskStatuses: FC<ITaskStatusesProps> = props => {
 		createNewStatus(+boardId);
 	}
 
-	const deleteTitleWord = useMemo(() => (actionData?.typeItem === 'status' ? 'статус' : 'задачу'), [actionData?.typeItem]);
+	const deleteTitleWord = useMemo(() => (actionData?.itemType === 'status' ? 'статус' : 'задачу'), [actionData?.itemType]);
 
 	return (
 		<div className="overflow-x-scroll h-screen">
@@ -73,7 +73,7 @@ const TaskStatuses: FC<ITaskStatusesProps> = props => {
 										key={taskStatus.id}
 										createNewTask={(statusId: number) =>
 											setActionData({
-												typeItem: 'task',
+												itemType: 'task',
 												typeAction: 'create',
 												statusId,
 											})
@@ -93,7 +93,7 @@ const TaskStatuses: FC<ITaskStatusesProps> = props => {
 					</div>
 				</Drop>
 			</DragDropContext>
-			<ModalWrapper isOpen={!!(actionData?.statusId && actionData.typeItem === 'task' && (actionData.typeAction === 'create' || actionData?.typeAction === 'update'))}>
+			<ModalWrapper isOpen={!!(actionData?.statusId && actionData.itemType === 'task' && (actionData.typeAction === 'create' || actionData?.typeAction === 'update'))}>
 				<CreateUpdateTaskModal
 					id={actionData?.taskId}
 					statusId={actionData?.statusId}

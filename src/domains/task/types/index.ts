@@ -1,10 +1,10 @@
-import { TypeAction } from 'common/types';
+import { ActionType } from 'common/types';
 
-export type TypeItem = 'status' | 'task';
+export type ItemType = 'status' | 'task';
 
 export interface IActionTaskResponseParams<DataType> {
-	typeItem: TypeItem;
-	typeAction: TypeAction;
+	itemType: ItemType;
+	typeAction: ActionType;
 	statusId: number;
 	taskId?: number;
 	data?: DataType;

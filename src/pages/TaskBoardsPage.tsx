@@ -2,13 +2,13 @@ import DeleteModal from 'common/components/modals/DeleteModal';
 import Button from 'common/components/ui/Button';
 import CreateUpdateBoardModal from 'domains/task/components/CreateUpdateBoardModal';
 import { BoardDto } from 'generated/api';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import BoardItem from 'domains/task/components/BoardItem';
+import { useEffect, useMemo, useState } from 'react';
 import useTaskBoards from 'domains/task/hooks/useTaskBoards';
 import ModalWrapper from 'common/components/modals/ModalWrapper';
 import PageLoader from 'common/components/ui/Loader/PageLoader';
 import { useAppDispatch } from 'store';
 import { changeBreadcrumbs } from 'store/features/common';
+import Card from 'common/components/cards/Card';
 
 interface IActionState {
 	id?: number;
@@ -92,12 +92,13 @@ const TaskBoardsPage = () => {
 			<div className="flex flex-wrap">
 				{data.map(board => {
 					return (
-						<BoardItem
+						<Card
 							key={board.id}
-							item={board}
-							className="mr-4 md:mr-6 mb-4 md:mb-6"
-							onEdit={onEditBoardAction}
-							onDelete={onDeleteBoardAction}
+							to={`/tasks/${board.id}`}
+							title={board.title}
+							description={board.description}
+							onEdit={() => onEditBoardAction(board)}
+							onDelete={() => onDeleteBoardAction(board.id)}
 						/>
 					);
 				})}
@@ -116,7 +117,7 @@ const TaskBoardsPage = () => {
 			{isLoading ? <PageLoader /> : content}
 			<ModalWrapper isOpen={actionState?.actionType === 'create' || actionState?.actionType === 'update'}>
 				<CreateUpdateBoardModal
-					onCreateUpdateTask={onCreateUpdateHandler}
+					onCreateUpdateBoard={onCreateUpdateHandler}
 					id={actionState?.id}
 					data={actionState?.data}
 					close={() => setActionState(null)}

@@ -6,7 +6,7 @@ class Transaction implements TransactionDto {
 		this.id = transaction?.id || getRandomId();
 		this.title = transaction?.title || '';
 		this.description = transaction?.description || '';
-		this.purchasePrice = transaction?.purchasePrice || 0;
+		this.purchasePrice = transaction?.purchasePrice || 1;
 		this.currentPrice = transaction?.currentPrice || this.purchasePrice;
 		this.owesPrice = transaction?.owesPrice || 0;
 		this.transactionType = transaction?.transactionType || TransactionDto.transactionType.INCOME;
@@ -16,6 +16,7 @@ class Transaction implements TransactionDto {
 		this.transactionDate = transaction?.transactionDate || new Date().toISOString();
 		this.transactionSaleId = transaction?.transactionSaleId;
 		this.status = transaction?.status || TransactionDto.status.ACTIVE;
+		this.isExistBefore = transaction?.isExistBefore;
 	}
 
 	status: TransactionDto.status;
@@ -43,6 +44,8 @@ class Transaction implements TransactionDto {
 	transactionDate: string | null;
 
 	transactionSaleId?: number | undefined;
+
+	isExistBefore?: boolean | undefined;
 }
 
 export default Transaction;

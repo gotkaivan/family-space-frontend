@@ -191,12 +191,14 @@ const useTask = () => {
 			const createdTask = await createTaskApi({ ...task, position: getTaskPosition(task) });
 
 			task.subtasks.forEach(async subtask => {
-				promises.push(
-					createSubtaskApi({
-						...subtask,
-						taskId: createdTask.id,
-					})
-				);
+				const { id, ...subtaskWithoutId } = subtask;
+
+				const subtaskRequest = {
+					...subtaskWithoutId,
+					taskId: createdTask.id,
+				};
+
+				promises.push(createSubtaskApi(subtaskRequest));
 			});
 			await Promise.allSettled(promises);
 

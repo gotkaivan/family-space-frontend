@@ -54,7 +54,7 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, isLoading, setAction
 	const openEdit = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
-			typeAction: 'update',
+			actionType: 'update',
 			data,
 		});
 	};
@@ -63,7 +63,7 @@ const TransactionTable: FC<IProps> = ({ hasActions = false, isLoading, setAction
 		setActionData({
 			id: data.id,
 			data,
-			typeAction: 'delete',
+			actionType: 'delete',
 		});
 	};
 

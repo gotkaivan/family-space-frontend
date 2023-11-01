@@ -10,17 +10,19 @@ import Checkbox from 'common/components/ui/Ckeckbox';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Investment from '../entities/Investment';
 import { currencyTypes } from 'domains/transaction/helpers';
+import FormModal from 'common/components/modals/FormModal';
 
 interface IProps {
 	id?: number | undefined;
 	onCreateUpdateInvestment: (type: 'create' | 'update' | 'sell', investment: InvestmentDto) => Promise<void>;
-	typeAction: 'create' | 'update' | 'sell';
+	actionType: 'create' | 'update' | 'sell';
 	close: () => void;
 	data?: InvestmentDto | null;
 }
 
-const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, close, data, typeAction, id }) => {
+const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, close, data, actionType, id }) => {
 	const [isOwe, setIsOwe] = useState<boolean>(false);
+	const [isExistBefore, setIsExistBefore] = useState<boolean>(false);
 
 	const {
 		register,
@@ -35,21 +37,23 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 		},
 	});
 
-	const isSale = useMemo(() => !!(typeAction === 'sell'), [typeAction]);
+	const isSale = useMemo(() => !!(actionType === 'sell'), [actionType]);
+
+	const isInvestment = useMemo(() => actionType !== 'sell', [actionType]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const buttonTitle = useMemo(() => {
-		if (typeAction === 'create') return 'Создать инвестицию';
-		if (typeAction === 'update') return 'Обновить инвестицию';
-		if (typeAction === 'sell') return 'Продать';
+		if (actionType === 'create') return 'Создать инвестицию';
+		if (actionType === 'update') return 'Обновить инвестицию';
+		if (actionType === 'sell') return 'Продать';
 		return 'Создать инвестицию';
 	}, [id]);
 
 	const onClickHandler: SubmitHandler<TransactionDto> = async (form: TransactionDto) => {
 		setIsLoading(true);
 		try {
-			await onCreateUpdateInvestment(typeAction, new Investment({ ...form, transactionSaleId: id }));
+			await onCreateUpdateInvestment(actionType, new Investment({ ...form, transactionSaleId: id, isExistBefore }));
 		} finally {
 			setIsLoading(false);
 		}
@@ -60,22 +64,21 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 	}, [data]);
 
 	useEffect(() => {
-		if (typeAction === 'sell') setValue('currentPrice', 0);
-	}, [typeAction]);
+		if (actionType === 'sell') setValue('currentPrice', 0);
+	}, [actionType]);
 
 	useEffect(() => {
 		setIsOwe(!!data?.owesPrice);
 	}, [data?.owesPrice]);
 
+	useEffect(() => {
+		setIsExistBefore(!!data?.isExistBefore);
+	}, [data?.isExistBefore]);
+
 	return (
-		<div
-			onClick={() => close()}
-			className="fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 py-5 px-4"
-		>
-			<div
-				onClick={e => e.stopPropagation()}
-				className="relative m-auto w-full max-w-180 rounded-md border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10"
-			>
+		<FormModal
+			close={close}
+			content={
 				<form onSubmit={handleSubmit(onClickHandler)}>
 					<button
 						onClick={() => close()}
@@ -146,7 +149,7 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 						{id && (
 							<Input
 								id="currentPrice"
-								label={typeAction === 'sell' ? 'Стоимость продаваемой единицы' : 'Текущая стоимость единицы'}
+								label={actionType === 'sell' ? 'Стоимость продаваемой единицы' : 'Текущая стоимость единицы'}
 								placeholder="Введите сумму"
 								register={register('currentPrice', {
 									valueAsNumber: true,
@@ -219,6 +222,16 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 						/>
 					</div>
 
+					{isInvestment && (
+						<Checkbox
+							text="Инвестиция создана до вычислений"
+							id={'isExistBefore'}
+							className="mb-8"
+							value={isExistBefore}
+							onChange={() => setIsExistBefore(!isExistBefore)}
+						/>
+					)}
+
 					<Datepicker
 						id="transactionDate"
 						label={isSale ? 'Дата продажи инвестиции' : 'Дата создания инвестиции'}
@@ -234,8 +247,8 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateInvestment, cl
 						/>
 					</div>
 				</form>
-			</div>
-		</div>
+			}
+		/>
 	);
 };
 

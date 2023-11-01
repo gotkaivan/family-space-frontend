@@ -219,15 +219,13 @@ const CreateUpdateTaskModal: FC<IProps> = ({ onCreateUpdateTask, deleteSubtask, 
 
 						<div className="flex flex-col gap-3.5">{renderSubtasks}</div>
 					</div>
+					<Button
+						className="text-white font-medium py-2.5 px-4.5 rounded-md"
+						title={buttonTitle}
+						isLoading={isLoadingBtn}
+						clickHandler={() => onClickHandler()}
+					/>
 				</>
-			}
-			button={
-				<Button
-					className="text-white font-medium py-2.5 px-4.5 rounded-md"
-					title={buttonTitle}
-					isLoading={isLoadingBtn}
-					clickHandler={() => onClickHandler()}
-				/>
 			}
 		/>
 	);

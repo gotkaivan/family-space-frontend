@@ -42,7 +42,7 @@ const InvestmentTable: FC<IProps> = ({ hasActions = false, isLoading, setActionD
 	const openEdit = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
-			typeAction: 'update',
+			actionType: 'update',
 			data,
 		});
 	};
@@ -50,7 +50,7 @@ const InvestmentTable: FC<IProps> = ({ hasActions = false, isLoading, setActionD
 	const openSell = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
-			typeAction: 'sell',
+			actionType: 'sell',
 			data,
 		});
 	};
@@ -58,7 +58,7 @@ const InvestmentTable: FC<IProps> = ({ hasActions = false, isLoading, setActionD
 	const openDelete = (data: TransactionDto) => {
 		setActionData({
 			id: data.id,
-			typeAction: 'delete',
+			actionType: 'delete',
 		});
 	};
 

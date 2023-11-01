@@ -3,11 +3,10 @@ import Icon from '../ui/Icon';
 
 interface IProps {
 	content: JSX.Element;
-	button: JSX.Element;
 	close: () => void;
 }
 
-const FormModal: FC<IProps> = ({ content, button, close }) => {
+const FormModal: FC<IProps> = ({ content, close }) => {
 	return (
 		<div
 			onClick={() => close()}
@@ -27,7 +26,6 @@ const FormModal: FC<IProps> = ({ content, button, close }) => {
 					/>
 				</button>
 				{content}
-				{button}
 			</div>
 		</div>
 	);

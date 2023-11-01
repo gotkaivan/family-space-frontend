@@ -1,20 +1,21 @@
 import { getRandomId } from 'common/helpers';
-import { TaskDto, BoardDto } from 'generated/api';
+import { NoteGroupDto } from 'generated/api';
 
-class Board implements BoardDto {
-	constructor(group?: BoardDto) {
+class NoteGroup implements NoteGroupDto {
+	constructor(group?: NoteGroupDto) {
 		this.id = group?.id || getRandomId();
 		this.title = group?.title || '';
 		this.description = group?.description || '';
-		this.position = group?.position || 1;
+		this.isFavorite = group?.isFavorite || false;
 	}
-	position: number;
 
 	id: number;
 
 	title: string;
 
 	description: string;
+
+	isFavorite: boolean;
 }
 
-export default Board;
+export default NoteGroup;

@@ -37,7 +37,7 @@ const InvestmentsPage = () => {
 				title="Инвестиции"
 				right={
 					<Button
-						clickHandler={() => setActionData({ typeAction: 'create' })}
+						clickHandler={() => setActionData({ actionType: 'create' })}
 						title={'Добавить'}
 						className={`w-36 p-2 text-sm  text-boxdark dark:bg-boxdark dark:border-boxdark dark:text-white bg-white border-white`}
 					/>
@@ -62,11 +62,11 @@ const InvestmentsPage = () => {
 					/>
 				}
 			/>
-			{(actionData?.typeAction === 'create' || actionData?.typeAction === 'update' || actionData?.typeAction === 'sell') && (
+			{(actionData?.actionType === 'create' || actionData?.actionType === 'update' || actionData?.actionType === 'sell') && (
 				<CreateUpdateInvestmentModal
 					id={actionData?.id}
 					data={actionData?.data}
-					typeAction={actionData?.typeAction}
+					actionType={actionData?.actionType}
 					onCreateUpdateInvestment={onCreateUpdateSaleInvestment}
 					close={() => setActionData(null)}
 				/>
@@ -77,7 +77,7 @@ const InvestmentsPage = () => {
 				description={`Вы точно хотите удалить инвестицию ?`}
 				cancel={() => setActionData(null)}
 				confirm={deleteInvestment}
-				isOpen={!!(actionData?.typeAction === 'delete' && actionData?.id)}
+				isOpen={!!(actionData?.actionType === 'delete' && actionData?.id)}
 			/>
 		</div>
 	);

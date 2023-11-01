@@ -37,7 +37,7 @@ const TransactionsPage = () => {
 				title="Транзакции"
 				right={
 					<Button
-						clickHandler={() => setActionData({ typeAction: 'create' })}
+						clickHandler={() => setActionData({ actionType: 'create' })}
 						title={'Добавить'}
 						className={`w-36 p-2 text-sm  text-boxdark dark:bg-boxdark dark:border-boxdark dark:text-white bg-white border-white`}
 					/>
@@ -63,7 +63,7 @@ const TransactionsPage = () => {
 					/>
 				}
 			/>
-			{(actionData?.typeAction === 'create' || actionData?.typeAction === 'update') && (
+			{(actionData?.actionType === 'create' || actionData?.actionType === 'update') && (
 				<CreateUpdateModal
 					id={actionData?.id}
 					data={actionData?.data}
@@ -77,7 +77,7 @@ const TransactionsPage = () => {
 				description={`Вы точно хотите удалить транзакцию ?`}
 				cancel={() => setActionData(null)}
 				confirm={onDeleteTransaction}
-				isOpen={!!(actionData?.typeAction === 'delete' && actionData?.id)}
+				isOpen={!!(actionData?.actionType === 'delete' && actionData?.id)}
 			/>
 		</div>
 	);

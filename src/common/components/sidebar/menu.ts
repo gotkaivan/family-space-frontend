@@ -1,4 +1,3 @@
-import {} from 'lucide-react';
 import { IIconProps } from '../ui/Icon';
 
 interface IMenuItem {
@@ -12,7 +11,15 @@ const menu: IMenuItem[] = [
 		name: 'Задачи',
 		url: 'tasks',
 		icon: {
-			name: 'clipboard-list',
+			name: 'list-checks',
+		},
+	},
+
+	{
+		name: 'Заметки',
+		url: 'notes',
+		icon: {
+			name: 'scroll-text',
 		},
 	},
 

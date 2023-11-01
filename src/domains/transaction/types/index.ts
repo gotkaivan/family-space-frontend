@@ -1,8 +1,8 @@
-import { TypeAction } from 'common/types';
+import { ActionType } from 'common/types';
 import { TransactionDto } from 'generated/api';
 
 export interface IActionTransactionResponseParams {
-	typeAction: TypeAction;
+	actionType: ActionType;
 	id?: number;
 	data?: TransactionDto;
 }

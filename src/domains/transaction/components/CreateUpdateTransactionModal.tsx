@@ -10,6 +10,7 @@ import Checkbox from 'common/components/ui/Ckeckbox';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Transaction from '../entities/Transaction';
 import { transactionTypes, currencyTypes, transactionTypesForCreate } from '../helpers';
+import FormModal from 'common/components/modals/FormModal';
 
 interface IProps {
 	id?: number | undefined;
@@ -20,6 +21,7 @@ interface IProps {
 
 const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, data, id }) => {
 	const [isOwe, setIsOwe] = useState<boolean>(false);
+	const [isExistBefore, setIsExistBefore] = useState<boolean>(false);
 
 	const {
 		register,
@@ -60,7 +62,13 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 		const requestType = id ? 'update' : 'create';
 		setIsLoading(true);
 		try {
-			await onCreateUpdateTask(requestType, new Transaction(form));
+			await onCreateUpdateTask(
+				requestType,
+				new Transaction({
+					...form,
+					isExistBefore,
+				})
+			);
 		} finally {
 			setIsLoading(false);
 		}
@@ -74,15 +82,14 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 		setIsOwe(!!data?.owesPrice);
 	}, [data?.owesPrice]);
 
+	useEffect(() => {
+		setIsExistBefore(!!data?.isExistBefore);
+	}, [data?.isExistBefore]);
+
 	return (
-		<div
-			onClick={() => close()}
-			className="fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 py-5 px-4"
-		>
-			<div
-				onClick={e => e.stopPropagation()}
-				className="relative m-auto w-full max-w-180 rounded-md border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10"
-			>
+		<FormModal
+			close={close}
+			content={
 				<form onSubmit={handleSubmit(onClickHandler)}>
 					<button
 						onClick={() => close()}
@@ -154,7 +161,7 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 								errorMessage={errors.purchasePrice?.message}
 							/>
 						)}
-						{!isInvestment && (
+						{isSale && (
 							<Input
 								id="currentPrice"
 								label={priceTitle}
@@ -209,7 +216,7 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 								withError={!!errors.owesPrice?.message}
 							/>
 						)}
-						{isInvestmentOrSale && (
+						{
 							<Input
 								id={isSale ? 'currentAmount' : 'purchaseAmount'}
 								label="Количество"
@@ -229,8 +236,17 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 								className="mb-8"
 								withError={!!errors[isSale ? 'currentAmount' : 'purchaseAmount']?.message}
 							/>
-						)}
+						}
 					</div>
+					{isInvestment && (
+						<Checkbox
+							text="Инвестиция создана до вычислений"
+							id={'isExistBefore'}
+							className="mb-8"
+							value={isExistBefore}
+							onChange={() => setIsExistBefore(!isExistBefore)}
+						/>
+					)}
 
 					<Datepicker
 						id="transactionDate"
@@ -247,8 +263,8 @@ const CreateUpdateTransactionModal: FC<IProps> = ({ onCreateUpdateTask, close, d
 						/>
 					</div>
 				</form>
-			</div>
-		</div>
+			}
+		/>
 	);
 };
 

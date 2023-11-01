@@ -72,7 +72,7 @@ const useTransactionPage = () => {
 	}
 
 	async function onDeleteTransaction(): Promise<boolean> {
-		if (actionData?.id && actionData?.typeAction === 'delete') {
+		if (actionData?.id && actionData?.actionType === 'delete') {
 			try {
 				actionData.data?.transactionType === TransactionDto.transactionType.SALE ? await deleteSaleTransaction(actionData.id) : await deleteTransaction(actionData.id);
 

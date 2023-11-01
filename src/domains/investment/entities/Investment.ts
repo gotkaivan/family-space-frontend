@@ -16,6 +16,7 @@ class Investment implements TransactionDto {
 		this.transactionDate = investment?.transactionDate || new Date().toISOString();
 		this.transactionSaleId = investment?.transactionSaleId;
 		this.status = investment?.status || TransactionDto.status.ACTIVE;
+		this.isExistBefore = investment?.isExistBefore;
 	}
 
 	status: TransactionDto.status;
@@ -43,6 +44,8 @@ class Investment implements TransactionDto {
 	transactionDate: string | null;
 
 	transactionSaleId?: number | undefined;
+
+	isExistBefore?: boolean | undefined;
 }
 
 export default Investment;

@@ -4,14 +4,14 @@ import {
 	DeleteNoteResponseDto,
 	NotesService,
 	NoteBoardsService,
-	NoteBoardDto,
-	DeleteNoteBoardResponseDto,
-	CreateNoteBoardDto,
-	CreateNoteBoardResponseDto,
-	UpdateNoteBoardResponseDto,
 	CreateNoteDto,
 	CreateNoteResponseDto,
 	UpdateNoteResponseDto,
+	NoteGroupDto,
+	CreateNoteGroupDto,
+	CreateNoteGroupResponseDto,
+	UpdateNoteGroupResponseDto,
+	DeleteNoteGroupResponseDto,
 } from 'api';
 
 /**
@@ -19,23 +19,23 @@ import {
  * @returns
  */
 
-export const getNoteBoardsApi = (): CancelablePromise<NoteBoardDto[]> => {
+export const getNoteGroupsApi = (): CancelablePromise<NoteGroupDto[]> => {
 	return NoteBoardsService.noteBoardsControllerGetNoteBoards();
 };
 
-export const getNoteBoardByIdApi = (id: number): CancelablePromise<NoteBoardDto> => {
+export const getNoteGroupByIdApi = (id: number): CancelablePromise<NoteGroupDto> => {
 	return NoteBoardsService.noteBoardsControllerGetNoteBoardById(id);
 };
 
-export const createNoteBoardApi = (board: CreateNoteBoardDto): CancelablePromise<CreateNoteBoardResponseDto> => {
+export const createNoteGroupApi = (board: CreateNoteGroupDto): CancelablePromise<CreateNoteGroupResponseDto> => {
 	return NoteBoardsService.noteBoardsControllerCreateNoteBoard(board);
 };
 
-export const updateNoteBoardApi = (board: NoteBoardDto): CancelablePromise<UpdateNoteBoardResponseDto> => {
+export const updateNoteGroupApi = (board: NoteGroupDto): CancelablePromise<UpdateNoteGroupResponseDto> => {
 	return NoteBoardsService.noteBoardsControllerUpdateNoteBoard(board);
 };
 
-export const deleteNoteBoardApi = (id: number): CancelablePromise<DeleteNoteBoardResponseDto> => {
+export const deleteNoteGroupApi = (id: number): CancelablePromise<DeleteNoteGroupResponseDto> => {
 	return NoteBoardsService.noteBoardsControllerDeleteNoteBoard(id);
 };
 

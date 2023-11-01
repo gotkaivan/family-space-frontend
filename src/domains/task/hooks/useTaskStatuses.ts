@@ -10,7 +10,7 @@ const useTaskStatuses = (props: ITaskStatusesProps) => {
 
 	const [actionData, setActionData] = useState<IActionTaskResponseParams<TaskDto | TaskStatusDto | null> | null>(null);
 
-	const isUpdateColumn = (id: number): boolean => !!(actionData?.typeItem === 'status' && actionData.statusId === id);
+	const isUpdateColumn = (id: number): boolean => !!(actionData?.itemType === 'status' && actionData.statusId === id);
 
 	const modalData = useMemo((): TaskDto | null => {
 		if (actionData?.data) {
@@ -115,13 +115,13 @@ const useTaskStatuses = (props: ITaskStatusesProps) => {
 	};
 
 	async function deleteElement(): Promise<boolean> {
-		if (actionData?.typeItem === 'status' && actionData.statusId) {
+		if (actionData?.itemType === 'status' && actionData.statusId) {
 			await props.deleteStatus(actionData.statusId);
 			setActionData(null);
 			return true;
 		}
 
-		if (actionData?.typeItem === 'task' && actionData.statusId && actionData.taskId) {
+		if (actionData?.itemType === 'task' && actionData.statusId && actionData.taskId) {
 			await props.deleteTask(actionData?.taskId);
 			setActionData(null);
 			return true;

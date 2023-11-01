@@ -1,4 +1,4 @@
-export type TypeAction = 'create' | 'update' | 'delete' | 'sell';
+export type ActionType = 'create' | 'update' | 'delete' | 'sell';
 
 export interface IBreadcrumb {
 	title: string;
