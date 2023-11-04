@@ -25,7 +25,7 @@ export default function DefaultLayout() {
 				/>
 				<div className={`relative flex flex-1 flex-col duration-300 ${!isSidebarOpen ? 'pl-60' : 'pl-22'}`}>
 					<Header />
-					<main>
+					<main className="overflow-scroll">
 						<div className="mx-auto max-w-screen p-4 md:p-6">
 							<Outlet />
 						</div>
